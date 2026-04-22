@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Knights of Transylvania
 
-## Getting Started
+A presentation-style cheerleading team website built with Next.js, React, and Tailwind CSS. The current version is static-first on purpose so it can be deployed for free without maintaining a backend.
 
-First, run the development server:
+## Stack
+
+- Next.js App Router
+- React
+- Tailwind CSS
+- TypeScript
+
+## Local Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Validation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Content Notes
 
-## Learn More
+- The gallery panels are styled placeholders until you add real team photos or videos.
+- The contact email and Instagram handle on the page are placeholders and should be replaced before launch.
+- The schedule section is sample content and should be swapped with real events.
 
-To learn more about Next.js, take a look at the following resources:
+## Free Hosting Recommendation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Deploy this project on the Vercel Hobby plan. It is free, works well with Next.js, and does not require a backend for the current version.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Suggested deployment flow:
 
-## Deploy on Vercel
+1. Push the project to GitHub.
+2. Import the repository into Vercel.
+3. Keep the default Next.js build settings.
+4. Add a custom domain later if you want one.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Backend
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+No backend is needed right now. If you later want a real contact form, athlete sign-up flow, or private team dashboard, add a lightweight service instead of building a full custom server first.

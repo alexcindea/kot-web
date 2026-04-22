@@ -1,0 +1,12 @@
+- [x] Verify that the copilot-instructions.md file in the .github directory is created.
+- [x] Clarify Project Requirements: Next.js presentation website for a cheerleading team, React frontend, no backend for now, free hosting target.
+- [x] Scaffold the Project: Generated the project in the current workspace with TypeScript, Tailwind CSS, App Router, and ESLint.
+- [x] Customize the Project: Replaced the starter page with a branded, presentation-style landing page and custom visual system.
+- [x] Install Required Extensions: No required extensions were specified by the project setup information.
+- [x] Compile the Project: `npm run lint` and `npm run build` both pass.
+- [x] Create and Run Task: Added and launched a VS Code task for `npm run dev`.
+- [ ] Launch the Project: Debug launch is still pending user confirmation.
+- [x] Ensure Documentation is Complete: README updated and this file cleaned of scaffold comments.
+- Work through each checklist item systematically.
+- Keep communication concise and focused.
+- Follow development best practices.
