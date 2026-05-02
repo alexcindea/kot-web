@@ -1,35 +1,33 @@
 import type { Metadata } from "next";
-import { Cinzel_Decorative, EB_Garamond } from "next/font/google";
+import { Bebas_Neue, Barlow } from "next/font/google";
 import "./globals.css";
 
-const cinzelDecorative = Cinzel_Decorative({
-  variable: "--font-cinzel",
-  weight: ["400", "700", "900"],
-  subsets: ["latin"],
+const bebas = Bebas_Neue({
+  weight: "400",
+  variable: "--font-bebas",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
 });
 
-const ebGaramond = EB_Garamond({
-  variable: "--font-garamond",
-  subsets: ["latin"],
+const barlow = Barlow({
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-barlow",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Knights of Transylvania | Cheer Program",
+  title: "Knights Of Transylvania · Cheerleading",
   description:
-    "The official cheer program of the Knights of Transylvania — built for game day and beyond.",
+    "Performanță și spectacol în inima Transilvaniei. Peste 130 de sportivi, 20+ titluri naționale, ICU Cheerleading Worlds 2025.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${cinzelDecorative.variable} ${ebGaramond.variable} h-full scroll-smooth antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="ro" className={`${bebas.variable} ${barlow.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

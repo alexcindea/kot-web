@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>KOT — Knights Of Transylvania · Cheerleading</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="ext-resource-dependency" content="../../assets/logo-kot-shield-transparent.png" data-resource-id="kotLogo" />
+<link rel="stylesheet" href="marketing.css">
+<template id="__bundler_thumbnail" data-bg-color="#ffffff">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#ffffff"/>
+    <g transform="translate(600 400)">
+      <path d="M -180 -200 L 180 -200 L 180 80 L 0 240 L -180 80 Z" fill="#1bafe2"/>
+      <path d="M -140 -160 L 140 -160 L 140 60 L 0 195 L -140 60 Z" fill="#ffffff"/>
+      <text x="0" y="-30" text-anchor="middle" font-family="Impact, sans-serif" font-size="72" font-weight="900" fill="#1bafe2" letter-spacing="2">KOT</text>
+      <rect x="-110" y="20" width="220" height="32" fill="#f79335"/>
+      <text x="0" y="44" text-anchor="middle" font-family="Impact, sans-serif" font-size="22" font-weight="700" fill="#ffffff" letter-spacing="3">CHEERLEADING</text>
+    </g>
+  </svg>
+</template>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="app"></div>
+
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="Nav-standalone.jsx"></script>
+<script type="text/babel" src="Hero.jsx"></script>
+<script type="text/babel" src="MarqueeStrip.jsx"></script>
+<script type="text/babel" src="AboutSection.jsx"></script>
+<script type="text/babel" src="GroupsSection.jsx"></script>
+<script type="text/babel" src="StaffSection.jsx"></script>
+<script type="text/babel" src="ProjectsSection.jsx"></script>
+<script type="text/babel" src="EventsSection.jsx"></script>
+<script type="text/babel" src="SponsorsSection.jsx"></script>
+<script type="text/babel" src="ContactSection.jsx"></script>
+<script type="text/babel" src="Footer-standalone.jsx"></script>
+
+<script type="text/babel">
+const { useEffect } = React;
+
+function App() {
+  useEffect(() => {
+    if (window.lucide) window.lucide.createIcons();
+  });
+  const Marquee = window.KOT_Marquee;
+  return (
+    <>
+      <window.KOT_Nav />
+      <main data-screen-label="01 Landing">
+        <window.KOT_Hero />
+        <Marquee
+          tone="orange"
+          icon="star"
+          items={['MOMENTUL TĂU WOOW', 'KNIGHTS OF TRANSYLVANIA', 'KOT', 'CLUJ-NAPOCA', 'CHEERLEADING']}
+        />
+        <window.KOT_About />
+        <window.KOT_Groups />
+        <Marquee
+          tone="cyan"
+          icon="trophy"
+          items={['ICU WORLDS 2025', 'TEAM ROMANIA', '20+ TITLURI NAȚIONALE', 'CAMPIONAT NAȚIONAL TURDA 2026']}
+        />
+        <window.KOT_Staff />
+        <window.KOT_Projects />
+        <window.KOT_Events />
+        <window.KOT_Sponsors />
+        <window.KOT_Contact />
+      </main>
+      <window.KOT_Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('app')).render(<App />);
+</script>
+</body>
+</html>

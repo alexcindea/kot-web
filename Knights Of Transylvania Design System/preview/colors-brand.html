@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brand colors</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .swatches { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column;
+  }
+  .chip { height: 120px; }
+  .meta { padding: 12px 14px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    color: var(--fg);
+  }
+  .hex { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); }
+  .scale { display: grid; grid-template-columns: repeat(5, 1fr); height: 32px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="swatches">
+      <div class="swatch">
+        <div class="chip" style="background: #1bafe2;"></div>
+        <div class="scale">
+          <div style="background:#ebf6fb"></div>
+          <div style="background:#d4eef8"></div>
+          <div style="background:#1bafe2"></div>
+          <div style="background:#0e9bcb"></div>
+          <div style="background:#0a7da6"></div>
+        </div>
+        <div class="meta"><div class="name">KOT Cyan</div><div class="hex">#1BAFE2</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #f79335;"></div>
+        <div class="scale">
+          <div style="background:#fff1e2"></div>
+          <div style="background:#fde2c6"></div>
+          <div style="background:#f79335"></div>
+          <div style="background:#e07a1d"></div>
+          <div style="background:#b75f12"></div>
+        </div>
+        <div class="meta"><div class="name">KOT Orange</div><div class="hex">#F79335</div></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

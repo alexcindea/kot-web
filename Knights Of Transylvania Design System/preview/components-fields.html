@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Form fields</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--fg-2);
+  }
+  .field input, .field textarea, .field select {
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    padding: 12px 14px;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    background: white;
+    color: var(--fg);
+    outline: none;
+    transition: border-color 200ms;
+  }
+  .field input:focus, .field input.focused { border-color: var(--kot-cyan); box-shadow: 0 0 0 4px rgba(27,175,226,0.18); }
+  .field input.error { border-color: var(--danger); }
+  .field .hint { font-size: 11px; color: var(--fg-3); }
+  .field .err { font-size: 11px; color: var(--danger); font-weight: 600; }
+  .row6 { display:flex; gap: 8px; align-items: center; }
+  .check { width: 18px; height: 18px; border: 2px solid var(--fg); border-radius: 4px; background: var(--kot-cyan); position: relative; }
+  .check::after { content:''; position:absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .check-label { font-size: 14px; color: var(--fg); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="grid">
+      <div class="field">
+        <label>Nume complet</label>
+        <input type="text" value="Maria Popescu">
+        <div class="hint">Așa cum apare pe carnet</div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input class="focused" type="email" value="maria@email.ro">
+      </div>
+      <div class="field">
+        <label>Telefon</label>
+        <input class="error" type="tel" value="07XX">
+        <div class="err">Număr incomplet</div>
+      </div>
+      <div class="field">
+        <label>Grupă</label>
+        <select><option>Juniori (8–11 ani)</option></select>
+      </div>
+    </div>
+    <div class="row6">
+      <div class="check"></div>
+      <span class="check-label">Sunt de acord cu prelucrarea datelor</span>
+    </div>
+  </div>
+</body>
+</html>

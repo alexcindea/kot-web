@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Display type</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .specimen { display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--line-2); padding-bottom: 12px; }
+  .specimen:last-child { border-bottom: none; padding-bottom: 0; }
+  .display {
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+    color: var(--fg);
+  }
+  .meta { margin-left: auto; text-align: right; flex-shrink: 0; }
+  .size { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); }
+  .name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="stack">
+      <div class="specimen">
+        <div class="display" style="font-size:88px;">Knights</div>
+        <div class="meta"><div class="name">Display 2XL</div><div class="size">Bebas Neue · 88–160px</div></div>
+      </div>
+      <div class="specimen">
+        <div class="display" style="font-size:64px;">Cheerleading</div>
+        <div class="meta"><div class="name">Display XL</div><div class="size">Bebas Neue · 48–112px</div></div>
+      </div>
+      <div class="specimen">
+        <div class="display" style="font-size:44px;">Despre noi</div>
+        <div class="meta"><div class="name">Display LG</div><div class="size">Bebas Neue · 40–80px</div></div>
+      </div>
+      <div class="specimen">
+        <div class="display" style="font-size:28px;">Grupele noastre</div>
+        <div class="meta"><div class="name">Display MD</div><div class="size">Bebas Neue · 32–56px</div></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

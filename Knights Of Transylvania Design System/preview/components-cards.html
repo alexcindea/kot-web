@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Card</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { background: #f7f8fa; }
+  .card { background: transparent; padding: 24px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .roster {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px -8px rgba(12,12,12,0.18);
+    display: flex; flex-direction: column;
+  }
+  .roster .img {
+    aspect-ratio: 4/5;
+    background: linear-gradient(135deg, #1bafe2 0%, #0a7da6 100%);
+    position: relative;
+    display: flex; align-items: flex-end; padding: 16px;
+  }
+  .roster .img::after {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.7) 100%);
+  }
+  .age-pill {
+    position: relative; z-index: 1;
+    background: white; color: var(--fg);
+    font-family: 'Barlow', sans-serif; font-weight: 700;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 5px 10px; border-radius: 999px;
+  }
+  .roster .body { padding: 16px; }
+  .roster .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; letter-spacing: 0.02em;
+    line-height: 1; color: var(--fg);
+  }
+  .roster .meta {
+    font-size: 12px; color: var(--fg-3);
+    margin-top: 4px;
+  }
+
+  .event {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 8px 24px -8px rgba(12,12,12,0.18);
+    border-left: 4px solid var(--kot-orange);
+  }
+  .event .date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; line-height: 1; color: var(--kot-orange);
+    letter-spacing: 0.02em;
+  }
+  .event h4 {
+    font-family: 'Barlow'; font-weight: 700; font-size: 17px;
+    margin: 6px 0 4px;
+  }
+  .event .location { font-size: 12px; color: var(--fg-3); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="grid">
+      <div class="roster">
+        <div class="img"><span class="age-pill">8–11 ani</span></div>
+        <div class="body">
+          <div class="name">Juniori</div>
+          <div class="meta">22 sportivi · 2 antrenori</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="event">
+          <div class="date">15 MAI</div>
+          <h4>Campionatul Național de Cheerleading</h4>
+          <div class="location">Cluj-Napoca · Sala Polivalentă</div>
+        </div>
+        <div class="event" style="border-left-color:var(--kot-cyan);">
+          <div class="date" style="color:var(--kot-cyan-700);">22 IUN</div>
+          <h4>Tabăra Națională KOT</h4>
+          <div class="location">Sibiu · 5 zile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

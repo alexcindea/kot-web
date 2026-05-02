@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Semantic colors</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .swatch { display: flex; flex-direction: column; gap: 8px; }
+  .chip {
+    height: 90px;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: 0.02em;
+  }
+  .meta { display: flex; justify-content: space-between; align-items: baseline; }
+  .name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg); }
+  .hex { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="swatches">
+      <div class="swatch">
+        <div class="chip" style="background:#1bafe2;">Info</div>
+        <div class="meta"><span class="name">Info</span><span class="hex">#1BAFE2</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#2ea66f;">Success</div>
+        <div class="meta"><span class="name">Success</span><span class="hex">#2EA66F</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#e0a012;">Warn</div>
+        <div class="meta"><span class="name">Warn</span><span class="hex">#E0A012</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#d23f3f;">Danger</div>
+        <div class="meta"><span class="name">Danger</span><span class="hex">#D23F3F</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

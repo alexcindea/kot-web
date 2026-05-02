@@ -1,0 +1,33 @@
+/* Shared frame for preview cards in the Design System tab.
+   Cards are designed at 700px wide and target ~150–400px tall. */
+@import url('../colors_and_type.css');
+
+html, body { background: var(--white); }
+body {
+  margin: 0;
+  width: 700px;
+  font-family: var(--font-sans);
+  color: var(--fg);
+}
+.card {
+  width: 700px;
+  padding: 24px;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.row { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+.label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fg-3);
+}
+.value-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+}

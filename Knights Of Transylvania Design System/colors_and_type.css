@@ -1,0 +1,261 @@
+/* ============================================================
+   KOT — Knights Of Transylvania
+   Design tokens: color, type, spacing, radius, shadow, motion
+   ------------------------------------------------------------
+   Pull this file into any HTML/JSX surface you build.
+   <link rel="stylesheet" href="colors_and_type.css">
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap');
+
+:root {
+  /* ---------- Brand ---------- */
+  --kot-cyan:        #1bafe2;
+  --kot-cyan-600:    #0e9bcb;   /* hover */
+  --kot-cyan-700:    #0a7da6;   /* press */
+  --kot-cyan-100:    #d4eef8;   /* tint */
+  --kot-cyan-50:     #ebf6fb;
+
+  --kot-orange:      #f79335;
+  --kot-orange-600:  #e07a1d;
+  --kot-orange-700:  #b75f12;
+  --kot-orange-100:  #fde2c6;
+  --kot-orange-50:   #fff1e2;
+
+  /* ---------- Neutrals ---------- */
+  --black:           #0c0c0c;
+  --ink:             #14181c;
+  --ink-2:           #2a3038;
+  --ink-3:           #4a525c;
+  --ink-4:           #7a8290;
+  --line:            #e3e6ea;
+  --line-2:          #ecf0f3;
+  --paper:           #f7f8fa;
+  --white:           #ffffff;
+
+  /* ---------- Semantic ---------- */
+  --success:         #2ea66f;
+  --warn:            #e0a012;
+  --danger:          #d23f3f;
+  --info:            var(--kot-cyan);
+
+  /* ---------- Surfaces (semantic aliases) ---------- */
+  --bg:              var(--white);
+  --bg-inverted:     var(--black);
+  --bg-muted:        var(--paper);
+  --fg:              var(--ink);
+  --fg-2:            var(--ink-2);
+  --fg-3:            var(--ink-3);
+  --fg-muted:        var(--ink-4);
+  --fg-inverted:     var(--white);
+  --border:          var(--line);
+  --border-strong:   var(--ink-2);
+  --primary:         var(--kot-cyan);
+  --primary-fg:      var(--white);
+  --accent:          var(--kot-orange);
+  --accent-fg:       var(--white);
+  --link:            var(--kot-cyan-600);
+
+  /* ---------- Typography ---------- */
+  --font-display:    'Bebas Neue', 'Oswald', 'Arial Narrow', sans-serif;
+  --font-sans:       'Barlow', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:       'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* Type scale (clamps fluid between mobile and desktop). */
+  --fs-display-2xl: clamp(64px, 12vw, 160px);   /* hero blockbuster */
+  --fs-display-xl:  clamp(48px, 8vw,  112px);   /* section heroes */
+  --fs-display-lg:  clamp(40px, 6vw,  80px);    /* section titles */
+  --fs-display-md:  clamp(32px, 4vw,  56px);    /* sub-section */
+  --fs-display-sm:  clamp(24px, 3vw,  36px);    /* eyebrow display */
+
+  --fs-h1:          clamp(32px, 4vw, 48px);
+  --fs-h2:          clamp(24px, 3vw, 36px);
+  --fs-h3:          22px;
+  --fs-h4:          18px;
+  --fs-body:        16px;
+  --fs-body-sm:     14px;
+  --fs-caption:     12px;
+  --fs-eyebrow:     13px;
+
+  --lh-tight:       1.0;
+  --lh-snug:        1.12;
+  --lh-normal:      1.45;
+  --lh-relaxed:     1.6;
+
+  --tracking-display: 0.01em;
+  --tracking-eyebrow: 0.18em;
+  --tracking-button:  0.06em;
+  --tracking-body:    0;
+
+  /* ---------- Spacing (8pt + 4pt substep) ---------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 128px;
+
+  --section-pad-y: clamp(64px, 10vw, 128px);
+  --container-pad-x: clamp(20px, 4vw, 48px);
+  --container-max:   1280px;
+
+  /* ---------- Radii ---------- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* ---------- Borders ---------- */
+  --bw-1: 1px;
+  --bw-2: 2px;
+  --bw-3: 3px;
+
+  /* ---------- Shadows ---------- */
+  --shadow-sm: 0 1px 2px rgba(12,12,12,0.06), 0 1px 3px rgba(12,12,12,0.08);
+  --shadow-md: 0 8px 24px -8px rgba(12,12,12,0.18);
+  --shadow-lg: 0 24px 60px -12px rgba(12,12,12,0.28);
+  --shadow-glow-cyan:   0 0 0 4px rgba(27,175,226,0.18);
+  --shadow-glow-orange: 0 0 0 4px rgba(247,147,53,0.22);
+  --shadow-inset:       inset 0 1px 0 rgba(255,255,255,0.6);
+
+  /* ---------- Motion ---------- */
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast:    120ms;
+  --dur-base:    200ms;
+  --dur-slow:    400ms;
+  --dur-page:    600ms;
+
+  /* ---------- Z-index ---------- */
+  --z-nav:       50;
+  --z-overlay:   80;
+  --z-modal:     100;
+  --z-toast:     120;
+}
+
+/* =====================================================
+   Base + semantic element styles
+   ===================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--kot-cyan); color: var(--white); }
+
+/* ---------- Display ---------- */
+.kot-display-2xl,
+.kot-display-xl,
+.kot-display-lg,
+.kot-display-md,
+.kot-display-sm {
+  font-family: var(--font-display);
+  font-weight: 400; /* Bebas only ships 400 */
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  color: var(--fg);
+  margin: 0;
+}
+.kot-display-2xl { font-size: var(--fs-display-2xl); }
+.kot-display-xl  { font-size: var(--fs-display-xl);  }
+.kot-display-lg  { font-size: var(--fs-display-lg);  }
+.kot-display-md  { font-size: var(--fs-display-md);  }
+.kot-display-sm  { font-size: var(--fs-display-sm);  }
+
+/* ---------- Headings (semantic elements default to display family) ---------- */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--lh-snug);
+  text-transform: uppercase;
+  margin: 0 0 var(--space-4) 0;
+  color: var(--fg);
+}
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+
+h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  margin: 0 0 var(--space-3) 0;
+  color: var(--fg);
+}
+h4 { font-size: var(--fs-h4); }
+h5 { font-size: var(--fs-body); text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); }
+h6 { font-size: var(--fs-body-sm); text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); color: var(--fg-3); }
+
+/* ---------- Body ---------- */
+p {
+  margin: 0 0 var(--space-4) 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+small, .kot-caption {
+  font-size: var(--fs-caption);
+  color: var(--fg-3);
+}
+
+.kot-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--kot-orange);
+}
+
+/* ---------- Links ---------- */
+a {
+  color: var(--link);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+a:hover { color: var(--kot-orange); }
+
+/* ---------- Code ---------- */
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+code {
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

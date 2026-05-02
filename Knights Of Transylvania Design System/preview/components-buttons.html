@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Buttons</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .group { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .label-row { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-3); }
+  .btn {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 14px;
+    padding: 14px 22px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary { background: var(--kot-cyan); color: white; }
+  .btn-primary.hover { background: var(--kot-cyan-600); transform: translateY(-2px); box-shadow: 0 0 0 4px rgba(27,175,226,0.18); }
+  .btn-primary.press { background: var(--kot-cyan-700); transform: scale(0.97); }
+
+  .btn-accent { background: var(--kot-orange); color: white; }
+  .btn-accent.hover { background: var(--kot-orange-600); transform: translateY(-2px); box-shadow: 0 0 0 4px rgba(247,147,53,0.22); }
+
+  .btn-outline { background: white; color: var(--fg); border-color: var(--fg); }
+  .btn-outline.hover { background: var(--fg); color: white; }
+
+  .btn-ghost { background: transparent; color: var(--fg); }
+  .btn-ghost.hover { background: var(--paper); }
+
+  .btn-disabled { background: var(--line); color: var(--fg-muted); cursor: not-allowed; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="grid">
+      <div class="group">
+        <div class="label-row">Primary · Cyan</div>
+        <button class="btn btn-primary">Vino la antrenament</button>
+        <button class="btn btn-primary hover">Vino la antrenament</button>
+        <button class="btn btn-primary press">Vino la antrenament</button>
+      </div>
+      <div class="group">
+        <div class="label-row">Accent · Orange</div>
+        <button class="btn btn-accent">Devino sponsor</button>
+        <button class="btn btn-accent hover">Devino sponsor</button>
+        <button class="btn btn-disabled">Indisponibil</button>
+      </div>
+      <div class="group">
+        <div class="label-row">Outline · Ghost</div>
+        <button class="btn btn-outline">Vezi mai mult</button>
+        <button class="btn btn-outline hover">Vezi mai mult</button>
+        <button class="btn btn-ghost">Citește</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

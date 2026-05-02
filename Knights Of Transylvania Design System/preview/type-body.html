@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Body type</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+  .row2 { display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--line-2); padding-bottom: 10px; }
+  .row2:last-child { border-bottom: none; padding-bottom: 0; }
+  .meta { margin-left: auto; text-align: right; flex-shrink: 0; }
+  .size { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); }
+  .name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg); }
+  .eyebrow {
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--kot-orange);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="stack">
+      <div class="row2">
+        <span class="eyebrow">Eyebrow · Despre noi</span>
+        <div class="meta"><div class="name">Eyebrow</div><div class="size">Barlow 700 · 13/0.18em</div></div>
+      </div>
+      <div class="row2">
+        <div style="font-family:Barlow;font-weight:700;font-size:22px;line-height:1.2;">H3 — Antrenori cu experiență</div>
+        <div class="meta"><div class="name">H3</div><div class="size">Barlow 700 · 22px</div></div>
+      </div>
+      <div class="row2">
+        <div style="font-family:Barlow;font-weight:700;font-size:18px;line-height:1.3;">H4 — Grupa juniori</div>
+        <div class="meta"><div class="name">H4</div><div class="size">Barlow 700 · 18px</div></div>
+      </div>
+      <div class="row2">
+        <p style="font-family:Barlow;font-size:16px;line-height:1.6;color:var(--fg-2);margin:0;max-width:380px;">Body — Antrenăm peste 80 de cheerleaderi în 4 grupe de vârstă, de la juniori la seniori.</p>
+        <div class="meta"><div class="name">Body</div><div class="size">Barlow 400 · 16/1.6</div></div>
+      </div>
+      <div class="row2">
+        <small style="font-family:Barlow;font-size:12px;color:var(--fg-3);">Caption · Foto: Andrei P., 2024</small>
+        <div class="meta"><div class="name">Caption</div><div class="size">Barlow 400 · 12px</div></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

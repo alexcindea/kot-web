@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Badges & tags</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+  .row7 { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .pill {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .label-row { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-3); min-width: 110px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="stack">
+      <div class="row7">
+        <span class="label-row">Solid</span>
+        <span class="pill" style="background:var(--kot-cyan);color:white;">Juniori</span>
+        <span class="pill" style="background:var(--kot-orange);color:white;">Seniori</span>
+        <span class="pill" style="background:var(--ink);color:white;">Elite</span>
+      </div>
+      <div class="row7">
+        <span class="label-row">Soft</span>
+        <span class="pill" style="background:#d4eef8;color:#0a7da6;">Juniori</span>
+        <span class="pill" style="background:#fde2c6;color:#b75f12;">Seniori</span>
+        <span class="pill" style="background:#e3e6ea;color:var(--ink);">Elite</span>
+      </div>
+      <div class="row7">
+        <span class="label-row">Status</span>
+        <span class="pill" style="background:#e2f5ec;color:#1f7a4f;"><span class="dot" style="background:#2ea66f;"></span>Înscrieri deschise</span>
+        <span class="pill" style="background:#fbf0d4;color:#8a5a08;"><span class="dot" style="background:#e0a012;"></span>Loc limitat</span>
+        <span class="pill" style="background:#fbe1e1;color:#8a2222;"><span class="dot" style="background:#d23f3f;"></span>Complet</span>
+      </div>
+      <div class="row7">
+        <span class="label-row">Outline</span>
+        <span class="pill" style="background:white;color:var(--fg);border:2px solid var(--fg);">2024</span>
+        <span class="pill" style="background:white;color:var(--kot-cyan-700);border:2px solid var(--kot-cyan);">Competiție</span>
+        <span class="pill" style="background:white;color:var(--kot-orange-700);border:2px solid var(--kot-orange);">Erasmus+</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

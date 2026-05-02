@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Neutrals</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .swatches { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+  .swatch { display: flex; flex-direction: column; gap: 6px; }
+  .chip {
+    height: 90px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg); }
+  .hex { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:#0c0c0c;border-color:#0c0c0c;"></div><div class="name">Black</div><div class="hex">#0C0C0C</div></div>
+      <div class="swatch"><div class="chip" style="background:#14181c;border-color:#14181c;"></div><div class="name">Ink</div><div class="hex">#14181C</div></div>
+      <div class="swatch"><div class="chip" style="background:#2a3038;border-color:#2a3038;"></div><div class="name">Ink-2</div><div class="hex">#2A3038</div></div>
+      <div class="swatch"><div class="chip" style="background:#4a525c;border-color:#4a525c;"></div><div class="name">Ink-3</div><div class="hex">#4A525C</div></div>
+      <div class="swatch"><div class="chip" style="background:#7a8290;border-color:#7a8290;"></div><div class="name">Ink-4</div><div class="hex">#7A8290</div></div>
+      <div class="swatch"><div class="chip" style="background:#e3e6ea;"></div><div class="name">Line</div><div class="hex">#E3E6EA</div></div>
+      <div class="swatch"><div class="chip" style="background:#f7f8fa;"></div><div class="name">Paper</div><div class="hex">#F7F8FA</div></div>
+      <div class="swatch"><div class="chip" style="background:#ffffff;"></div><div class="name">White</div><div class="hex">#FFFFFF</div></div>
+    </div>
+  </div>
+</body>
+</html>
