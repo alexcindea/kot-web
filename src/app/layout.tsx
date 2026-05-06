@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Barlow } from "next/font/google";
+import 'leaflet/dist/leaflet.css'
 import "./globals.css";
 
 const bebas = Bebas_Neue({

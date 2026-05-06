@@ -1,6 +1,18 @@
 // Contact — form + map placeholder
 const { useState: useStateContact } = React;
 
+const contactMapQuery = encodeURIComponent('Str. Fabricii de Zahăr 109, 400631 Cluj-Napoca, Romania');
+const contactMapLat = 46.786109;
+const contactMapLon = 23.6263783;
+const contactMapBbox = [
+  contactMapLon - 0.0036,
+  contactMapLat - 0.0022,
+  contactMapLon + 0.0036,
+  contactMapLat + 0.0022,
+].map((value) => value.toFixed(6)).join('%2C');
+const contactMapEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${contactMapBbox}&layer=mapnik&marker=${contactMapLat}%2C${contactMapLon}`;
+const contactMapDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${contactMapQuery}`;
+
 function ContactSection() {
   const { Container, Eyebrow, Reveal } = window.KOT_UI;
   const [name, setName] = useStateContact('');
@@ -59,13 +71,30 @@ function ContactSection() {
           <Reveal delay={160}>
             <aside className="kot-contact__info">
               <div className="kot-contact__map">
-                <div className="kot-contact__map-pin">
-                  <i data-lucide="map-pin" />
+                <iframe
+                  className="kot-contact__map-frame"
+                  src={contactMapEmbedUrl}
+                  title="Harta Knights of Transylvania in Cluj-Napoca"
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+                <div className="kot-contact__map-overlay">
+                  <div className="kot-contact__map-card">
+                    <div className="kot-contact__map-kicker">
+                      <i data-lucide="map-pin" />
+                      <span>Sala KOT · Cluj-Napoca</span>
+                    </div>
+                    <div className="kot-contact__map-label">Str. Fabricii de Zahăr 109</div>
+                  </div>
+                  <a className="kot-contact__map-link" href={contactMapDirectionsUrl} target="_blank" rel="noopener noreferrer">
+                    <span>Navighează</span>
+                    <i data-lucide="arrow-right" />
+                  </a>
                 </div>
-                <div className="kot-contact__map-label">Cluj-Napoca · Transilvania</div>
               </div>
               <ul className="kot-contact__list">
-                <li><i data-lucide="map-pin" /><div><strong>Bază</strong>Cluj-Napoca, România</div></li>
+                <li><i data-lucide="map-pin" /><div><strong>Bază</strong>Str. Fabricii de Zahăr 109, 400631 Cluj-Napoca</div></li>
                 <li><i data-lucide="user" /><div><strong>Carmen Biriș</strong>Persoană de contact</div></li>
                 <li><i data-lucide="phone" /><div><strong>Telefon</strong>0799 822 100</div></li>
                 <li><i data-lucide="trophy" /><div><strong>30 mai 2026</strong>Campionatul Național · Turda</div></li>

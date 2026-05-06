@@ -1,29 +1,29 @@
-'use client'
+import Image from 'next/image'
 
-import { useState } from 'react'
-import { MapPin } from 'lucide-react'
+import { urlForImage } from '@/sanity/lib/image'
+import type { HomepageEvent, SitePhotosDocument } from '@/sanity/lib/types'
 
-const events = [
-  { year: 2025, kind: 'Competiție', title: 'Campionatul Național', loc: 'Cluj-Napoca', tone: 'cyan' },
-  { year: 2025, kind: 'Spectacol',  title: 'Gala KOT',            loc: 'Sibiu · Filarmonică', tone: 'orange' },
-  { year: 2024, kind: 'Competiție', title: 'Cupa României',        loc: 'București', tone: 'cyan' },
-  { year: 2024, kind: 'Spectacol',  title: 'Halftime liceu',       loc: 'CCS Sibiu', tone: 'orange' },
-  { year: 2024, kind: 'Tabără',     title: 'Tabăra Națională',     loc: 'Sibiu', tone: 'cyan' },
-  { year: 2023, kind: 'Competiție', title: 'Cupa Transilvaniei',   loc: 'Brașov', tone: 'orange' },
+const eventFallback: HomepageEvent[] = [
+  { title: 'UNTOLD', tone: 'cyan' as const, slot: 'untold' as const },
+  { title: 'Zilele Clujului', tone: 'orange' as const, slot: 'zileleClujului' as const },
+  { title: 'Sports Festival', tone: 'cyan' as const, slot: 'sportsFestival' as const },
+  { title: 'Meciuri UBT', tone: 'orange' as const, slot: 'meciuriUbt' as const },
+  { title: 'Wonder Family Fest', tone: 'cyan' as const, slot: 'wonderFamilyFest' as const },
+  { title: 'Season Opening Show', tone: 'orange' as const, slot: 'seasonOpeningShow' as const },
 ]
 
-const years = ['Toate', 2025, 2024, 2023] as const
-const kinds = ['Toate', 'Competiție', 'Spectacol', 'Tabără'] as const
+type EventsSectionProps = {
+  events?: HomepageEvent[]
+  photos?: SitePhotosDocument['events']
+}
 
-export default function EventsSection() {
-  const [year, setYear] = useState<(typeof years)[number]>('Toate')
-  const [kind, setKind] = useState<(typeof kinds)[number]>('Toate')
+export default function EventsSection({ events, photos }: EventsSectionProps) {
+  const resolvedEvents = events?.length ? events : eventFallback
 
-  const filtered = events.filter(
-    (e) =>
-      (year === 'Toate' || e.year === year) &&
-      (kind === 'Toate' || e.kind === kind),
-  )
+  const eventsWithPhotos = resolvedEvents.map((event) => ({
+    ...event,
+    photo: photos?.[event.slot],
+  }))
 
   return (
     <section className="kot-section kot-section--white" id="evenimente">
@@ -33,61 +33,37 @@ export default function EventsSection() {
           <span className="kot-eyebrow-text">Evenimente</span>
         </div>
         <h2 className="kot-section__title">
-          Foto din spectacole<br />și competiții.
+          Evenimente în care<br />ne vezi live.
         </h2>
-
-        <div className="kot-events__filters">
-          <div className="kot-filter-group">
-            <span className="kot-filter-group__label">An</span>
-            {years.map((y) => (
-              <button
-                key={String(y)}
-                className={`kot-filter${year === y ? ' is-on' : ''}`}
-                onClick={() => setYear(y)}
-              >
-                {y}
-              </button>
-            ))}
-          </div>
-          <div className="kot-filter-group">
-            <span className="kot-filter-group__label">Tip</span>
-            {kinds.map((k) => (
-              <button
-                key={k}
-                className={`kot-filter${kind === k ? ' is-on' : ''}`}
-                onClick={() => setKind(k)}
-              >
-                {k}
-              </button>
-            ))}
-          </div>
-        </div>
+        <p className="kot-section__sub">
+          Aici apar doar fotografia și titlul fiecărui eveniment.
+        </p>
 
         <div className="kot-events__grid">
-          {filtered.map((e, i) => (
-            <article key={e.title + i} className="kot-event-card">
-              <div
-                className={`kot-photo kot-photo--${e.tone}`}
-                style={{ aspectRatio: '3/2', borderRadius: 0 }}
-              />
+          {eventsWithPhotos.map((e) => (
+            <article key={e.slot} className="kot-event-card">
+              <div className={`kot-photo kot-photo--${e.tone}`} style={{ aspectRatio: '3/2', borderRadius: 0 }}>
+                {e.photo?.asset && (
+                  <Image
+                    src={urlForImage(e.photo).width(1200).height(800).fit('crop').auto('format').url()}
+                    alt={e.photo?.alt ?? e.title}
+                    fill
+                    className="kot-photo__img"
+                    sizes="(min-width: 1280px) 360px, (min-width: 768px) 50vw, 100vw"
+                  />
+                )}
+                {!e.photo?.asset && (
+                  <div className="kot-photo__inner">
+                    <span className="kot-event-card__placeholder">{e.title}</span>
+                  </div>
+                )}
+                {e.photo?.caption && <div className="kot-photo__caption">{e.photo.caption}</div>}
+              </div>
               <div className="kot-event-card__body">
-                <div className="kot-event-card__row">
-                  <span className={`kot-pill kot-pill--${e.tone} kot-pill--soft`}>{e.kind}</span>
-                  <span className="kot-event-card__year">{e.year}</span>
-                </div>
                 <h3 className="kot-event-card__title">{e.title}</h3>
-                <div className="kot-event-card__loc">
-                  <MapPin size={14} />
-                  {e.loc}
-                </div>
               </div>
             </article>
           ))}
-          {filtered.length === 0 && (
-            <div className="kot-events__empty">
-              Nu există evenimente pentru filtrele selectate.
-            </div>
-          )}
         </div>
       </div>
     </section>

@@ -1,0 +1,154 @@
+.projectsStack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.projectAccordion {
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 4px solid var(--kot-cyan);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.18);
+}
+
+.projectAccordionOrange {
+  border-top-color: var(--kot-orange);
+}
+
+.projectAccordionSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.projectAccordionSummary::-webkit-details-marker {
+  display: none;
+}
+
+.projectAccordionSummaryText {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.projectAccordionLabel {
+  color: rgba(255, 255, 255, 0.64);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.projectAccordionTitle {
+  margin: 0;
+  color: white;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 2vw, 38px);
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+}
+
+.projectAccordionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  transition: transform var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
+}
+
+.projectAccordion[open] .projectAccordionIcon {
+  transform: rotate(180deg);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.projectAccordionBody {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+  gap: 22px;
+  padding: 0 24px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.projectAccordionMedia,
+.projectAccordionContent {
+  padding-top: 22px;
+}
+
+.projectAccordionMedia {
+  min-width: 0;
+}
+
+.projectAccordionMedia :global(.kot-photo) {
+  border-radius: calc(var(--radius-lg) - 4px);
+}
+
+.projectAccordionPlaceholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  max-width: 16ch;
+}
+
+.projectAccordionPlaceholderLabel {
+  color: rgba(255, 255, 255, 0.72);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.projectAccordionPlaceholder strong {
+  color: white;
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+}
+
+.projectAccordionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.projectAccordionStory {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+@media (max-width: 860px) {
+  .projectAccordionBody {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .projectAccordionSummary {
+    padding: 18px 18px 16px;
+  }
+
+  .projectAccordionBody {
+    padding: 0 18px 18px;
+  }
+
+  .projectAccordionPlaceholder strong {
+    font-size: 28px;
+  }
+}

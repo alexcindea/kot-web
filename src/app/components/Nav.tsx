@@ -2,16 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 
 const links = [
-  { href: '#despre', label: 'Despre' },
-  { href: '#grupe', label: 'Grupele' },
-  { href: '#staff', label: 'Staff' },
-  { href: '#proiecte', label: 'Proiecte' },
-  { href: '#evenimente', label: 'Evenimente' },
-  { href: '#sponsorizare', label: 'Sponsorizare' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#despre', label: 'Despre noi' },
+  { href: '/#grupe', label: 'Grupele' },
+  { href: '/#staff', label: 'Staff' },
+  { href: '/#proiecte', label: 'Proiecte' },
+  { href: '/#evenimente', label: 'Evenimente' },
+  { href: '/#sponsorizare', label: 'Sponsorizare' },
+  { href: '/#contact', label: 'Contact' },
 ]
 
 export default function Nav() {
@@ -28,24 +29,30 @@ export default function Nav() {
   return (
     <header className={`kot-nav${scrolled ? ' is-scrolled' : ''}`}>
       <div className="kot-nav__inner">
-        <a href="#top" className="kot-nav__logo">
-          <Image src="/logo-kot-shield-transparent.png" alt="KOT shield" width={38} height={48} />
+        <Link href="/#top" className="kot-nav__logo">
+          <Image
+            src="/logo-kot-shield.svg"
+            alt="Knights Of Transylvania logo"
+            width={1447}
+            height={1054}
+            priority
+          />
           <span className="kot-nav__wordmark">
-            KOT
-            <span>cheerleading</span>
+            <span className="kot-nav__wordmark-main">Knights of Transylvania</span>
+            <span className="kot-nav__wordmark-sub">Cheerleaders</span>
           </span>
-        </a>
+        </Link>
 
         <nav className="kot-nav__links" aria-label="Navigare principală">
           {links.map((l) => (
-            <a key={l.href} href={l.href}>{l.label}</a>
+            <Link key={l.href} href={l.href}>{l.label}</Link>
           ))}
         </nav>
 
         <div className="kot-nav__cta">
-          <a href="#contact" className="kot-btn kot-btn--primary kot-btn--sm">
-            Vino la antrenament
-          </a>
+          <Link href="/#contact" className="kot-btn kot-btn--primary kot-btn--sm">
+            Încearcă și tu
+          </Link>
         </div>
 
         <button
@@ -60,9 +67,9 @@ export default function Nav() {
       {mobileOpen && (
         <div className="kot-nav__mobile">
           {links.map((l) => (
-            <a key={l.href} href={l.href} onClick={() => setMobileOpen(false)}>
+            <Link key={l.href} href={l.href} onClick={() => setMobileOpen(false)}>
               {l.label}
-            </a>
+            </Link>
           ))}
         </div>
       )}
