@@ -736,7 +736,7 @@ export default async function Home() {
                   </li>
                   <li>
                     <User size={20} />
-                    <div><strong>Carmen Biriș</strong><span>Persoană de contact</span></div>
+                    <div><strong>Persoană de contact</strong><span>Carmen Biriș</span></div>
                   </li>
                   <li>
                     <Phone size={20} />

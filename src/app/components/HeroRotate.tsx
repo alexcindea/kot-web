@@ -13,18 +13,34 @@ export default function HeroRotate() {
   }, [])
 
   const text = phrases[idx]
+  const words = text.split(' ')
+  const animatedWords = words.reduce<Array<{ word: string; startIndex: number }>>((acc, word) => {
+    const previous = acc[acc.length - 1]
+    const startIndex = previous ? previous.startIndex + previous.word.length : 0
+
+    acc.push({ word, startIndex })
+    return acc
+  }, [])
 
   return (
     <span className="kot-hero__rotate" key={idx} aria-label={text}>
       <span className="kot-kinetic">
-        {text.split('').map((ch, i) => (
-          <span
-            key={i}
-            className="kot-kinetic__letter"
-            style={{ animationDelay: `${i * 30}ms` }}
-            aria-hidden="true"
-          >
-            {ch === ' ' ? ' ' : ch}
+        {animatedWords.map(({ word, startIndex }, wordIndex) => (
+          <span key={`${word}-${wordIndex}`} className="kot-kinetic__word" aria-hidden="true">
+            {word.split('').map((ch, charIndex) => {
+              const currentIndex = startIndex + charIndex
+
+              return (
+                <span
+                  key={`${word}-${wordIndex}-${currentIndex}`}
+                  className="kot-kinetic__letter"
+                  style={{ animationDelay: `${currentIndex * 30}ms` }}
+                >
+                  {ch}
+                </span>
+              )
+            })}
+            {wordIndex < words.length - 1 && <span className="kot-kinetic__space">&nbsp;</span>}
           </span>
         ))}
       </span>

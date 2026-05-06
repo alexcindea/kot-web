@@ -293,9 +293,16 @@ a:hover { color: var(--kot-orange); }
    Kinetic letters
    ============================================================ */
 .kot-kinetic { display: inline-block; }
+.kot-kinetic__word {
+  display: inline-block;
+  white-space: nowrap;
+}
 .kot-kinetic__letter {
   display: inline-block; opacity: 0; transform: translateY(0.7em);
   animation: kot-kinetic-rise 700ms var(--ease-spring) forwards;
+}
+.kot-kinetic__space {
+  display: inline-block;
 }
 @keyframes kot-kinetic-rise {
   0%   { opacity: 0; transform: translateY(0.7em); }
@@ -875,12 +882,14 @@ a:hover { color: var(--kot-orange); }
 .kot-contact__map::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(15,23,42,0.03) 0%, rgba(15,23,42,0.18) 100%);
+  z-index: 1;
   pointer-events: none;
 }
 .kot-contact__map-canvas,
 .kot-contact__map .leaflet-container {
   position: absolute; inset: 0; width: 100%; height: 100%;
 }
+.kot-contact__map-canvas { z-index: 0; }
 .kot-contact__map .leaflet-container {
   background: #dce9f0;
   font-family: var(--font-sans);
@@ -889,14 +898,14 @@ a:hover { color: var(--kot-orange); }
   filter: saturate(0.88) contrast(1.03);
 }
 .kot-contact__map-attribution {
-  position: absolute; top: 12px; right: 12px; z-index: 1;
+  position: absolute; top: 12px; right: 12px; z-index: 2;
   padding: 7px 10px; border-radius: 999px; background: rgba(255,255,255,0.9);
   color: var(--fg-3); text-decoration: none; font-family: var(--font-sans); font-size: 10px;
   letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .kot-contact__map-overlay {
-  position: absolute; inset: auto 12px 12px 12px; z-index: 1;
+  position: absolute; inset: auto 12px 12px 12px; z-index: 2;
   display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;
 }
 .kot-contact__map-card {

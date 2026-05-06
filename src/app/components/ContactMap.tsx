@@ -77,7 +77,7 @@ export default function ContactMap({
         ref={mapRef}
         className="kot-contact__map-canvas"
         aria-hidden="true"
-        style={{ position: 'absolute', inset: 0 }}
+        style={{ position: 'absolute', inset: 0, zIndex: 0 }}
       />
 
       <a
@@ -85,11 +85,12 @@ export default function ContactMap({
         href="https://www.openstreetmap.org/copyright"
         target="_blank"
         rel="noopener noreferrer"
+        style={{ zIndex: 2 }}
       >
         Map data OpenStreetMap · Tiles CARTO
       </a>
 
-      <div className="kot-contact__map-overlay">
+      <div className="kot-contact__map-overlay" style={{ zIndex: 2 }}>
         <div className="kot-contact__map-card">
           <div className="kot-contact__map-kicker">
             <MapPin size={14} />
