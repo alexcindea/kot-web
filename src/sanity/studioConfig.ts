@@ -18,15 +18,15 @@ export default defineConfig({
           .title('Content')
           .items([
             S.listItem()
-              .title('Homepage Content')
+              .title('Conținut homepage')
               .id('homepageContent')
               .child(S.document().schemaType('homepageContent').documentId('homepageContent')),
             S.listItem()
-              .title('Website Photos')
+              .title('Poze site')
               .id('sitePhotos')
               .child(S.document().schemaType('sitePhotos').documentId('sitePhotos')),
-            S.documentTypeListItem('post').title('Posts'),
-            S.documentTypeListItem('sponsor').title('Sponsors'),
+            S.documentTypeListItem('post').title('Articole'),
+            S.documentTypeListItem('sponsor').title('Sponsori'),
           ]),
     }),
     visionTool({ defaultApiVersion: apiVersion }),

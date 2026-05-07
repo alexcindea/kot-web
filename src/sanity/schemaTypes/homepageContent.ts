@@ -1,5 +1,22 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
+const projectSlotTitleByValue = {
+  mondialTeamRo: 'Mondial / Team RO',
+  erasmus: 'Erasmus',
+  tabaraNationala: 'Tabăra Națională',
+  frumuseteFaraFiltru: 'Frumusețe fără filtru',
+  nicioZiFaraSport: 'Nicio zi fără spor(t)',
+} as const
+
+const eventSlotTitleByValue = {
+  untold: 'UNTOLD',
+  zileleClujului: 'Zilele Clujului',
+  sportsFestival: 'Sports Festival',
+  meciuriUbt: 'Meciuri UBT',
+  wonderFamilyFest: 'Wonder Family Fest',
+  seasonOpeningShow: 'Season Opening Show · CCS de iarnă',
+} as const
+
 const defaultProjects = [
   {
     title: 'Mondial / Team RO',
@@ -53,8 +70,8 @@ const defaultEvents = [
 ]
 
 const toneOptions = [
-  { title: 'Cyan', value: 'cyan' },
-  { title: 'Orange', value: 'orange' },
+  { title: 'Albastru', value: 'cyan' },
+  { title: 'Portocaliu', value: 'orange' },
 ]
 
 const projectSlotOptions = [
@@ -71,29 +88,29 @@ const eventSlotOptions = [
   { title: 'Sports Festival', value: 'sportsFestival' },
   { title: 'Meciuri UBT', value: 'meciuriUbt' },
   { title: 'Wonder Family Fest', value: 'wonderFamilyFest' },
-  { title: 'Season Opening Show', value: 'seasonOpeningShow' },
+  { title: 'Season Opening Show · CCS de iarnă', value: 'seasonOpeningShow' },
 ]
 
 export const homepageProjectType = defineType({
   name: 'homepageProject',
-  title: 'Homepage project',
+  title: 'Proiect homepage',
   type: 'object',
   fields: [
     defineField({
       name: 'title',
-      title: 'Title',
+      title: 'Titlu',
       type: 'string',
       validation: (Rule) => Rule.required().min(3).max(80),
     }),
     defineField({
       name: 'label',
-      title: 'Label',
+      title: 'Etichetă',
       type: 'string',
       validation: (Rule) => Rule.required().min(2).max(30),
     }),
     defineField({
       name: 'tone',
-      title: 'Color tone',
+      title: 'Culoare',
       type: 'string',
       options: {
         list: toneOptions,
@@ -104,9 +121,9 @@ export const homepageProjectType = defineType({
     }),
     defineField({
       name: 'slot',
-      title: 'Photo slot',
+      title: 'Slot foto',
       type: 'string',
-      description: 'Choose the matching image slot from Website Photos → Projects section.',
+      description: 'Alege slotul foto corespunzător din Poze site → Proiecte.',
       options: {
         list: projectSlotOptions,
       },
@@ -114,7 +131,7 @@ export const homepageProjectType = defineType({
     }),
     defineField({
       name: 'story',
-      title: 'Story',
+      title: 'Poveste',
       type: 'text',
       rows: 5,
       validation: (Rule) => Rule.required().min(30).max(500),
@@ -127,25 +144,25 @@ export const homepageProjectType = defineType({
     },
     prepare: ({ title, subtitle }) => ({
       title,
-      subtitle: subtitle ? `Slot foto: ${subtitle}` : undefined,
+      subtitle: subtitle ? `Poză: ${projectSlotTitleByValue[subtitle as keyof typeof projectSlotTitleByValue] ?? subtitle}` : undefined,
     }),
   },
 })
 
 export const homepageEventType = defineType({
   name: 'homepageEvent',
-  title: 'Homepage event',
+  title: 'Eveniment homepage',
   type: 'object',
   fields: [
     defineField({
       name: 'title',
-      title: 'Title',
+      title: 'Titlu',
       type: 'string',
       validation: (Rule) => Rule.required().min(3).max(80),
     }),
     defineField({
       name: 'tone',
-      title: 'Color tone',
+      title: 'Culoare',
       type: 'string',
       options: {
         list: toneOptions,
@@ -156,9 +173,9 @@ export const homepageEventType = defineType({
     }),
     defineField({
       name: 'slot',
-      title: 'Photo slot',
+      title: 'Slot foto',
       type: 'string',
-      description: 'Choose the matching image slot from Website Photos → Events section.',
+      description: 'Alege slotul foto corespunzător din Poze site → Evenimente.',
       options: {
         list: eventSlotOptions,
       },
@@ -172,14 +189,14 @@ export const homepageEventType = defineType({
     },
     prepare: ({ title, subtitle }) => ({
       title,
-      subtitle: subtitle ? `Slot foto: ${subtitle}` : undefined,
+      subtitle: subtitle ? `Poză: ${eventSlotTitleByValue[subtitle as keyof typeof eventSlotTitleByValue] ?? subtitle}` : undefined,
     }),
   },
 })
 
 export const homepageContentType = defineType({
   name: 'homepageContent',
-  title: 'Homepage Content',
+  title: 'Conținut homepage',
   type: 'document',
   initialValue: {
     projects: defaultProjects,
@@ -188,25 +205,25 @@ export const homepageContentType = defineType({
   fields: [
     defineField({
       name: 'projects',
-      title: 'Projects',
+      title: 'Proiecte',
       type: 'array',
-      description: 'Editable content for the Projects accordion on the homepage.',
+      description: 'Conținutul editabil pentru accordionul de proiecte de pe homepage.',
       of: [defineArrayMember({ type: 'homepageProject' })],
       validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'events',
-      title: 'Events',
+      title: 'Evenimente',
       type: 'array',
-      description: 'Editable titles for the Events cards on the homepage.',
+      description: 'Titlurile editabile pentru cardurile de evenimente de pe homepage.',
       of: [defineArrayMember({ type: 'homepageEvent' })],
       validation: (Rule) => Rule.required().min(1),
     }),
   ],
   preview: {
     prepare: () => ({
-      title: 'Homepage Content',
-      subtitle: 'Projects and events lists',
+      title: 'Conținut homepage',
+      subtitle: 'Listele de proiecte și evenimente',
     }),
   },
 })

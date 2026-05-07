@@ -20,6 +20,7 @@ export async function submitContact(
 ): Promise<ContactState> {
   const name = (formData.get("name") as string | null)?.trim();
   const email = (formData.get("email") as string | null)?.trim();
+  const phone = (formData.get("phone") as string | null)?.trim();
   const enquiry = (formData.get("enquiry") as string | null) ?? "General";
   const message = (formData.get("message") as string | null)?.trim();
   const website = (formData.get("website") as string | null)?.trim();
@@ -48,6 +49,7 @@ export async function submitContact(
       console.log("[contact form]", {
         name,
         email,
+        phone,
         enquiry,
         message,
         to,
@@ -65,11 +67,13 @@ export async function submitContact(
 
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
+  const safePhone = phone ? escapeHtml(phone) : null;
   const safeEnquiry = escapeHtml(enquiry);
   const safeMessage = escapeHtml(message).replace(/\n/g, "<br />");
   const textBody = [
     `Name: ${name}`,
     `Email: ${email}`,
+    ...(phone ? [`Phone: ${phone}`] : []),
     `Enquiry type: ${enquiry}`,
     "",
     "Message:",
@@ -92,6 +96,7 @@ export async function submitContact(
         html: `
           <p><strong>Name:</strong> ${safeName}</p>
           <p><strong>Email:</strong> ${safeEmail}</p>
+          ${safePhone ? `<p><strong>Phone:</strong> ${safePhone}</p>` : ""}
           <p><strong>Enquiry type:</strong> ${safeEnquiry}</p>
           <p><strong>Message:</strong></p>
           <p>${safeMessage}</p>

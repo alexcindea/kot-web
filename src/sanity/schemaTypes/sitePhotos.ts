@@ -9,7 +9,7 @@ const slotField = (name: string, title: string) =>
 
 export const sitePhotoAssetType = defineType({
   name: 'sitePhotoAsset',
-  title: 'Website Photo',
+  title: 'Poză site',
   type: 'image',
   options: {
     hotspot: true,
@@ -17,22 +17,22 @@ export const sitePhotoAssetType = defineType({
   fields: [
     defineField({
       name: 'alt',
-      title: 'Alt text',
+      title: 'Text alternativ',
       type: 'string',
-      description: 'Describe the photo for screen readers.',
+      description: 'Descriere pentru screen readers.',
     }),
     defineField({
       name: 'caption',
-      title: 'Caption',
+      title: 'Legendă',
       type: 'string',
-      description: 'Optional label shown on top of the image card.',
+      description: 'Text opțional afișat peste cardul cu imagine.',
     }),
   ],
 })
 
 export const aboutMilestonePhotosType = defineType({
   name: 'aboutMilestonePhotos',
-  title: 'About Milestones',
+  title: 'Despre noi · Momente cheie',
   type: 'object',
   options: {
     collapsible: true,
@@ -44,48 +44,48 @@ export const aboutMilestonePhotosType = defineType({
     slotField('varsity2023', '2023 · Începutul varsity'),
     slotField('salaKot2023', '2023 · Sala KOT'),
     slotField('milestone2024', '2025 · Campionatul mondial'),
-    slotField('milestone2019', 'Legacy milestone (unused)'),
+    slotField('milestone2019', 'Slot vechi (nefolosit)'),
   ],
 })
 
 export const groupPhotosType = defineType({
   name: 'groupPhotos',
-  title: 'Groups Section',
+  title: 'Grupele noastre',
   type: 'object',
   options: {
     collapsible: true,
     collapsed: true,
   },
   fields: [
-    slotField('mini', 'Mini group'),
-    slotField('u13Mixt', 'U13 Mixt group'),
-    slotField('u13FeteHu', 'U13 Fete HU group'),
-    slotField('primaryLevel1', 'Primary Level 1 group'),
-    slotField('primaryLevel2', 'Primary Level 2 group'),
-    slotField('u19', 'U19 group'),
-    slotField('seniori', 'Seniori group'),
+    slotField('mini', 'Mini · 5–7 ani'),
+    slotField('u13Mixt', 'U13 Mixt · Sub 13 ani'),
+    slotField('u13FeteHu', 'U13 Fete · Predare în limba maghiară'),
+    slotField('primaryLevel1', 'Primary Level 1 · 8–13 ani'),
+    slotField('primaryLevel2', 'Primary Level 2 · 8–13 ani'),
+    slotField('u19', 'U19 · Sub 19 ani'),
+    slotField('seniori', 'Seniori · 16+ ani'),
   ],
 })
 
 export const staffPhotosType = defineType({
   name: 'staffPhotos',
-  title: 'Staff Section',
+  title: 'Echipa din spatele rezultatelor',
   type: 'object',
   options: {
     collapsible: true,
     collapsed: true,
   },
   fields: [
-    slotField('coach1', 'Coach card 1'),
-    slotField('coach2', 'Coach card 2'),
-    slotField('coach3', 'Coach card 3'),
-    slotField('coach4', 'Coach card 4'),
+    slotField('coach1', 'Antrenor 1 · Seniori'),
+    slotField('coach2', 'Antrenor 2 · Juniori'),
+    slotField('coach3', 'Antrenor 3 · Mini'),
+    slotField('coach4', 'Antrenor 4 · Coregraf'),
   ],
 })
 
 export const projectPhotosType = defineType({
   name: 'projectPhotos',
-  title: 'Projects Section',
+  title: 'Proiecte',
   type: 'object',
   options: {
     collapsible: true,
@@ -102,7 +102,7 @@ export const projectPhotosType = defineType({
 
 export const eventPhotosType = defineType({
   name: 'eventPhotos',
-  title: 'Events Section',
+  title: 'Evenimente',
   type: 'object',
   options: {
     collapsible: true,
@@ -114,45 +114,45 @@ export const eventPhotosType = defineType({
     slotField('sportsFestival', 'Sports Festival'),
     slotField('meciuriUbt', 'Meciuri UBT'),
     slotField('wonderFamilyFest', 'Wonder Family Fest'),
-    slotField('seasonOpeningShow', 'Season Opening Show'),
+    slotField('seasonOpeningShow', 'Season Opening Show · CCS de iarnă'),
   ],
 })
 
 export const sitePhotosType = defineType({
   name: 'sitePhotos',
-  title: 'Website Photos',
+  title: 'Poze site',
   type: 'document',
   fields: [
     defineField({
       name: 'aboutMilestones',
-      title: 'About section',
+      title: 'Despre noi',
       type: 'aboutMilestonePhotos',
     }),
     defineField({
       name: 'groups',
-      title: 'Groups section',
+      title: 'Grupele noastre',
       type: 'groupPhotos',
     }),
     defineField({
       name: 'staff',
-      title: 'Staff section',
+      title: 'Echipa din spatele rezultatelor',
       type: 'staffPhotos',
     }),
     defineField({
       name: 'projects',
-      title: 'Projects section',
+      title: 'Proiecte',
       type: 'projectPhotos',
     }),
     defineField({
       name: 'events',
-      title: 'Events section',
+      title: 'Evenimente',
       type: 'eventPhotos',
     }),
   ],
   preview: {
     prepare: () => ({
-      title: 'Website Photos',
-      subtitle: 'Homepage image slots',
+      title: 'Poze site',
+      subtitle: 'Sloturi foto pentru homepage',
     }),
   },
 })

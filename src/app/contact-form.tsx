@@ -55,6 +55,16 @@ export default function ContactForm() {
       </label>
 
       <label className="kot-field">
+        <span>Telefon</span>
+        <input
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          placeholder="07xx xxx xxx"
+        />
+      </label>
+
+      <label className="kot-field">
         <span>Subiect</span>
         <select name="enquiry">
           <option value="General">Întrebare generală</option>
