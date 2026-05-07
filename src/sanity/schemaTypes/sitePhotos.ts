@@ -39,10 +39,12 @@ export const aboutMilestonePhotosType = defineType({
     collapsed: false,
   },
   fields: [
-    slotField('milestone2012', '2012 milestone'),
-    slotField('milestone2016', '2016 milestone'),
-    slotField('milestone2019', '2019 milestone'),
-    slotField('milestone2024', '2024 milestone'),
+    slotField('milestone2012', '2014 · Începutul'),
+    slotField('milestone2016', '2015 · Prima medalie'),
+    slotField('varsity2023', '2023 · Începutul varsity'),
+    slotField('salaKot2023', '2023 · Sala KOT'),
+    slotField('milestone2024', '2025 · Campionatul mondial'),
+    slotField('milestone2019', 'Legacy milestone (unused)'),
   ],
 })
 

@@ -121,6 +121,8 @@ export type SitePhotosDocument = {
   aboutMilestones?: {
     milestone2012?: SanityPhotoAsset
     milestone2016?: SanityPhotoAsset
+    varsity2023?: SanityPhotoAsset
+    salaKot2023?: SanityPhotoAsset
     milestone2019?: SanityPhotoAsset
     milestone2024?: SanityPhotoAsset
   }

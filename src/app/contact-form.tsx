@@ -15,7 +15,7 @@ export default function ContactForm() {
         <div className="kot-contact__sent">
           <CheckCircle2 size={48} />
           <h3>Mesaj trimis!</h3>
-          <p>Te sunăm sau scriem în maxim 24 de ore.</p>
+          <p>Te vom contacta în curând.</p>
         </div>
       </div>
     )
@@ -23,6 +23,15 @@ export default function ContactForm() {
 
   return (
     <form action={action} noValidate className="kot-contact__form">
+      <input
+        name="website"
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}
+      />
+
       <label className="kot-field">
         <span>Nume *</span>
         <input

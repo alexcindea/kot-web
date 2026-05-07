@@ -149,6 +149,7 @@ const milestones: AboutMilestone[] = [
     tone: 'cyan',
     caption: 'Foto: începutul grupei varsity',
     ratio: '1/1',
+    slot: 'varsity2023',
   },
   {
     id: 'sala-kot-2023',
@@ -157,6 +158,7 @@ const milestones: AboutMilestone[] = [
     tone: 'orange',
     caption: 'Foto: Sala KOT',
     ratio: '1/1',
+    slot: 'salaKot2023',
   },
   {
     id: 'worlds-2025',

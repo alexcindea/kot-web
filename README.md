@@ -15,6 +15,12 @@ A presentation-style cheerleading team website built with Next.js, React, and Ta
 npm run dev
 ```
 
+Create a local environment file before testing the contact form:
+
+```bash
+cp .env.example .env
+```
+
 ## Validation
 
 ```bash
@@ -42,3 +48,17 @@ Suggested deployment flow:
 ## Backend
 
 No backend is needed right now. If you later want a real contact form, athlete sign-up flow, or private team dashboard, add a lightweight service instead of building a full custom server first.
+
+## Contact Form Mailing
+
+The contact form uses Resend via the server action in [src/app/actions.ts](src/app/actions.ts).
+
+Required environment variables:
+
+- `RESEND_API_KEY`: your Resend API key
+- `CONTACT_EMAIL`: inbox that should receive contact form messages
+- `CONTACT_FROM_EMAIL`: verified sender, for example `Knights of Transylvania <contact@your-domain.ro>`
+
+For local testing, `CONTACT_FROM_EMAIL` can stay on `onboarding@resend.dev` until you verify your own domain in Resend.
+
+For Vercel, add the same variables in Project Settings → Environment Variables.
