@@ -35,7 +35,8 @@ export default function Nav() {
             alt="Knights Of Transylvania logo"
             width={1447}
             height={1054}
-            priority
+            loading="eager"
+            fetchPriority="high"
           />
           <span className="kot-nav__wordmark">
             <span className="kot-nav__wordmark-main">Knights of Transylvania</span>

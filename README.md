@@ -55,6 +55,7 @@ The contact form uses Resend via the server action in [src/app/actions.ts](src/a
 
 Required environment variables:
 
+- `NEXT_PUBLIC_SITE_URL`: public site origin used for canonical URLs and `sitemap.xml`, for example `https://knightsoftransylvania.ro`
 - `RESEND_API_KEY`: your Resend API key
 - `CONTACT_EMAIL`: inbox that should receive contact form messages
 - `CONTACT_FROM_EMAIL`: verified sender, for example `Knights of Transylvania <contact@your-domain.ro>`

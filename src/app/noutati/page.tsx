@@ -1,14 +1,29 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
+import { siteDescription, siteName } from '@/app/seo'
 import Nav from '@/app/components/Nav'
 import PostCard from '@/app/components/PostCard'
 import SiteFooter from '@/app/components/SiteFooter'
 import { getPosts } from '@/sanity/lib/queries'
 
 export const metadata: Metadata = {
-  title: 'Noutăți KOT · Knights Of Transylvania',
+  title: 'Noutăți KOT',
   description: 'Articole, rezultate, proiecte și anunțuri publicate de Knights Of Transylvania.',
+  alternates: {
+    canonical: '/noutati',
+  },
+  openGraph: {
+    type: 'website',
+    url: '/noutati',
+    title: `Noutăți KOT | ${siteName}`,
+    description: 'Articole, rezultate, proiecte și anunțuri publicate de Knights Of Transylvania.',
+  },
+  twitter: {
+    card: 'summary',
+    title: `Noutăți KOT | ${siteName}`,
+    description: siteDescription,
+  },
 }
 
 export const revalidate = 60

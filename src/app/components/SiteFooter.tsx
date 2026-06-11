@@ -28,8 +28,20 @@ function IconYoutube() {
 }
 
 export default function SiteFooter() {
+  const wordmarkItems = Array.from({ length: 4 })
+
   return (
     <footer className="kot-footer">
+      <div className="kot-footer__giant" aria-hidden="true">
+        <div className="kot-footer__giant-track">
+          {wordmarkItems.map((_, i) => (
+            <span key={i} className="kot-footer__giant-item">
+              Knights of Transylvania <span className="kot-footer__giant-star">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
       <div className="kot-container">
         <div className="kot-footer__top">
           <div className="kot-footer__brand">
