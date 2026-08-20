@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import {
   ArrowRight, Play, ChevronRight, ChevronDown,
@@ -12,9 +13,29 @@ import ContactMap from './components/ContactMap'
 import ContactForm from './contact-form'
 import groupsStyles from './groups-section.module.css'
 import projectsStyles from './projects-section.module.css'
+import { getAbsoluteUrl, organizationAddress, siteDescription, siteName, siteShortName } from './seo'
 import { urlForImage } from '@/sanity/lib/image'
 import { getHomepageContent, getSitePhotos, getSponsors } from '@/sanity/lib/queries'
 import type { HomepageProject, SanityPhotoAsset, SanitySponsor, SitePhotosDocument } from '@/sanity/lib/types'
+
+export const metadata: Metadata = {
+  title: 'Cheerleading în Cluj-Napoca',
+  description: siteDescription,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: '/',
+    title: `${siteName} · Cheerleading în Cluj-Napoca`,
+    description: siteDescription,
+  },
+  twitter: {
+    card: 'summary',
+    title: `${siteName} · Cheerleading în Cluj-Napoca`,
+    description: siteDescription,
+  },
+}
 
 export const revalidate = 60
 
@@ -59,11 +80,16 @@ function Photo({
   )
 }
 
-function Eyebrow({ children, color = 'orange' }: { children: React.ReactNode; color?: 'orange' | 'cyan' | 'white' }) {
+function SectionMark({ index, children, tone = 'orange' }: {
+  index: string
+  children: React.ReactNode
+  tone?: 'orange' | 'cyan' | 'white'
+}) {
   return (
-    <div className="kot-eyebrow-row">
-      <span className={`kot-eyebrow-dot dot-${color}`} />
-      <span className="kot-eyebrow-text">{children}</span>
+    <div className="kot-mark" data-reveal>
+      <span className={`kot-mark__num kot-mark__num--${tone}`} aria-hidden="true">{index}</span>
+      <span className="kot-mark__rule" aria-hidden="true" />
+      <span className="kot-mark__label">{children}</span>
     </div>
   )
 }
@@ -383,6 +409,40 @@ const contactMapLat = 46.786109
 const contactMapLon = 23.6263783
 const contactMapDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${contactMapQuery}`
 
+const organizationStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsOrganization',
+  '@id': getAbsoluteUrl('/#organization'),
+  name: siteName,
+  alternateName: siteShortName,
+  url: getAbsoluteUrl('/'),
+  logo: getAbsoluteUrl('/logo-kot-shield.svg'),
+  description: siteDescription,
+  sport: 'Cheerleading',
+  foundingDate: '2014',
+  address: {
+    '@type': 'PostalAddress',
+    ...organizationAddress,
+  },
+  location: {
+    '@type': 'Place',
+    name: 'Sala KOT',
+    address: {
+      '@type': 'PostalAddress',
+      ...organizationAddress,
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: contactMapLat,
+      longitude: contactMapLon,
+    },
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'Cluj-Napoca',
+  },
+}
+
 function ProjectAccordionItem({
   project,
   images,
@@ -444,25 +504,36 @@ export default async function Home() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }}
+      />
       <Nav />
 
       <main>
         {/* ── Hero ── */}
         <section className="kot-hero" id="top">
-          <div className="kot-hero__shapes" aria-hidden="true">
-            <div className="kot-hero__shape kot-hero__shape--cyan" />
-            <div className="kot-hero__shape kot-hero__shape--orange" />
+          <div className="kot-hero__bg" aria-hidden="true">
+            <div className="kot-hero__beam kot-hero__beam--cyan" />
+            <div className="kot-hero__beam kot-hero__beam--orange" />
+            <div className="kot-hero__halftone" />
+            <div className="kot-hero__watermark">KOT</div>
+            <div className="kot-hero__floor" />
           </div>
 
           <div className="kot-container kot-hero__inner">
             <div className="kot-hero__eyebrow">
               <span className="kot-hero__dot" />
-              KNIGHTS OF TRANSYLVANIA · CLUJ-NAPOCA
+              Knights of Transylvania · Cluj-Napoca · est. 2014
             </div>
 
             <h1 className="kot-hero__title">
-              CHEERLEADING<br />
-              <HeroRotate />
+              <span className="kot-hero__title-main">
+                CHEER<span className="kot-hero__title-flip">LEADING</span>
+              </span>
+              <span className="kot-hero__title-sub">
+                <HeroRotate />
+              </span>
             </h1>
 
             <p className="kot-hero__lede">
@@ -472,7 +543,7 @@ export default async function Home() {
             </p>
 
             <div className="kot-hero__ctas">
-              <a href="#contact" className="kot-btn kot-btn--primary kot-btn--lg">
+              <a href="#contact" className="kot-btn kot-btn--accent kot-btn--lg">
                 <span>Încearcă și tu</span>
                 <ArrowRight size={18} />
               </a>
@@ -481,12 +552,14 @@ export default async function Home() {
                 <span>Despre KOT</span>
               </a>
             </div>
+          </div>
 
-            <div className="kot-hero__stats">
-              <div><strong>130+</strong><span>Sportivi activi</span></div>
-              <div><strong>16+</strong><span>Instructori</span></div>
-              <div><strong>12+</strong><span>Țări concurate</span></div>
-              <div><strong>10K+</strong><span>Spectatori</span></div>
+          <div className="kot-container">
+            <div className="kot-hero__stats" role="list" aria-label="KOT în cifre">
+              <div role="listitem"><strong>130+</strong><span>Sportivi activi</span></div>
+              <div role="listitem"><strong>16+</strong><span>Instructori</span></div>
+              <div role="listitem"><strong>12+</strong><span>Țări concurate</span></div>
+              <div role="listitem"><strong>10K+</strong><span>Spectatori</span></div>
             </div>
           </div>
 
@@ -505,11 +578,11 @@ export default async function Home() {
         {/* ── About ── */}
         <section className="kot-section kot-section--white" id="despre">
           <div className="kot-container">
-            <Eyebrow>Despre noi</Eyebrow>
+            <SectionMark index="01">Despre noi</SectionMark>
             <div className="kot-about__hero-row">
-              <div className="kot-about__intro">
+              <div className="kot-about__intro" data-reveal>
                 <h2 className="kot-section__title">
-                  Etalonul țării<br />în cheer sport.
+                  Etalonul țării<br />în <em>cheer sport</em>.
                 </h2>
 
                 <p className="kot-about__lede">
@@ -527,7 +600,7 @@ export default async function Home() {
                 </p>
               </div>
 
-              <div className="kot-about__milestones kot-about__milestones--top">
+              <div className="kot-about__milestones kot-about__milestones--top" data-reveal>
                 {aboutMilestonesTop.map((milestone) => (
                   <MilestoneCard
                     key={milestone.id}
@@ -538,7 +611,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="kot-about__milestones kot-about__milestones--mid">
+            <div className="kot-about__milestones kot-about__milestones--mid" data-reveal>
               {aboutMilestonesMid.map((milestone) => (
                 <MilestoneCard
                   key={milestone.id}
@@ -549,7 +622,7 @@ export default async function Home() {
             </div>
 
             {aboutMilestoneFeatured && (
-              <div className="kot-about__milestones kot-about__milestones--bottom">
+              <div className="kot-about__milestones kot-about__milestones--bottom" data-reveal>
                 <MilestoneCard milestone={aboutMilestoneFeatured} images={sitePhotos?.aboutMilestones} />
               </div>
             )}
@@ -559,14 +632,14 @@ export default async function Home() {
         {/* ── Groups ── */}
         <section className="kot-section kot-section--paper" id="grupe">
           <div className="kot-container">
-            <Eyebrow>Grupele noastre</Eyebrow>
-            <h2 className="kot-section__title">
-              7 grupe.<br />O singură familie.
+            <SectionMark index="02" tone="cyan">Grupele noastre</SectionMark>
+            <h2 className="kot-section__title" data-reveal>
+              7 grupe.<br />O singură <em>familie</em>.
             </h2>
-            <p className="kot-section__sub">
+            <p className="kot-section__sub" data-reveal>
               Apasă pe grupa potrivită pentru a vedea categoria, formatul și spațiul rezervat pentru fotografia ei.
             </p>
-            <div className={groupsStyles.groupsStack}>
+            <div className={groupsStyles.groupsStack} data-reveal>
               {groups.map((g) => (
                 <GroupAccordionItem key={g.id} group={g} images={sitePhotos?.groups} />
               ))}
@@ -582,16 +655,16 @@ export default async function Home() {
         />
 
         {/* ── Staff ── */}
-        <section className="kot-section kot-section--white" id="staff">
+        <section className="kot-section kot-section--ink" id="staff">
           <div className="kot-container">
-            <Eyebrow>Staff KOT</Eyebrow>
-            <h2 className="kot-section__title">
-              Echipa din spatele rezultatelor.
+            <SectionMark index="03" tone="white">Staff KOT</SectionMark>
+            <h2 className="kot-section__title kot-section__title--inv" data-reveal>
+              Echipa din spatele<br /><em>rezultatelor</em>.
             </h2>
-            <p className="kot-section__sub">
+            <p className="kot-section__sub kot-section__sub--inv" data-reveal>
               Această secțiune urmează să fie actualizată cu portrete și nume reale.
             </p>
-            <div className="kot-staff__grid">
+            <div className="kot-staff__grid" data-reveal>
               {staff.map((s) => (
                 <div key={s.slot} className="kot-staff-card">
                   <Photo
@@ -600,8 +673,10 @@ export default async function Home() {
                     caption={`Foto: ${s.name}`}
                     image={sitePhotos?.staff?.[s.slot]}
                   />
-                  <div className="kot-staff-card__name">{s.name}</div>
-                  <div className="kot-staff-card__role">{s.role}</div>
+                  <div className="kot-staff-card__plate">
+                    <div className="kot-staff-card__name">{s.name}</div>
+                    <div className="kot-staff-card__role">{s.role}</div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -611,14 +686,14 @@ export default async function Home() {
         {/* ── Projects ── */}
         <section className="kot-section kot-section--ink" id="proiecte">
           <div className="kot-container">
-            <Eyebrow color="cyan">Proiecte</Eyebrow>
-            <h2 className="kot-section__title kot-section__title--inv">
-              Povestea din spatele<br />proiectelor KOT.
+            <SectionMark index="04" tone="cyan">Proiecte</SectionMark>
+            <h2 className="kot-section__title kot-section__title--inv" data-reveal>
+              Povestea din spatele<br />proiectelor <em>KOT</em>.
             </h2>
-            <p className="kot-section__sub kot-section__sub--inv">
+            <p className="kot-section__sub kot-section__sub--inv" data-reveal>
               Apasă pe fiecare proiect pentru a deschide povestea din spatele lui.
             </p>
-            <div className={projectsStyles.projectsStack}>
+            <div className={projectsStyles.projectsStack} data-reveal>
               {homepageProjects.map((project) => (
                 <ProjectAccordionItem
                   key={project._key ?? project.slot}
@@ -637,10 +712,10 @@ export default async function Home() {
         <section className="kot-section kot-section--orange" id="sponsorizare">
           <div className="kot-container">
             <div className="kot-sponsor__layout">
-              <div>
-                <Eyebrow color="white">Sponsorizare</Eyebrow>
+              <div data-reveal>
+                <SectionMark index="06" tone="white">Sponsorizare</SectionMark>
                 <h2 className="kot-section__title kot-section__title--inv">
-                  Ajută echipa<br />să zboare mai sus.
+                  Ajută echipa<br />să zboare <em>mai sus</em>.
                 </h2>
                 <p className="kot-section__sub kot-section__sub--inv">
                   Asociere cu un proiect sportiv credibil. Vizibilitate în
@@ -649,7 +724,7 @@ export default async function Home() {
                   <strong>Suntem momentul tău WOOW.</strong>
                 </p>
               </div>
-              <div className="kot-sponsor__cards">
+              <div className="kot-sponsor__cards" data-reveal>
                 <article className="kot-sponsor-card">
                   <FileText size={28} />
                   <h3>Mapa de prezentare</h3>
@@ -670,7 +745,7 @@ export default async function Home() {
                 </article>
               </div>
             </div>
-            <div className="kot-sponsor__logos">
+            <div className="kot-sponsor__logos" data-reveal>
               <div className="kot-sponsor__logos-label">Sponsori și parteneri</div>
               <div className="kot-sponsor__logos-strip">
                 {homepageSponsors.map((sponsor) => {
@@ -714,11 +789,11 @@ export default async function Home() {
         {/* ── Contact ── */}
         <section className="kot-section kot-section--white" id="contact">
           <div className="kot-container">
-            <Eyebrow>Contact</Eyebrow>
-            <h2 className="kot-section__title">
-              Încearcă și tu.<br />Sau scrie-ne.
+            <SectionMark index="07">Contact</SectionMark>
+            <h2 className="kot-section__title" data-reveal>
+              Încearcă și tu.<br />Sau <em>scrie-ne</em>.
             </h2>
-            <div className="kot-contact__layout">
+            <div className="kot-contact__layout" data-reveal>
               {/* Form (client) */}
               <ContactForm />
 

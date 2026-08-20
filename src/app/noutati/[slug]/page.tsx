@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
+import { siteDescription } from '@/app/seo'
 import Nav from '@/app/components/Nav'
 import RichText from '@/app/components/RichText'
 import SiteFooter from '@/app/components/SiteFooter'
@@ -25,25 +26,50 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
   const { slug } = await params
   const post = await getPostBySlug(slug)
+  const canonicalPath = `/noutati/${slug}`
 
   if (!post) {
     return {
-      title: 'Articol negăsit · Knights Of Transylvania',
+      title: 'Articol negăsit',
+      robots: {
+        index: false,
+        follow: false,
+      },
     }
   }
 
   const ogImage = post.coverImage?.asset
     ? urlForImage(post.coverImage).width(1200).height(630).fit('crop').auto('format').url()
     : undefined
+  const description = post.excerpt || siteDescription
 
   return {
-    title: `${post.title} · Knights Of Transylvania`,
-    description: post.excerpt,
-    openGraph: ogImage
-      ? {
-          images: [ogImage],
-        }
-      : undefined,
+    title: post.title,
+    description,
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      type: 'article',
+      url: canonicalPath,
+      title: post.title,
+      description,
+      publishedTime: post.publishedAt,
+      images: ogImage
+        ? [
+            {
+              url: ogImage,
+              alt: post.coverImage?.alt ?? post.title,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: ogImage ? 'summary_large_image' : 'summary',
+      title: post.title,
+      description,
+      images: ogImage ? [ogImage] : undefined,
+    },
   }
 }
 
@@ -86,7 +112,7 @@ export default async function PostPage({ params }: PostPageProps) {
                   width={1600}
                   height={900}
                   className="kot-article__cover-image"
-                  priority
+                  preload
                 />
                 {post.coverImage?.caption && <figcaption className="kot-article__figure-caption">{post.coverImage.caption}</figcaption>}
               </figure>

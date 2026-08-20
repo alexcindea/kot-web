@@ -1,20 +1,36 @@
+/* Projects — dark dossier tabs */
+
 .projectsStack {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
+  counter-reset: dossier;
 }
 
 .projectAccordion {
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-top: 4px solid var(--kot-cyan);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.18);
+  background: var(--night-2);
+  border: 1px solid var(--night-line);
+  border-left: 8px solid var(--kot-cyan);
+  border-radius: var(--radius-md);
+  counter-increment: dossier;
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+.projectAccordion:hover {
+  background: var(--night-3);
+}
+
+.projectAccordion[open] {
+  background: var(--night-3);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.4);
 }
 
 .projectAccordionOrange {
-  border-top-color: var(--kot-orange);
+  border-left-color: var(--kot-orange);
 }
 
 .projectAccordionSummary {
@@ -22,7 +38,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 22px 24px;
+  padding: 20px 24px;
   cursor: pointer;
   list-style: none;
 }
@@ -31,29 +47,58 @@
   display: none;
 }
 
+/* dossier index */
+.projectAccordionSummary::before {
+  content: 'P·' counter(dossier);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(151, 183, 255, 0.35);
+  flex-shrink: 0;
+  min-width: 64px;
+  transition: -webkit-text-stroke-color var(--dur-base);
+}
+
+.projectAccordion[open] .projectAccordionSummary::before,
+.projectAccordion:hover .projectAccordionSummary::before {
+  -webkit-text-stroke-color: var(--kot-cyan-hot);
+}
+
+.projectAccordionOrange[open] .projectAccordionSummary::before,
+.projectAccordionOrange:hover .projectAccordionSummary::before {
+  -webkit-text-stroke-color: var(--kot-orange-hot);
+}
+
 .projectAccordionSummaryText {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 9px;
   min-width: 0;
+  flex: 1;
 }
 
 .projectAccordionLabel {
-  color: rgba(255, 255, 255, 0.64);
+  color: rgba(235, 240, 252, 0.55);
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-stretch: var(--stretch-wide);
+  font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
 }
 
 .projectAccordionTitle {
   margin: 0;
-  color: white;
+  color: var(--chalk);
   font-family: var(--font-display);
-  font-size: clamp(28px, 2vw, 38px);
-  line-height: 0.98;
+  font-weight: 800;
+  font-size: clamp(28px, 2.4vw, 40px);
+  line-height: 0.96;
   letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .projectAccordionIcon {
@@ -61,25 +106,44 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
-  transition: transform var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  border: 1px solid var(--night-line);
+  color: var(--chalk);
+  transition:
+    transform var(--dur-base) var(--ease-spring),
+    background-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
 }
 
 .projectAccordion[open] .projectAccordionIcon {
   transform: rotate(180deg);
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--kot-orange);
+  border-color: var(--kot-orange);
+  color: var(--night);
 }
 
 .projectAccordionBody {
   display: grid;
   grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
-  gap: 22px;
+  gap: 24px;
   padding: 0 24px 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--night-line);
+}
+
+.projectAccordion[open] .projectAccordionBody > * {
+  animation: dossierRise 480ms var(--ease-out) backwards;
+}
+
+.projectAccordion[open] .projectAccordionBody > *:last-child {
+  animation-delay: 90ms;
+}
+
+@keyframes dossierRise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
 }
 
 .projectAccordionMedia,
@@ -92,7 +156,7 @@
 }
 
 .projectAccordionMedia :global(.kot-photo) {
-  border-radius: calc(var(--radius-lg) - 4px);
+  border: 1px solid var(--night-line);
 }
 
 .projectAccordionPlaceholder {
@@ -104,20 +168,23 @@
 }
 
 .projectAccordionPlaceholderLabel {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(235, 240, 252, 0.7);
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-stretch: var(--stretch-wide);
+  font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
 }
 
 .projectAccordionPlaceholder strong {
-  color: white;
+  color: var(--chalk);
   font-family: var(--font-display);
+  font-weight: 800;
   font-size: 32px;
-  line-height: 0.98;
+  line-height: 0.96;
   letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .projectAccordionContent {
@@ -128,9 +195,9 @@
 
 .projectAccordionStory {
   margin: 0;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(235, 240, 252, 0.78);
   font-size: 16px;
-  line-height: 1.75;
+  line-height: 1.8;
 }
 
 @media (max-width: 860px) {
@@ -141,14 +208,20 @@
 
 @media (max-width: 640px) {
   .projectAccordionSummary {
-    padding: 18px 18px 16px;
+    padding: 16px 16px;
+    gap: 14px;
+  }
+
+  .projectAccordionSummary::before {
+    font-size: 22px;
+    min-width: 44px;
   }
 
   .projectAccordionBody {
-    padding: 0 18px 18px;
+    padding: 0 16px 18px;
   }
 
   .projectAccordionPlaceholder strong {
-    font-size: 28px;
+    font-size: 26px;
   }
 }
