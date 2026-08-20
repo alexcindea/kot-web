@@ -5,46 +5,54 @@
    "VARSITY VOLTAGE" · night-meet sports poster
    ============================================================
    Dark arena sections + warm chalk paper, floodlit brand
-   cyan/orange, towering condensed display type, skewed speed
+   one-hue orange system, towering condensed display type, skewed speed
    buttons, jersey-number section marks, halftone + grain.
    ============================================================ */
 :root {
-  /* Brand */
-  --kot-cyan: #1bafe2;
-  --kot-cyan-hot: #45ccff;
-  --kot-cyan-600: #0e9bcb;
-  --kot-cyan-700: #0a7da6;
-  --kot-cyan-100: #d4eef8;
-  --kot-cyan-50: #ebf6fb;
-
-  --kot-orange: #f79335;
-  --kot-orange-hot: #ff9c33;
+  /* Brand — one hue, worked across its whole range.
+     The team dropped blue, so orange carries the site alone: flame leads,
+     ember accents on paper, amber accents on night. Rhythm that used to
+     come from cyan-vs-orange now comes from value — see --tone-b below. */
+  --kot-orange: #f79335; /* flame — the brand colour */
+  --kot-orange-hot: #ffa94d; /* hover */
   --kot-orange-600: #e07a1d;
-  --kot-orange-700: #b75f12;
+  --kot-orange-700: #b75f12; /* ember */
   --kot-orange-100: #fde2c6;
   --kot-orange-50: #fff1e2;
+  --kot-amber: #ffbe6d; /* highlight on dark grounds */
+  --kot-ember: var(--kot-orange-700);
 
-  /* Arena darks (blue-cast night) */
-  --night: #06080e;
-  --night-2: #0a0e17;
-  --night-3: #101624;
-  --night-line: rgba(151, 183, 255, 0.16);
-  --night-soft: rgba(151, 183, 255, 0.07);
+  /* Arena darks — warm charcoal, no blue cast anywhere */
+  --night: #12100e;
+  --night-2: #17130f;
+  --night-3: #241d17;
+  --night-line: rgba(255, 226, 190, 0.16);
+  --night-soft: rgba(255, 226, 190, 0.07);
 
   /* Chalk lights (warm gym-chalk paper) */
   --chalk: #f5f2e9;
   --chalk-2: #ece8db;
+  --bone: #efe7d9;
   --white: #ffffff;
 
-  /* Ink text on chalk */
-  --black: #06080e;
-  --ink: #0e1118;
-  --ink-2: #272c39;
-  --ink-3: #4e5566;
-  --ink-4: #7c8294;
+  /* Ink text on chalk — warm-biased, never blue-grey */
+  --black: #0d0b0a;
+  --ink: #14110f;
+  --ink-2: #332b24;
+  --ink-3: #5b5147;
+  --ink-4: #8a7f72;
   --line: #d8d3c4;
   --line-2: #e4e0d2;
   --paper: var(--chalk-2);
+
+  /* Two-tone rhythm without a second hue. Tone A is always flame; tone B is
+     whatever contrasts the ground it sits on, so dark sections flip it to
+     chalk and light sections keep it ink. Alternating rows read as
+     colour-against-paper the way a printed poster does. */
+  --tone-a: var(--kot-orange);
+  --tone-a-ink: var(--night);
+  --tone-b: var(--ink);
+  --tone-b-ink: var(--chalk);
 
   /* Semantic */
   --success: #2ea66f;
@@ -61,8 +69,8 @@
   --fg-muted: var(--ink-4);
   --fg-inverted: var(--chalk);
   --border: var(--line);
-  --primary: var(--kot-cyan);
-  --accent: var(--kot-orange);
+  --primary: var(--kot-orange);
+  --accent: var(--kot-ember);
 
   /* Typography — next/font variables injected via layout */
   --font-display: var(--font-shoulders), "Arial Narrow", "Impact", sans-serif;
@@ -117,12 +125,12 @@
   --radius-pill: 999px;
 
   /* Shadows — hard offsets, print-style */
-  --shadow-sm: 0 1px 2px rgba(6, 8, 14, 0.1);
-  --shadow-md: 6px 6px 0 rgba(14, 17, 24, 0.12);
-  --shadow-lg: 10px 10px 0 rgba(14, 17, 24, 0.14);
+  --shadow-sm: 0 1px 2px rgba(18, 16, 14, 0.1);
+  --shadow-md: 6px 6px 0 rgba(20, 17, 15, 0.12);
+  --shadow-lg: 10px 10px 0 rgba(20, 17, 15, 0.14);
   --shadow-hard: 6px 6px 0 var(--ink);
   --shadow-hard-sm: 4px 4px 0 var(--ink);
-  --shadow-glow-cyan: 0 0 0 4px rgba(27, 175, 226, 0.2);
+  --shadow-glow-flame: 0 0 0 4px rgba(247, 147, 53, 0.28);
   --shadow-glow-orange: 0 0 0 4px rgba(247, 147, 53, 0.24);
 
   /* Texture */
@@ -206,7 +214,7 @@ p {
 }
 
 a {
-  color: var(--kot-cyan);
+  color: var(--kot-ember);
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
   transition: color var(--dur-fast) var(--ease-out);
@@ -257,6 +265,74 @@ a:hover {
   transform: none;
 }
 
+/* "wipe" variant — poster titles sweep in from the left.
+   Uses a sliding mask, not clip-path: an element's own clip-path zeroes
+   its IntersectionObserver geometry, so a clip-based wipe never triggers. */
+.kot-js [data-reveal="wipe"] {
+  transform: translateY(14px);
+  -webkit-mask-image: linear-gradient(100deg, #000 46%, transparent 54%);
+  mask-image: linear-gradient(100deg, #000 46%, transparent 54%);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 720ms var(--ease-out),
+    -webkit-mask-position 900ms var(--ease-out),
+    mask-position 900ms var(--ease-out);
+}
+.kot-js [data-reveal="wipe"].is-in {
+  -webkit-mask-position: 0% 0;
+  mask-position: 0% 0;
+}
+
+/* Group reveal — direct children stagger in; ScrollFx sets --ri per child.
+   The from-only keyframe settles into each child's own resting transform
+   (rotated poster cards keep their tilt, hover transitions stay untouched). */
+.kot-js [data-reveal-group]:not(.is-in) > * {
+  opacity: 0;
+}
+.kot-js [data-reveal-group].is-in > * {
+  animation: kot-group-in 640ms var(--ease-out) backwards;
+  animation-delay: calc(var(--ri, 0) * 80ms);
+}
+.kot-js [data-reveal-group="fast"].is-in > * {
+  animation-duration: 480ms;
+  animation-delay: calc(var(--ri, 0) * 45ms);
+}
+.kot-js [data-reveal-group].is-in.is-instant > * {
+  animation: none;
+}
+@keyframes kot-group-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+
+/* ============================================================
+   Scroll progress — voltage line across the very top
+   ============================================================ */
+.kot-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  transform-origin: 0 50%;
+  background: linear-gradient(
+    90deg,
+    var(--kot-ember) 0%,
+    var(--kot-orange) 55%,
+    var(--kot-amber) 100%
+  );
+  z-index: 60;
+  pointer-events: none;
+}
+
 /* ============================================================
    Layout
    ============================================================ */
@@ -284,11 +360,11 @@ a:hover {
   transform: rotate(45deg);
   flex-shrink: 0;
 }
-.kot-eyebrow-dot.dot-orange {
+.kot-eyebrow-dot.dot-flame {
   background: var(--kot-orange);
 }
-.kot-eyebrow-dot.dot-cyan {
-  background: var(--kot-cyan);
+.kot-eyebrow-dot.dot-ember {
+  background: var(--tone-b);
 }
 .kot-eyebrow-dot.dot-white {
   background: var(--chalk);
@@ -319,8 +395,11 @@ a:hover {
   color: transparent;
   -webkit-text-stroke: 1.6px var(--kot-orange);
 }
-.kot-mark__num--cyan {
-  -webkit-text-stroke-color: var(--kot-cyan);
+.kot-mark__num--flame {
+  -webkit-text-stroke-color: var(--kot-orange);
+}
+.kot-mark__num--ember {
+  -webkit-text-stroke-color: var(--tone-b);
 }
 .kot-mark__num--white {
   -webkit-text-stroke-color: var(--chalk);
@@ -352,6 +431,22 @@ a:hover {
   position: relative;
   overflow: hidden;
 }
+
+/* Smooth accordion open/close where supported (Chromium 131+);
+   elsewhere the toggle stays instant. */
+.kot-section details {
+  interpolate-size: allow-keywords;
+}
+.kot-section details::details-content {
+  block-size: 0;
+  overflow-y: clip;
+  transition:
+    block-size 420ms var(--ease-out),
+    content-visibility 420ms allow-discrete;
+}
+.kot-section details[open]::details-content {
+  block-size: auto;
+}
 .kot-section > .kot-container {
   position: relative;
   z-index: 1;
@@ -365,12 +460,7 @@ a:hover {
 .kot-section--paper {
   background: var(--chalk-2);
   color: var(--ink);
-  --title-accent: var(--kot-cyan-600);
-}
-.kot-section--ink {
-  background: var(--night);
-  color: var(--chalk);
-  --title-accent: var(--kot-cyan-hot);
+  --title-accent: var(--kot-ember);
 }
 .kot-section--orange {
   background: var(--kot-orange);
@@ -378,6 +468,32 @@ a:hover {
   --title-accent: var(--chalk);
 }
 
+/* Dark grounds flip tone B to paper and lift the accent to amber, so the
+   alternation keeps its contrast without reaching for a second hue. */
+.kot-section--ink,
+.kot-hero,
+.kot-footer,
+.kot-page-hero--ink,
+.kot-article-hero {
+  --tone-b: var(--chalk);
+  --tone-b-ink: var(--night);
+}
+.kot-section--ink {
+  background: var(--night);
+  color: var(--chalk);
+  --title-accent: var(--kot-amber);
+}
+.kot-section--ink a,
+.kot-footer a,
+.kot-article-hero a {
+  color: var(--kot-amber);
+}
+.kot-section--ink a:hover,
+.kot-footer a:hover,
+.kot-article-hero a:hover {
+  color: var(--kot-orange-hot);
+}
+/*/
 /* grain on the dark arenas */
 .kot-section--ink::before,
 .kot-footer::before,
@@ -401,7 +517,7 @@ a:hover {
   z-index: 0;
   background-image: radial-gradient(
     circle,
-    rgba(6, 8, 14, 0.16) 1px,
+    rgba(18, 16, 14, 0.16) 1px,
     transparent 1.7px
   );
   background-size: 16px 16px;
@@ -459,20 +575,20 @@ a:hover {
   margin: -22px 0 36px 0;
 }
 .kot-section__sub--inv {
-  color: rgba(235, 240, 252, 0.72);
+  color: rgba(243, 237, 228, 0.72);
 }
 .kot-section--orange .kot-section__sub {
-  color: rgba(6, 8, 14, 0.78);
+  color: rgba(18, 16, 14, 0.78);
 }
 
 /* ============================================================
    Buttons — skewed speed blocks
    ============================================================ */
 .kot-btn {
-  --btn-bg: var(--kot-cyan);
+  --btn-bg: var(--kot-orange);
   --btn-fg: var(--night);
   --btn-bd: transparent;
-  --btn-shadow: rgba(6, 8, 14, 0.85);
+  --btn-shadow: rgba(18, 16, 14, 0.85);
   font-family: var(--font-sans);
   font-stretch: 112%;
   font-weight: 800;
@@ -498,6 +614,29 @@ a:hover {
     background-color var(--dur-base) var(--ease-out),
     color var(--dur-base) var(--ease-out);
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+/* one-shot shine sweep on hover */
+.kot-btn::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+  width: 36%;
+  background: linear-gradient(
+    105deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transform: translateX(-160%) skewX(-14deg);
+  pointer-events: none;
+}
+.kot-btn:hover::after {
+  transform: translateX(340%) skewX(-14deg);
+  transition: transform 640ms var(--ease-out);
 }
 .kot-btn > * {
   transform: skewX(8deg);
@@ -534,11 +673,11 @@ a:hover {
 }
 
 .kot-btn--primary {
-  --btn-bg: var(--kot-cyan);
+  --btn-bg: var(--kot-orange);
   --btn-fg: var(--night);
 }
 .kot-btn--primary:hover {
-  --btn-bg: var(--kot-cyan-hot);
+  --btn-bg: var(--kot-orange-hot);
   color: var(--night);
 }
 .kot-btn--accent {
@@ -556,16 +695,16 @@ a:hover {
   box-shadow: none;
 }
 .kot-btn--ghost:hover {
-  --btn-bg: var(--kot-cyan);
+  --btn-bg: var(--kot-orange);
   --btn-fg: var(--night);
-  --btn-bd: var(--kot-cyan);
+  --btn-bd: var(--kot-orange);
   box-shadow: 4px 4px 0 var(--btn-shadow);
   color: var(--night);
 }
 .kot-btn--dark {
   --btn-bg: var(--night);
   --btn-fg: var(--chalk);
-  --btn-shadow: rgba(6, 8, 14, 0.35);
+  --btn-shadow: rgba(18, 16, 14, 0.35);
 }
 .kot-btn--dark:hover {
   --btn-bg: var(--night-3);
@@ -601,20 +740,20 @@ a:hover {
   background: var(--ink);
   color: var(--chalk);
 }
-.kot-pill--cyan {
-  background: var(--kot-cyan);
-  color: var(--night);
+.kot-pill--ember {
+  background: var(--tone-b);
+  color: var(--tone-b-ink);
 }
-.kot-pill--orange {
+.kot-pill--flame {
   background: var(--kot-orange);
   color: var(--night);
 }
-.kot-pill--cyan.kot-pill--soft {
-  background: rgba(27, 175, 226, 0.16);
-  color: var(--kot-cyan-hot);
-  box-shadow: inset 0 0 0 1px rgba(69, 204, 255, 0.35);
+.kot-pill--ember.kot-pill--soft {
+  background: rgba(255, 190, 109, 0.16);
+  color: var(--kot-amber);
+  box-shadow: inset 0 0 0 1px rgba(255, 190, 109, 0.35);
 }
-.kot-pill--orange.kot-pill--soft {
+.kot-pill--flame.kot-pill--soft {
   background: rgba(247, 147, 53, 0.16);
   color: var(--kot-orange-hot);
   box-shadow: inset 0 0 0 1px rgba(255, 156, 51, 0.35);
@@ -627,18 +766,18 @@ a:hover {
   position: relative;
   border-radius: var(--radius-md);
   overflow: hidden;
-  background: var(--kot-cyan);
+  background: var(--kot-orange);
   isolation: isolate;
   display: block;
 }
-.kot-photo--cyan {
-  background: linear-gradient(150deg, #1bafe2 0%, #0a7da6 55%, #06222e 100%);
+.kot-photo--ember {
+  background: linear-gradient(150deg, #4a3b2c 0%, #2a2119 55%, #12100e 100%);
 }
-.kot-photo--orange {
+.kot-photo--flame {
   background: linear-gradient(150deg, #f79335 0%, #b75f12 55%, #2b1404 100%);
 }
 .kot-photo--ink {
-  background: linear-gradient(150deg, #1c2435 0%, #06080e 100%);
+  background: linear-gradient(150deg, #2a2119 0%, #12100e 100%);
 }
 .kot-photo::before {
   content: "";
@@ -652,7 +791,7 @@ a:hover {
       rgba(255, 255, 255, 0.16) 0%,
       transparent 45%
     ),
-    linear-gradient(180deg, transparent 55%, rgba(6, 8, 14, 0.42) 100%);
+    linear-gradient(180deg, transparent 55%, rgba(18, 16, 14, 0.42) 100%);
 }
 /* corner ticks */
 .kot-photo::after {
@@ -682,6 +821,10 @@ a:hover {
   object-fit: cover;
   z-index: 0;
   filter: saturate(1.05) contrast(1.04);
+  transition: transform 900ms var(--ease-out);
+}
+.kot-photo:hover .kot-photo__img {
+  transform: scale(1.045);
 }
 .kot-photo__inner {
   position: absolute;
@@ -716,25 +859,10 @@ a:hover {
 }
 .kot-kinetic__letter {
   display: inline-block;
-  opacity: 0;
-  transform: translateY(0.75em) rotate(4deg);
-  animation: kot-kinetic-rise 680ms var(--ease-spring) forwards;
+  will-change: transform;
 }
 .kot-kinetic__space {
   display: inline-block;
-}
-@keyframes kot-kinetic-rise {
-  0% {
-    opacity: 0;
-    transform: translateY(0.75em) rotate(4deg);
-  }
-  60% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotate(0);
-  }
 }
 
 /* ============================================================
@@ -752,11 +880,16 @@ a:hover {
   transition:
     background-color var(--dur-base) var(--ease-out),
     backdrop-filter var(--dur-base) var(--ease-out),
-    border-bottom-color var(--dur-base) var(--ease-out);
+    border-bottom-color var(--dur-base) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
   border-bottom: 1px solid transparent;
 }
+/* ducks away scrolling down, glides back on the first scroll up */
+.kot-nav.is-hidden {
+  transform: translateY(-101%);
+}
 .kot-nav.is-scrolled {
-  background: rgba(6, 8, 14, 0.86);
+  background: rgba(18, 16, 14, 0.86);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   border-bottom-color: var(--night-line);
@@ -892,7 +1025,7 @@ a:hover {
   }
 }
 .kot-nav__mobile {
-  background: rgba(6, 8, 14, 0.96);
+  background: rgba(18, 16, 14, 0.96);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   border-top: 1px solid var(--night-line);
@@ -901,19 +1034,9 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  animation: kot-fade-down 280ms var(--ease-out) backwards;
-}
-@keyframes kot-fade-down {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
 }
 .kot-nav__mobile a {
+  display: block;
   text-decoration: none;
   font-family: var(--font-display);
   font-weight: 800;
@@ -939,7 +1062,7 @@ a:hover {
   position: relative;
   min-height: 100svh;
   background:
-    radial-gradient(110% 70% at 70% -10%, #131c30 0%, transparent 60%),
+    radial-gradient(110% 70% at 70% -10%, #241c14 0%, transparent 60%),
     var(--night);
   color: var(--chalk);
   padding-top: clamp(120px, 16vh, 170px);
@@ -974,12 +1097,14 @@ a:hover {
   transform-origin: top center;
   animation: kot-beam-sway 13s ease-in-out infinite alternate;
 }
-.kot-hero__beam--cyan {
+/* Two floodlights, both warm now: a pale amber key on the left, the hot
+   orange one on the right. Reads as stadium light rather than cold moonlight. */
+.kot-hero__beam--warm {
   left: 4%;
   background: conic-gradient(
     from 12deg at 50% 0%,
     transparent 41%,
-    rgba(27, 175, 226, 0.4) 50%,
+    rgba(255, 226, 190, 0.3) 50%,
     transparent 59%
   );
 }
@@ -1009,7 +1134,7 @@ a:hover {
   height: 60%;
   background-image: radial-gradient(
     circle,
-    rgba(151, 183, 255, 0.34) 1px,
+    rgba(255, 226, 190, 0.34) 1px,
     transparent 1.8px
   );
   background-size: 17px 17px;
@@ -1034,7 +1159,7 @@ a:hover {
   font-size: clamp(220px, 38vw, 560px);
   letter-spacing: 0em;
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(151, 183, 255, 0.13);
+  -webkit-text-stroke: 1.5px rgba(255, 226, 190, 0.13);
   user-select: none;
 }
 .kot-hero__floor {
@@ -1064,7 +1189,7 @@ a:hover {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: rgba(235, 240, 252, 0.82);
+  color: rgba(243, 237, 228, 0.82);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   margin-bottom: 30px;
@@ -1116,8 +1241,29 @@ a:hover {
 }
 .kot-hero__title-flip {
   color: transparent;
-  -webkit-text-stroke: 2px var(--kot-cyan-hot);
+  -webkit-text-stroke: 2px var(--kot-amber);
   text-shadow: none;
+  animation: kot-voltage 7.2s linear infinite;
+}
+/* floodlight buzz — a brief double-dip once per cycle */
+@keyframes kot-voltage {
+  0%,
+  86.9% {
+    opacity: 1;
+  }
+  87.4% {
+    opacity: 0.35;
+  }
+  87.9% {
+    opacity: 1;
+  }
+  88.7% {
+    opacity: 0.5;
+  }
+  89.5%,
+  100% {
+    opacity: 1;
+  }
 }
 .kot-hero__title-sub {
   font-family: var(--font-display);
@@ -1136,7 +1282,7 @@ a:hover {
   font-family: var(--font-sans);
   font-size: clamp(16px, 1.7vw, 20px);
   line-height: 1.6;
-  color: rgba(235, 240, 252, 0.78);
+  color: rgba(243, 237, 228, 0.78);
   max-width: 54ch;
   margin: 0 0 38px 0;
   animation: kot-fade-up 700ms var(--ease-out) 480ms backwards;
@@ -1185,7 +1331,7 @@ a:hover {
   opacity: 0.85;
 }
 .kot-hero__stats > div:nth-child(even)::before {
-  border-color: var(--kot-cyan);
+  border-color: var(--kot-amber);
 }
 .kot-hero__stats strong {
   font-family: var(--font-display);
@@ -1202,7 +1348,7 @@ a:hover {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: rgba(235, 240, 252, 0.55);
+  color: rgba(243, 237, 228, 0.55);
 }
 @media (max-width: 700px) {
   .kot-hero__stats {
@@ -1229,7 +1375,7 @@ a:hover {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  color: rgba(235, 240, 252, 0.5);
+  color: rgba(243, 237, 228, 0.5);
 }
 .kot-hero__scroll svg {
   width: 16px;
@@ -1270,8 +1416,13 @@ a:hover {
   margin: -14px 0;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
-.kot-marquee--cyan {
-  background: var(--kot-cyan);
+.kot-marquee--flame {
+  background: var(--kot-orange);
+  color: var(--night);
+}
+.kot-marquee--ember {
+  background: var(--tone-b);
+  color: var(--tone-b-ink);
 }
 .kot-marquee--ink {
   background: var(--night-3);
@@ -1287,6 +1438,17 @@ a:hover {
 }
 .kot-marquee:hover .kot-marquee__track {
   animation-play-state: paused;
+}
+/* Once JS lands, Motion drives the tapes with scroll velocity — the CSS
+   keyframes above stay as the no-JS fallback. */
+.kot-js .kot-marquee__track,
+.kot-js .kot-footer__giant-track {
+  animation: none;
+}
+.kot-vmq__copy {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 .kot-marquee__item {
   display: inline-flex;
@@ -1322,18 +1484,20 @@ a:hover {
 /* ============================================================
    About — chalk editorial
    ============================================================ */
-.kot-about__hero-row {
+.kot-about__intro {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: clamp(32px, 4vw, 56px);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 4vw, 64px);
   align-items: start;
   margin-top: 8px;
-}
-.kot-about__intro {
-  max-width: 74ch;
+  margin-bottom: clamp(40px, 5vw, 72px);
 }
 .kot-about__intro .kot-section__title {
-  margin-bottom: 26px;
+  margin-bottom: 0;
+}
+.kot-about__copy {
+  display: flex;
+  flex-direction: column;
 }
 .kot-about__lede {
   font-size: 19px;
@@ -1349,103 +1513,70 @@ a:hover {
   line-height: 1.75;
   color: var(--ink-3);
 }
-.kot-about__milestones {
-  display: grid;
-  gap: 20px;
-  align-items: start;
+
+/* ============================================================
+   Empty photo slots — Sanity notation
+   ============================================================ */
+.kot-slot-code {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  align-self: center;
+  margin: auto;
 }
-.kot-about__milestones--top,
-.kot-about__milestones--mid {
-  grid-template-columns: 1fr 1fr;
-}
-.kot-about__milestones--mid {
-  margin-top: 36px;
-}
-.kot-about__milestones--bottom {
-  grid-template-columns: 1fr;
-  margin-top: 20px;
-}
-.kot-milestone {
-  min-width: 0;
-  transition: transform var(--dur-slow) var(--ease-out);
-}
-.kot-about__milestones--top .kot-milestone:nth-child(odd),
-.kot-about__milestones--mid .kot-milestone:nth-child(even) {
-  transform: rotate(-1.1deg);
-}
-.kot-about__milestones--top .kot-milestone:nth-child(even),
-.kot-about__milestones--mid .kot-milestone:nth-child(odd) {
-  transform: rotate(0.9deg);
-}
-.kot-milestone:hover {
-  transform: rotate(0deg) translateY(-4px);
-}
-.kot-milestone .kot-photo {
-  border: 2px solid var(--ink);
-  box-shadow: var(--shadow-hard);
-}
-.kot-milestone--featured .kot-photo__inner {
-  padding: 24px;
-}
-.kot-milestone__year {
+.kot-slot-code__code {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 48px;
+  font-size: clamp(26px, 3.4vw, 44px);
   line-height: 1;
-  color: var(--chalk);
-  letter-spacing: 0.02em;
-  text-shadow: 3px 3px 0 rgba(6, 8, 14, 0.45);
+  letter-spacing: 0.05em;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.85);
 }
-.kot-milestone__label {
+.kot-slot-code__hint {
   font-family: var(--font-sans);
   font-stretch: var(--stretch-wide);
+  font-size: 9px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--chalk);
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Timeline rail above the accordion gallery */
+.kot-about__timeline-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+}
+.kot-about__timeline-label {
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
   font-size: 12px;
-  margin-top: 8px;
-  display: inline-flex;
-  align-self: flex-start;
-  background: rgba(6, 8, 14, 0.55);
-  padding: 5px 9px;
-  border-radius: var(--radius-xs);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--ink-2);
 }
-.kot-milestone--featured .kot-milestone__year {
-  font-size: clamp(56px, 5.5vw, 76px);
-}
-@media (max-width: 1100px) {
-  .kot-about__hero-row {
-    gap: 32px;
-  }
-  .kot-about__milestones {
-    gap: 16px;
-  }
+.kot-about__timeline-range {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1.4px var(--kot-orange);
 }
 @media (max-width: 900px) {
-  .kot-about__hero-row {
+  .kot-about__intro {
     grid-template-columns: 1fr;
-    gap: 28px;
-  }
-  .kot-about__milestones--mid {
-    margin-top: 20px;
-  }
-}
-@media (max-width: 560px) {
-  .kot-about__milestones {
-    gap: 14px;
-  }
-  .kot-milestone__year {
-    font-size: clamp(32px, 9vw, 42px);
-  }
-  .kot-milestone__label {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-  }
-  .kot-milestone--featured .kot-milestone__year {
-    font-size: clamp(40px, 11vw, 52px);
+    gap: 24px;
   }
 }
 
@@ -1541,14 +1672,17 @@ a:hover {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--night-line);
-  border-top: 4px solid var(--kot-cyan);
+  border-top: 4px solid var(--chalk);
   transition:
     transform var(--dur-base) var(--ease-out),
     border-color var(--dur-base),
     box-shadow var(--dur-base) var(--ease-out);
 }
-.kot-project--orange {
+.kot-project--flame {
   border-top-color: var(--kot-orange);
+}
+.kot-project--ember {
+  border-top-color: var(--chalk);
 }
 .kot-project:hover {
   transform: translateY(-5px);
@@ -1577,7 +1711,7 @@ a:hover {
 .kot-project__desc {
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(235, 240, 252, 0.66);
+  color: rgba(243, 237, 228, 0.66);
   margin: 0;
 }
 .kot-post-card__meta {
@@ -1596,7 +1730,7 @@ a:hover {
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(235, 240, 252, 0.5);
+  color: rgba(243, 237, 228, 0.5);
 }
 .kot-project__link {
   display: inline-flex;
@@ -1616,13 +1750,13 @@ a:hover {
 }
 .kot-project__link:hover {
   gap: 12px;
-  color: var(--kot-cyan-hot);
+  color: var(--chalk);
 }
-.kot-project--cyan .kot-project__link {
-  color: var(--kot-cyan-hot);
+.kot-project--ember .kot-project__link {
+  color: var(--kot-amber);
 }
-.kot-project--cyan .kot-project__link:hover {
-  color: var(--kot-orange-hot);
+.kot-project--ember .kot-project__link:hover {
+  color: var(--chalk);
 }
 .kot-project__link svg {
   width: 14px;
@@ -1685,7 +1819,7 @@ a:hover {
 }
 .kot-event-card:nth-child(even) .kot-event-card__body {
   background:
-    linear-gradient(90deg, var(--kot-cyan) 0 6px, transparent 6px), var(--white);
+    linear-gradient(90deg, var(--ink) 0 6px, transparent 6px), var(--white);
 }
 .kot-event-card__title {
   font-family: var(--font-display);
@@ -1707,6 +1841,20 @@ a:hover {
   line-height: 0.95;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+}
+.kot-event-card__slot {
+  margin-top: 8px;
+  align-self: flex-start;
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(18, 16, 14, 0.5);
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
 }
 .kot-events__empty {
   grid-column: 1 / -1;
@@ -1805,7 +1953,7 @@ a:hover {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: rgba(235, 240, 252, 0.5);
+  color: rgba(243, 237, 228, 0.5);
 }
 .kot-sponsor__logos-strip {
   display: flex;
@@ -1824,14 +1972,14 @@ a:hover {
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 13px;
-  color: rgba(235, 240, 252, 0.7);
+  color: rgba(243, 237, 228, 0.7);
   letter-spacing: 0.04em;
   transition: all var(--dur-base) var(--ease-out);
   text-decoration: none;
   padding: 10px 14px;
 }
 .kot-sponsor-logo:hover {
-  background: #18213a;
+  background: #2a2119;
   color: var(--chalk);
   transform: translateY(-2px);
 }
@@ -1849,7 +1997,7 @@ a:hover {
   height: auto;
   object-fit: contain;
 }
-// sdjas
+
 /* ============================================================
    Contact — chalk court
    ============================================================ */
@@ -1914,9 +2062,9 @@ a:hover {
 .kot-field input:focus,
 .kot-field textarea:focus,
 .kot-field select:focus {
-  border-color: var(--kot-cyan);
+  border-color: var(--kot-orange);
   background: var(--white);
-  box-shadow: var(--shadow-glow-cyan);
+  box-shadow: var(--shadow-glow-flame);
 }
 .kot-contact__err {
   background: #fbe1e1;
@@ -1963,7 +2111,7 @@ a:hover {
   aspect-ratio: 4/3;
   border-radius: var(--radius-md);
   overflow: hidden;
-  background: linear-gradient(180deg, #edf4f8 0%, #dce9f0 100%);
+  background: linear-gradient(180deg, #f2eee4 0%, #e4ddcd 100%);
   border: 2px solid var(--ink);
   box-shadow: var(--shadow-hard);
   isolation: isolate;
@@ -1974,8 +2122,8 @@ a:hover {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(15, 23, 42, 0.03) 0%,
-    rgba(15, 23, 42, 0.16) 100%
+    rgba(20, 17, 15, 0.03) 0%,
+    rgba(20, 17, 15, 0.16) 100%
   );
   z-index: 1;
   pointer-events: none;
@@ -1991,7 +2139,7 @@ a:hover {
   z-index: 0;
 }
 .kot-contact__map .leaflet-container {
-  background: #dce9f0;
+  background: #e4ddcd;
   font-family: var(--font-sans);
 }
 .kot-contact__map .leaflet-tile {
@@ -2032,7 +2180,7 @@ a:hover {
   background: rgba(255, 255, 255, 0.95);
   padding: 12px 14px;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(14, 17, 24, 0.2);
+  border: 1px solid rgba(20, 17, 15, 0.2);
   box-shadow: var(--shadow-sm);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -2047,7 +2195,7 @@ a:hover {
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--kot-cyan-700);
+  color: var(--kot-ember);
 }
 .kot-contact__map-kicker svg {
   width: 14px;
@@ -2077,7 +2225,7 @@ a:hover {
   bottom: 5px;
   height: 14px;
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.22);
+  background: rgba(20, 17, 15, 0.22);
   filter: blur(6px);
 }
 .kot-contact__marker-pin {
@@ -2207,7 +2355,7 @@ a:hover {
    ============================================================ */
 .kot-footer {
   background: var(--night);
-  color: rgba(235, 240, 252, 0.7);
+  color: rgba(243, 237, 228, 0.7);
   padding: 0 0 32px;
   position: relative;
   overflow: hidden;
@@ -2239,7 +2387,7 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(151, 183, 255, 0.22);
+  -webkit-text-stroke: 1.5px rgba(255, 226, 190, 0.22);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -2247,7 +2395,7 @@ a:hover {
   transition: color var(--dur-slow) var(--ease-out);
 }
 .kot-footer__giant:hover .kot-footer__giant-item {
-  -webkit-text-stroke-color: rgba(69, 204, 255, 0.45);
+  -webkit-text-stroke-color: rgba(255, 190, 109, 0.45);
 }
 .kot-footer__giant-star {
   color: var(--kot-orange);
@@ -2288,7 +2436,7 @@ a:hover {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(235, 240, 252, 0.45);
+  color: rgba(243, 237, 228, 0.45);
   margin-top: 6px;
   font-stretch: var(--stretch-wide);
   font-weight: 700;
@@ -2313,7 +2461,7 @@ a:hover {
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  color: rgba(235, 240, 252, 0.68);
+  color: rgba(243, 237, 228, 0.68);
   font-size: 14px;
   padding: 4px 0;
   transition:
@@ -2321,7 +2469,7 @@ a:hover {
     padding-left var(--dur-base) var(--ease-out);
 }
 .kot-footer__links a:hover {
-  color: var(--kot-cyan-hot);
+  color: var(--kot-amber);
   padding-left: 6px;
 }
 .kot-footer__links svg {
@@ -2335,7 +2483,7 @@ a:hover {
   flex-wrap: wrap;
   gap: 16px;
   font-size: 12px;
-  color: rgba(235, 240, 252, 0.45);
+  color: rgba(243, 237, 228, 0.45);
 }
 
 /* ============================================================
@@ -2348,7 +2496,7 @@ a:hover {
 }
 .kot-page-hero--ink {
   background:
-    radial-gradient(90% 60% at 80% -10%, #131c30 0%, transparent 60%),
+    radial-gradient(90% 60% at 80% -10%, #241c14 0%, transparent 60%),
     var(--night);
   color: var(--chalk);
 }
@@ -2357,7 +2505,7 @@ a:hover {
   z-index: 1;
 }
 .kot-page-hero__eyebrow {
-  color: rgba(235, 240, 252, 0.72);
+  color: rgba(243, 237, 228, 0.72);
 }
 .kot-page-hero__title {
   font-family: var(--font-display);
@@ -2374,7 +2522,7 @@ a:hover {
 .kot-page-hero__lede {
   font-size: 18px;
   line-height: 1.6;
-  color: rgba(235, 240, 252, 0.74);
+  color: rgba(243, 237, 228, 0.74);
   max-width: 58ch;
   margin: 0 0 30px;
 }
@@ -2406,7 +2554,7 @@ a:hover {
   background:
     radial-gradient(
       100% 80% at 85% 0%,
-      rgba(27, 175, 226, 0.18) 0%,
+      rgba(247, 147, 53, 0.16) 0%,
       transparent 55%
     ),
     var(--night);
@@ -2433,7 +2581,7 @@ a:hover {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: rgba(235, 240, 252, 0.6);
+  color: rgba(243, 237, 228, 0.6);
   text-decoration: none;
 }
 .kot-article__backlink::before {
@@ -2452,12 +2600,12 @@ a:hover {
   margin: 0 0 20px;
   max-width: 14ch;
   text-transform: uppercase;
-  text-shadow: 0.03em 0.03em 0 rgba(27, 175, 226, 0.6);
+  text-shadow: 0.03em 0.03em 0 rgba(183, 95, 18, 0.75);
 }
 .kot-article__excerpt {
   font-size: 19px;
   line-height: 1.7;
-  color: rgba(235, 240, 252, 0.76);
+  color: rgba(243, 237, 228, 0.76);
   margin: 0;
   max-width: 56ch;
 }
@@ -2494,7 +2642,7 @@ a:hover {
   margin: 0 0 20px;
 }
 .kot-article__body a {
-  color: var(--kot-cyan-600);
+  color: var(--kot-ember);
 }
 .kot-article__h2 {
   font-family: var(--font-display);

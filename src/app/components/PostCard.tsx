@@ -8,10 +8,10 @@ import type { SanityPostPreview } from '@/sanity/lib/types'
 
 type PostCardProps = {
   post: SanityPostPreview
-  tone?: 'cyan' | 'orange'
+  tone?: 'flame' | 'ember'
 }
 
-export default function PostCard({ post, tone = 'cyan' }: PostCardProps) {
+export default function PostCard({ post, tone = 'flame' }: PostCardProps) {
   const imageUrl = post.coverImage?.asset
     ? urlForImage(post.coverImage).width(1600).height(900).fit('crop').auto('format').url()
     : null

@@ -3,6 +3,7 @@ import { Big_Shoulders, Archivo } from "next/font/google";
 import 'leaflet/dist/leaflet.css'
 import "./globals.css";
 import ScrollFx from './components/ScrollFx'
+import MotionProvider from './components/fx/MotionProvider'
 import { getSiteUrl, siteDescription, siteLocale, siteName } from './seo'
 
 const bigShoulders = Big_Shoulders({
@@ -75,7 +76,7 @@ export default function RootLayout({
     <html lang="ro" className={`${bigShoulders.variable} ${archivo.variable}`}>
       <body>
         <ScrollFx />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

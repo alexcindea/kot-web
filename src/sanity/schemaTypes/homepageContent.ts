@@ -21,7 +21,7 @@ const defaultProjects = [
   {
     title: 'Mondial / Team RO',
     label: 'Mondial',
-    tone: 'cyan',
+    tone: 'flame',
     slot: 'mondialTeamRo',
     story:
       'Drumul spre Team Romania a adunat antrenamente, selecții și responsabilitatea de a reprezenta mai mult decât o echipă: o direcție întreagă de creștere pentru cheer sportul românesc.',
@@ -29,7 +29,7 @@ const defaultProjects = [
   {
     title: 'Erasmus',
     label: 'Dezvoltare',
-    tone: 'orange',
+    tone: 'ember',
     slot: 'erasmus',
     story:
       'Proiectul aduce schimb de experiență, idei noi și contexte internaționale care se întorc apoi în sala KOT prin metode, ritm și încredere.',
@@ -37,7 +37,7 @@ const defaultProjects = [
   {
     title: 'Tabăra Națională',
     label: 'Comunitate',
-    tone: 'cyan',
+    tone: 'flame',
     slot: 'tabaraNationala',
     story:
       'Aici se leagă mai repede grupurile, se lucrează concentrat și se creează acel timp comun în care progresul tehnic merge mână în mână cu energia de echipă.',
@@ -45,7 +45,7 @@ const defaultProjects = [
   {
     title: 'Frumusețe fără filtru',
     label: 'Identitate',
-    tone: 'orange',
+    tone: 'ember',
     slot: 'frumuseteFaraFiltru',
     story:
       'Este un proiect construit în jurul autenticității, expresiei și felului în care sportul poate da curaj, prezență și voce.',
@@ -53,7 +53,7 @@ const defaultProjects = [
   {
     title: 'Nicio zi fără spor(t)',
     label: 'Mișcare',
-    tone: 'cyan',
+    tone: 'flame',
     slot: 'nicioZiFaraSport',
     story:
       'Inițiativa pune accent pe consecvență, obiceiuri sănătoase și ideea că sportul se construiește zi de zi, nu doar la evenimente mari.',
@@ -61,17 +61,17 @@ const defaultProjects = [
 ]
 
 const defaultEvents = [
-  { title: 'UNTOLD', tone: 'cyan', slot: 'untold' },
-  { title: 'Zilele Clujului', tone: 'orange', slot: 'zileleClujului' },
-  { title: 'Sports Festival', tone: 'cyan', slot: 'sportsFestival' },
-  { title: 'Meciuri UBT', tone: 'orange', slot: 'meciuriUbt' },
-  { title: 'Wonder Family Fest', tone: 'cyan', slot: 'wonderFamilyFest' },
-  { title: 'Season Opening Show', tone: 'orange', slot: 'seasonOpeningShow' },
+  { title: 'UNTOLD', tone: 'flame', slot: 'untold' },
+  { title: 'Zilele Clujului', tone: 'ember', slot: 'zileleClujului' },
+  { title: 'Sports Festival', tone: 'flame', slot: 'sportsFestival' },
+  { title: 'Meciuri UBT', tone: 'ember', slot: 'meciuriUbt' },
+  { title: 'Wonder Family Fest', tone: 'flame', slot: 'wonderFamilyFest' },
+  { title: 'Season Opening Show', tone: 'ember', slot: 'seasonOpeningShow' },
 ]
 
 const toneOptions = [
-  { title: 'Albastru', value: 'cyan' },
-  { title: 'Portocaliu', value: 'orange' },
+  { title: 'Portocaliu aprins', value: 'flame' },
+  { title: 'Portocaliu ars', value: 'ember' },
 ]
 
 const projectSlotOptions = [
@@ -116,7 +116,7 @@ export const homepageProjectType = defineType({
         list: toneOptions,
         layout: 'radio',
       },
-      initialValue: 'cyan',
+      initialValue: 'flame',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -168,7 +168,7 @@ export const homepageEventType = defineType({
         list: toneOptions,
         layout: 'radio',
       },
-      initialValue: 'cyan',
+      initialValue: 'flame',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

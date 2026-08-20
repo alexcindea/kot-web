@@ -95,7 +95,7 @@ export default async function PostPage({ params }: PostPageProps) {
             <div className="kot-container kot-article-hero__inner">
               <Link href="/noutati" className="kot-article__backlink">Toate articolele</Link>
               <div className="kot-post-card__meta kot-post-card__meta--article">
-                <span className="kot-pill kot-pill--orange kot-pill--soft">{getPostCategoryLabel(post.category)}</span>
+                <span className="kot-pill kot-pill--flame kot-pill--soft">{getPostCategoryLabel(post.category)}</span>
                 <span className="kot-post-card__date">{formatSanityDate(post.publishedAt)}</span>
               </div>
               <h1 className="kot-article__title">{post.title}</h1>

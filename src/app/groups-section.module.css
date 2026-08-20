@@ -12,7 +12,7 @@
   background: var(--white);
   border: 2px solid var(--ink);
   border-radius: var(--radius-md);
-  box-shadow: 5px 5px 0 rgba(14, 17, 24, 0.16);
+  box-shadow: 5px 5px 0 rgba(20, 17, 15, 0.16);
   counter-increment: roster;
   transition:
     box-shadow var(--dur-base) var(--ease-out),
@@ -21,7 +21,7 @@
 
 .groupAccordion:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 7px 7px 0 rgba(14, 17, 24, 0.2);
+  box-shadow: 7px 7px 0 rgba(20, 17, 15, 0.2);
 }
 
 .groupAccordion[open] {
@@ -29,8 +29,8 @@
   box-shadow: 8px 8px 0 var(--ink);
 }
 
-.groupAccordionCyan { border-left: 8px solid var(--kot-cyan); }
-.groupAccordionOrange { border-left: 8px solid var(--kot-orange); }
+.groupAccordionEmber { border-left: 8px solid var(--ink); }
+.groupAccordionFlame { border-left: 8px solid var(--kot-orange); }
 
 .groupAccordionSummary {
   display: flex;
@@ -61,13 +61,13 @@
   transition: -webkit-text-stroke-color var(--dur-base);
 }
 
-.groupAccordionCyan[open] .groupAccordionSummary::before,
-.groupAccordionCyan:hover .groupAccordionSummary::before {
-  -webkit-text-stroke-color: var(--kot-cyan);
+.groupAccordionEmber[open] .groupAccordionSummary::before,
+.groupAccordionEmber:hover .groupAccordionSummary::before {
+  -webkit-text-stroke-color: var(--ink);
 }
 
-.groupAccordionOrange[open] .groupAccordionSummary::before,
-.groupAccordionOrange:hover .groupAccordionSummary::before {
+.groupAccordionFlame[open] .groupAccordionSummary::before,
+.groupAccordionFlame:hover .groupAccordionSummary::before {
   -webkit-text-stroke-color: var(--kot-orange);
 }
 
@@ -246,7 +246,7 @@
   gap: 8px;
   margin-top: auto;
   padding-top: 10px;
-  color: var(--kot-cyan-700);
+  color: var(--kot-ember);
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 800;
@@ -279,7 +279,7 @@
 .groupAccordionImageWrap {
   display: flex;
   background: var(--white);
-  box-shadow: 4px 4px 0 rgba(14, 17, 24, 0.14);
+  box-shadow: 4px 4px 0 rgba(20, 17, 15, 0.14);
 }
 
 .groupAccordionImage {
@@ -298,8 +298,8 @@
   gap: 10px;
   padding: 24px;
   background:
-    radial-gradient(circle, rgba(14, 17, 24, 0.07) 1px, transparent 1.7px) 0 0 / 14px 14px,
-    linear-gradient(150deg, rgba(27, 175, 226, 0.1) 0%, rgba(247, 147, 53, 0.1) 100%);
+    radial-gradient(circle, rgba(20, 17, 15, 0.07) 1px, transparent 1.7px) 0 0 / 14px 14px,
+    linear-gradient(150deg, rgba(20, 17, 15, 0.08) 0%, rgba(247, 147, 53, 0.12) 100%);
 }
 
 .groupAccordionPlaceholderLabel {

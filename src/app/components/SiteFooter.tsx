@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import Link from 'next/link'
+import VelocityMarquee from './fx/VelocityMarquee'
 
 function IconInstagram() {
   return (
@@ -28,18 +30,18 @@ function IconYoutube() {
 }
 
 export default function SiteFooter() {
-  const wordmarkItems = Array.from({ length: 4 })
-
   return (
     <footer className="kot-footer">
       <div className="kot-footer__giant" aria-hidden="true">
-        <div className="kot-footer__giant-track">
-          {wordmarkItems.map((_, i) => (
-            <span key={i} className="kot-footer__giant-item">
-              Knights of Transylvania <span className="kot-footer__giant-star">✦</span>
-            </span>
-          ))}
-        </div>
+        <VelocityMarquee
+          className="kot-footer__giant-track"
+          baseVelocity={-0.45}
+          gap="clamp(40px, 5vw, 80px)"
+        >
+          <span className="kot-footer__giant-item">
+            Knights of Transylvania <span className="kot-footer__giant-star">✦</span>
+          </span>
+        </VelocityMarquee>
       </div>
 
       <div className="kot-container">
@@ -59,16 +61,16 @@ export default function SiteFooter() {
           <div className="kot-footer__links">
             <div>
               <h5>Echipa</h5>
-              <a href="/#despre">Despre</a>
-              <a href="/#grupe">Grupele</a>
-              <a href="/#staff">Staff</a>
+              <Link href="/#despre">Despre</Link>
+              <Link href="/#grupe">Grupele</Link>
+              <Link href="/#staff">Staff</Link>
             </div>
             <div>
               <h5>Activitate</h5>
-              <a href="/#proiecte">Noutăți</a>
-              <a href="/noutati">Toate articolele</a>
-              <a href="/#evenimente">Evenimente</a>
-              <a href="/#sponsorizare">Sponsorizare</a>
+              <Link href="/#proiecte">Noutăți</Link>
+              <Link href="/noutati">Toate articolele</Link>
+              <Link href="/#evenimente">Evenimente</Link>
+              <Link href="/#sponsorizare">Sponsorizare</Link>
             </div>
             <div>
               <h5>Urmărește</h5>
@@ -86,7 +88,7 @@ export default function SiteFooter() {
         </div>
         <div className="kot-footer__bottom">
           <span>© 2026 Knights Of Transylvania · Cluj-Napoca</span>
-          <span>Hai KOT! KOT orange and cyan, no excuses.</span>
+          <span>Hai KOT! Portocaliu din cap până-n picioare.</span>
         </div>
       </div>
     </footer>

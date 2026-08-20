@@ -43,10 +43,6 @@ export const postsQuery = defineQuery(
   `*[_type == "post" && defined(slug.current) && dateTime(publishedAt) <= dateTime(now())] | order(featured desc, publishedAt desc) ${postPreviewProjection}`,
 )
 
-export const latestPostsQuery = defineQuery(
-  `*[_type == "post" && defined(slug.current) && dateTime(publishedAt) <= dateTime(now())] | order(featured desc, publishedAt desc)[0...$limit] ${postPreviewProjection}`,
-)
-
 export const postBySlugQuery = defineQuery(
   `*[_type == "post" && slug.current == $slug && dateTime(publishedAt) <= dateTime(now())][0] {
     _id,
@@ -87,10 +83,6 @@ export async function getHomepageContent() {
 
 export async function getPosts() {
   return sanityClient.fetch<SanityPostPreview[]>(postsQuery)
-}
-
-export async function getLatestPosts(limit = 3) {
-  return sanityClient.fetch<SanityPostPreview[]>(latestPostsQuery, { limit })
 }
 
 export async function getPostBySlug(slug: string) {

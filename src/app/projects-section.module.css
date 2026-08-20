@@ -11,7 +11,7 @@
   overflow: hidden;
   background: var(--night-2);
   border: 1px solid var(--night-line);
-  border-left: 8px solid var(--kot-cyan);
+  border-left: 8px solid var(--chalk);
   border-radius: var(--radius-md);
   counter-increment: dossier;
   transition:
@@ -29,7 +29,7 @@
   box-shadow: 0 28px 60px rgba(0, 0, 0, 0.4);
 }
 
-.projectAccordionOrange {
+.projectAccordionFlame {
   border-left-color: var(--kot-orange);
 }
 
@@ -56,7 +56,7 @@
   line-height: 1;
   letter-spacing: 0.06em;
   color: transparent;
-  -webkit-text-stroke: 1.2px rgba(151, 183, 255, 0.35);
+  -webkit-text-stroke: 1.2px rgba(255, 226, 190, 0.35);
   flex-shrink: 0;
   min-width: 64px;
   transition: -webkit-text-stroke-color var(--dur-base);
@@ -64,11 +64,11 @@
 
 .projectAccordion[open] .projectAccordionSummary::before,
 .projectAccordion:hover .projectAccordionSummary::before {
-  -webkit-text-stroke-color: var(--kot-cyan-hot);
+  -webkit-text-stroke-color: var(--kot-amber);
 }
 
-.projectAccordionOrange[open] .projectAccordionSummary::before,
-.projectAccordionOrange:hover .projectAccordionSummary::before {
+.projectAccordionFlame[open] .projectAccordionSummary::before,
+.projectAccordionFlame:hover .projectAccordionSummary::before {
   -webkit-text-stroke-color: var(--kot-orange-hot);
 }
 
@@ -81,7 +81,7 @@
 }
 
 .projectAccordionLabel {
-  color: rgba(235, 240, 252, 0.55);
+  color: rgba(243, 237, 228, 0.55);
   font-family: var(--font-sans);
   font-stretch: var(--stretch-wide);
   font-size: 10px;
@@ -168,7 +168,7 @@
 }
 
 .projectAccordionPlaceholderLabel {
-  color: rgba(235, 240, 252, 0.7);
+  color: rgba(243, 237, 228, 0.7);
   font-family: var(--font-sans);
   font-stretch: var(--stretch-wide);
   font-size: 10px;
@@ -195,7 +195,7 @@
 
 .projectAccordionStory {
   margin: 0;
-  color: rgba(235, 240, 252, 0.78);
+  color: rgba(243, 237, 228, 0.78);
   font-size: 16px;
   line-height: 1.8;
 }

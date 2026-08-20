@@ -3,20 +3,33 @@ import Image from 'next/image'
 import {
   ArrowRight, Play, ChevronRight, ChevronDown,
   MapPin, User, Phone, Trophy,
-  FileText, HeartHandshake, Download, Star,
+  FileText, HeartHandshake, Download,
 } from 'lucide-react'
 import Nav from './components/Nav'
 import HeroRotate from './components/HeroRotate'
+import AboutGallery from './components/AboutGallery'
+import MarqueeStrip from './components/MarqueeStrip'
+import SlotCode from './components/SlotCode'
 import EventsSection from './components/EventsSection'
 import SiteFooter from './components/SiteFooter'
 import ContactMap from './components/ContactMap'
+import CountUp from './components/fx/CountUp'
+import Magnetic from './components/fx/Magnetic'
+import Parallax from './components/fx/Parallax'
 import ContactForm from './contact-form'
 import groupsStyles from './groups-section.module.css'
 import projectsStyles from './projects-section.module.css'
 import { getAbsoluteUrl, organizationAddress, siteDescription, siteName, siteShortName } from './seo'
 import { urlForImage } from '@/sanity/lib/image'
 import { getHomepageContent, getSitePhotos, getSponsors } from '@/sanity/lib/queries'
-import type { HomepageProject, SanityPhotoAsset, SanitySponsor, SitePhotosDocument } from '@/sanity/lib/types'
+import { groupPhotoSlots, projectPhotoSlots, staffPhotoSlots } from '@/sanity/photoSlots'
+import type {
+  AboutMilestoneEntry,
+  HomepageProject,
+  SanityPhotoAsset,
+  SanitySponsor,
+  SitePhotosDocument,
+} from '@/sanity/lib/types'
 
 export const metadata: Metadata = {
   title: 'Cheerleading în Cluj-Napoca',
@@ -49,11 +62,11 @@ const photoDimensionsByRatio: Record<string, { width: number; height: number }> 
 /* ── Shared primitives ────────────────────────────────────── */
 
 function Photo({
-  caption, ratio = '16/9', tone = 'cyan', image, children,
+  caption, ratio = '16/9', tone = 'flame', image, children,
 }: {
   caption?: string
   ratio?: string
-  tone?: 'cyan' | 'orange' | 'ink'
+  tone?: 'flame' | 'ember' | 'ink'
   image?: SanityPhotoAsset
   children?: React.ReactNode
 }) {
@@ -80,10 +93,10 @@ function Photo({
   )
 }
 
-function SectionMark({ index, children, tone = 'orange' }: {
+function SectionMark({ index, children, tone = 'flame' }: {
   index: string
   children: React.ReactNode
-  tone?: 'orange' | 'cyan' | 'white'
+  tone?: 'flame' | 'ember' | 'white'
 }) {
   return (
     <div className="kot-mark" data-reveal>
@@ -94,119 +107,9 @@ function SectionMark({ index, children, tone = 'orange' }: {
   )
 }
 
-function MarqueeStrip({ items, tone = 'orange', Icon = Star }: {
-  items: string[]
-  tone?: 'orange' | 'cyan' | 'ink'
-  Icon?: React.ComponentType<{ size?: number }>
-}) {
-  const repeated = [...items, ...items, ...items, ...items]
-  return (
-    <div className={`kot-marquee kot-marquee--${tone}`} aria-hidden="true">
-      <div className="kot-marquee__track">
-        {repeated.map((it, i) => (
-          <span key={i} className="kot-marquee__item">
-            <span>{it}</span>
-            <Icon size={22} />
-          </span>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 /* ── Data ─────────────────────────────────────────────────── */
 
-type AboutMilestone = {
-  id: string
-  year: string
-  label: string
-  tone: 'cyan' | 'orange'
-  caption: string
-  ratio: string
-  slot?: keyof NonNullable<SitePhotosDocument['aboutMilestones']>
-  featured?: boolean
-}
-
-function MilestoneCard({
-  milestone,
-  images,
-}: {
-  milestone: AboutMilestone
-  images?: SitePhotosDocument['aboutMilestones']
-}) {
-  return (
-    <div className={`kot-milestone${milestone.featured ? ' kot-milestone--featured' : ''}`}>
-      <Photo
-        tone={milestone.tone}
-        ratio={milestone.ratio}
-        caption={milestone.caption}
-        image={milestone.slot ? images?.[milestone.slot] : undefined}
-      >
-        <div className="kot-milestone__year">{milestone.year}</div>
-        <div className="kot-milestone__label">{milestone.label}</div>
-      </Photo>
-    </div>
-  )
-}
-
-const milestones: AboutMilestone[] = [
-  {
-    id: 'origin-2014',
-    year: '2014',
-    label: 'Începutul',
-    tone: 'cyan',
-    caption: 'Foto: începuturile KOT',
-    ratio: '5/8',
-    slot: 'milestone2012',
-  },
-  {
-    id: 'first-medal-2015',
-    year: '2015',
-    label: 'Prima medalie',
-    tone: 'orange',
-    caption: 'Foto: prima medalie KOT',
-    ratio: '5/8',
-    slot: 'milestone2016',
-  },
-  {
-    id: 'varsity-2023',
-    year: '2023',
-    label: 'Începutul varsity',
-    tone: 'cyan',
-    caption: 'Foto: începutul grupei varsity',
-    ratio: '1/1',
-    slot: 'varsity2023',
-  },
-  {
-    id: 'sala-kot-2023',
-    year: '2023',
-    label: 'Sala KOT',
-    tone: 'orange',
-    caption: 'Foto: Sala KOT',
-    ratio: '1/1',
-    slot: 'salaKot2023',
-  },
-  {
-    id: 'worlds-2025',
-    year: '2025',
-    label: 'Campionatul mondial',
-    tone: 'cyan',
-    caption: 'Foto: Campionatul Mondial',
-    ratio: '21/9',
-    slot: 'milestone2024',
-    featured: true,
-  },
-]
-
-const aboutMilestonesTop = milestones.filter((milestone) =>
-  milestone.id === 'origin-2014' || milestone.id === 'first-medal-2015',
-)
-
-const aboutMilestonesMid = milestones.filter((milestone) =>
-  milestone.id === 'varsity-2023' || milestone.id === 'sala-kot-2023',
-)
-
-const aboutMilestoneFeatured = milestones.find((milestone) => milestone.featured)
+/* Milestones live entirely in Sanity — see sitePhotos.aboutTimeline. */
 
 type TrainingGroup = {
   id: keyof NonNullable<SitePhotosDocument['groups']>
@@ -215,7 +118,7 @@ type TrainingGroup = {
   format: string
   description: string
   note?: string
-  tone: 'cyan' | 'orange'
+  tone: 'flame' | 'ember'
 }
 
 function GroupAccordionItem({
@@ -229,7 +132,7 @@ function GroupAccordionItem({
   const imageUrl = image?.asset
     ? urlForImage(image).width(1200).height(900).fit('crop').auto('format').url()
     : null
-  const toneClass = group.tone === 'cyan' ? groupsStyles.groupAccordionCyan : groupsStyles.groupAccordionOrange
+  const toneClass = group.tone === 'flame' ? groupsStyles.groupAccordionFlame : groupsStyles.groupAccordionEmber
   const noteText = group.note ? (/[.!?]$/.test(group.note) ? group.note : `${group.note}.`) : null
 
   return (
@@ -283,7 +186,9 @@ function GroupAccordionItem({
             </div>
           ) : (
             <div className={groupsStyles.groupAccordionPlaceholder}>
-              <span className={groupsStyles.groupAccordionPlaceholderLabel}>Foto grupă</span>
+              <span className={groupsStyles.groupAccordionPlaceholderLabel}>
+                Foto grupă · slot {groupPhotoSlots[group.id].code}
+              </span>
               <strong>Adăugăm fotografia aici după ce o alegem.</strong>
             </div>
           )}
@@ -300,7 +205,7 @@ const groups: TrainingGroup[] = [
     age: '5–7 ani',
     format: 'Start',
     description: 'Grupa în care cei mici descoperă bazele cheerleadingului prin joc, ritm și încredere.',
-    tone: 'cyan',
+    tone: 'flame',
   },
   {
     id: 'u13Mixt',
@@ -308,7 +213,7 @@ const groups: TrainingGroup[] = [
     age: 'Sub 13 ani',
     format: 'Mixt',
     description: 'Pentru sportivii U13 care lucrează tehnica de bază, coordonarea și lucrul în echipă.',
-    tone: 'orange',
+    tone: 'ember',
   },
   {
     id: 'u13FeteHu',
@@ -317,7 +222,7 @@ const groups: TrainingGroup[] = [
     format: 'Fete',
     description: 'Grupă dedicată fetelor U13, într-un ritm potrivit de învățare și progres.',
     note: 'Predare în limba maghiară',
-    tone: 'cyan',
+    tone: 'flame',
   },
   {
     id: 'primaryLevel1',
@@ -325,7 +230,7 @@ const groups: TrainingGroup[] = [
     age: '8–13 ani',
     format: 'Level 1',
     description: 'Pentru sportivii 8–13 ani care construiesc fundația tehnică și încep să lucreze în formulă de echipă.',
-    tone: 'orange',
+    tone: 'ember',
   },
   {
     id: 'primaryLevel2',
@@ -333,7 +238,7 @@ const groups: TrainingGroup[] = [
     age: '8–13 ani',
     format: 'Level 2',
     description: 'Grupă de progres pentru sportivii care sunt gata să treacă la cerințe și combinații mai avansate.',
-    tone: 'cyan',
+    tone: 'flame',
   },
   {
     id: 'u19',
@@ -341,7 +246,7 @@ const groups: TrainingGroup[] = [
     age: 'Sub 19 ani',
     format: 'Competițional',
     description: 'Categorie pentru sportivii care își dezvoltă constanța, expresivitatea și lucrul de echipă la nivel U19.',
-    tone: 'orange',
+    tone: 'ember',
   },
   {
     id: 'seniori',
@@ -349,50 +254,50 @@ const groups: TrainingGroup[] = [
     age: '16+ ani',
     format: 'Competițional',
     description: 'Grupa seniorilor reunește sportivii 16+ care lucrează rutine complete, energie de concurs și identitate de echipă.',
-    tone: 'cyan',
+    tone: 'flame',
   },
 ]
 
 const staff = [
-  { name: 'Antrenor 1', role: 'Head Coach · Seniori', tone: 'cyan'   as const, slot: 'coach1' as const },
-  { name: 'Antrenor 2', role: 'Coach · Juniori',      tone: 'orange' as const, slot: 'coach2' as const },
-  { name: 'Antrenor 3', role: 'Coach · Mini',         tone: 'cyan'   as const, slot: 'coach3' as const },
-  { name: 'Antrenor 4', role: 'Coregraf',             tone: 'orange' as const, slot: 'coach4' as const },
+  { name: 'Antrenor 1', role: 'Head Coach · Seniori', tone: 'flame'  as const, slot: 'coach1' as const },
+  { name: 'Antrenor 2', role: 'Coach · Juniori',      tone: 'ember'  as const, slot: 'coach2' as const },
+  { name: 'Antrenor 3', role: 'Coach · Mini',         tone: 'flame'  as const, slot: 'coach3' as const },
+  { name: 'Antrenor 4', role: 'Coregraf',             tone: 'ember'  as const, slot: 'coach4' as const },
 ]
 
 const projectFallback: HomepageProject[] = [
   {
     title: 'Mondial / Team RO',
     label: 'Mondial',
-    tone: 'cyan',
+    tone: 'flame',
     slot: 'mondialTeamRo',
     story: 'Drumul spre Team Romania a adunat antrenamente, selecții și responsabilitatea de a reprezenta mai mult decât o echipă: o direcție întreagă de creștere pentru cheer sportul românesc.',
   },
   {
     title: 'Erasmus',
     label: 'Dezvoltare',
-    tone: 'orange',
+    tone: 'ember',
     slot: 'erasmus',
     story: 'Proiectul aduce schimb de experiență, idei noi și contexte internaționale care se întorc apoi în sala KOT prin metode, ritm și încredere.',
   },
   {
     title: 'Tabăra Națională',
     label: 'Comunitate',
-    tone: 'cyan',
+    tone: 'flame',
     slot: 'tabaraNationala',
     story: 'Aici se leagă mai repede grupurile, se lucrează concentrat și se creează acel timp comun în care progresul tehnic merge mână în mână cu energia de echipă.',
   },
   {
     title: 'Frumusețe fără filtru',
     label: 'Identitate',
-    tone: 'orange',
+    tone: 'ember',
     slot: 'frumuseteFaraFiltru',
     story: 'Este un proiect construit în jurul autenticității, expresiei și felului în care sportul poate da curaj, prezență și voce.',
   },
   {
     title: 'Nicio zi fără spor(t)',
     label: 'Mișcare',
-    tone: 'cyan',
+    tone: 'flame',
     slot: 'nicioZiFaraSport',
     story: 'Inițiativa pune accent pe consecvență, obiceiuri sănătoase și ideea că sportul se construiește zi de zi, nu doar la evenimente mari.',
   },
@@ -451,7 +356,7 @@ function ProjectAccordionItem({
   images?: SitePhotosDocument['projects']
 }) {
   const image = images?.[project.slot]
-  const toneClass = project.tone === 'cyan' ? projectsStyles.projectAccordion : `${projectsStyles.projectAccordion} ${projectsStyles.projectAccordionOrange}`
+  const toneClass = project.tone === 'ember' ? projectsStyles.projectAccordion : `${projectsStyles.projectAccordion} ${projectsStyles.projectAccordionFlame}`
 
   return (
     <details className={toneClass}>
@@ -475,7 +380,9 @@ function ProjectAccordionItem({
           >
             {!image?.asset && (
               <div className={projectsStyles.projectAccordionPlaceholder}>
-                <span className={projectsStyles.projectAccordionPlaceholderLabel}>Proiect</span>
+                <span className={projectsStyles.projectAccordionPlaceholderLabel}>
+                  Proiect · slot {projectPhotoSlots[project.slot].code}
+                </span>
                 <strong>{project.title}</strong>
               </div>
             )}
@@ -502,6 +409,12 @@ export default async function Home() {
     ? sanitySponsors
     : sponsorFallbackNames.map((name) => ({ _id: name, name }))
 
+  const aboutTimeline: AboutMilestoneEntry[] = sitePhotos?.aboutTimeline ?? []
+  const aboutYears = aboutTimeline.map((milestone) => milestone.year).filter(Boolean)
+  const aboutTimelineRange = aboutYears.length > 1
+    ? `${aboutYears[0]} — ${aboutYears[aboutYears.length - 1]}`
+    : aboutYears[0] ?? ''
+
   return (
     <>
       <script
@@ -514,10 +427,10 @@ export default async function Home() {
         {/* ── Hero ── */}
         <section className="kot-hero" id="top">
           <div className="kot-hero__bg" aria-hidden="true">
-            <div className="kot-hero__beam kot-hero__beam--cyan" />
+            <div className="kot-hero__beam kot-hero__beam--warm" />
             <div className="kot-hero__beam kot-hero__beam--orange" />
             <div className="kot-hero__halftone" />
-            <div className="kot-hero__watermark">KOT</div>
+            <Parallax className="kot-hero__watermark" from={-30} to={110}>KOT</Parallax>
             <div className="kot-hero__floor" />
           </div>
 
@@ -543,23 +456,27 @@ export default async function Home() {
             </p>
 
             <div className="kot-hero__ctas">
-              <a href="#contact" className="kot-btn kot-btn--accent kot-btn--lg">
-                <span>Încearcă și tu</span>
-                <ArrowRight size={18} />
-              </a>
-              <a href="#despre" className="kot-btn kot-btn--ghost kot-btn--lg">
-                <Play size={18} />
-                <span>Despre KOT</span>
-              </a>
+              <Magnetic>
+                <a href="#contact" className="kot-btn kot-btn--accent kot-btn--lg">
+                  <span>Încearcă și tu</span>
+                  <ArrowRight size={18} />
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href="#despre" className="kot-btn kot-btn--ghost kot-btn--lg">
+                  <Play size={18} />
+                  <span>Despre KOT</span>
+                </a>
+              </Magnetic>
             </div>
           </div>
 
           <div className="kot-container">
             <div className="kot-hero__stats" role="list" aria-label="KOT în cifre">
-              <div role="listitem"><strong>130+</strong><span>Sportivi activi</span></div>
-              <div role="listitem"><strong>16+</strong><span>Instructori</span></div>
-              <div role="listitem"><strong>12+</strong><span>Țări concurate</span></div>
-              <div role="listitem"><strong>10K+</strong><span>Spectatori</span></div>
+              <div role="listitem"><CountUp value={130} suffix="+" /><span>Sportivi activi</span></div>
+              <div role="listitem"><CountUp value={16} suffix="+" duration={1.2} /><span>Instructori</span></div>
+              <div role="listitem"><CountUp value={12} suffix="+" duration={1.2} /><span>Țări concurate</span></div>
+              <div role="listitem"><CountUp value={10} suffix="K+" duration={1} /><span>Spectatori</span></div>
             </div>
           </div>
 
@@ -571,7 +488,7 @@ export default async function Home() {
 
         {/* ── Marquee 1 ── */}
         <MarqueeStrip
-          tone="orange"
+          tone="flame"
           items={['MOMENTUL TĂU WOOW', 'KNIGHTS OF TRANSYLVANIA', 'KOT', 'CLUJ-NAPOCA', 'CHEERLEADING']}
         />
 
@@ -579,12 +496,12 @@ export default async function Home() {
         <section className="kot-section kot-section--white" id="despre">
           <div className="kot-container">
             <SectionMark index="01">Despre noi</SectionMark>
-            <div className="kot-about__hero-row">
-              <div className="kot-about__intro" data-reveal>
-                <h2 className="kot-section__title">
-                  Etalonul țării<br />în <em>cheer sport</em>.
-                </h2>
+            <div className="kot-about__intro" data-reveal>
+              <h2 className="kot-section__title">
+                Etalonul țării<br />în <em>cheer sport</em>.
+              </h2>
 
+              <div className="kot-about__copy">
                 <p className="kot-about__lede">
                   Knights Of Transylvania este structura clujeană devenită etalonul
                   României în materie de cheer sport — peste 130 de sportivi între
@@ -599,31 +516,17 @@ export default async function Home() {
                   ICU Cheerleading Worlds 2025 din SUA.
                 </p>
               </div>
-
-              <div className="kot-about__milestones kot-about__milestones--top" data-reveal>
-                {aboutMilestonesTop.map((milestone) => (
-                  <MilestoneCard
-                    key={milestone.id}
-                    milestone={milestone}
-                    images={sitePhotos?.aboutMilestones}
-                  />
-                ))}
-              </div>
             </div>
 
-            <div className="kot-about__milestones kot-about__milestones--mid" data-reveal>
-              {aboutMilestonesMid.map((milestone) => (
-                <MilestoneCard
-                  key={milestone.id}
-                  milestone={milestone}
-                  images={sitePhotos?.aboutMilestones}
-                />
-              ))}
-            </div>
-
-            {aboutMilestoneFeatured && (
-              <div className="kot-about__milestones kot-about__milestones--bottom" data-reveal>
-                <MilestoneCard milestone={aboutMilestoneFeatured} images={sitePhotos?.aboutMilestones} />
+            {aboutTimeline.length > 0 && (
+              <div className="kot-about__timeline" data-reveal>
+                <div className="kot-about__timeline-head">
+                  <span className="kot-about__timeline-label">Momentele care ne-au construit</span>
+                  {aboutTimelineRange && (
+                    <span className="kot-about__timeline-range">{aboutTimelineRange}</span>
+                  )}
+                </div>
+                <AboutGallery milestones={aboutTimeline} />
               </div>
             )}
           </div>
@@ -632,14 +535,14 @@ export default async function Home() {
         {/* ── Groups ── */}
         <section className="kot-section kot-section--paper" id="grupe">
           <div className="kot-container">
-            <SectionMark index="02" tone="cyan">Grupele noastre</SectionMark>
-            <h2 className="kot-section__title" data-reveal>
+            <SectionMark index="02" tone="ember">Grupele noastre</SectionMark>
+            <h2 className="kot-section__title" data-reveal="wipe">
               7 grupe.<br />O singură <em>familie</em>.
             </h2>
             <p className="kot-section__sub" data-reveal>
               Apasă pe grupa potrivită pentru a vedea categoria, formatul și spațiul rezervat pentru fotografia ei.
             </p>
-            <div className={groupsStyles.groupsStack} data-reveal>
+            <div className={groupsStyles.groupsStack} data-reveal-group>
               {groups.map((g) => (
                 <GroupAccordionItem key={g.id} group={g} images={sitePhotos?.groups} />
               ))}
@@ -649,8 +552,9 @@ export default async function Home() {
 
         {/* ── Marquee 2 ── */}
         <MarqueeStrip
-          tone="cyan"
-          Icon={Trophy}
+          tone="ember"
+          icon="trophy"
+          direction={-1}
           items={['ICU WORLDS 2025', 'TEAM ROMANIA', '20+ TITLURI NAȚIONALE', 'CAMPIONAT NAȚIONAL TURDA 2026']}
         />
 
@@ -658,13 +562,13 @@ export default async function Home() {
         <section className="kot-section kot-section--ink" id="staff">
           <div className="kot-container">
             <SectionMark index="03" tone="white">Staff KOT</SectionMark>
-            <h2 className="kot-section__title kot-section__title--inv" data-reveal>
+            <h2 className="kot-section__title kot-section__title--inv" data-reveal="wipe">
               Echipa din spatele<br /><em>rezultatelor</em>.
             </h2>
             <p className="kot-section__sub kot-section__sub--inv" data-reveal>
               Această secțiune urmează să fie actualizată cu portrete și nume reale.
             </p>
-            <div className="kot-staff__grid" data-reveal>
+            <div className="kot-staff__grid" data-reveal-group>
               {staff.map((s) => (
                 <div key={s.slot} className="kot-staff-card">
                   <Photo
@@ -672,7 +576,11 @@ export default async function Home() {
                     ratio="4/5"
                     caption={`Foto: ${s.name}`}
                     image={sitePhotos?.staff?.[s.slot]}
-                  />
+                  >
+                    {!sitePhotos?.staff?.[s.slot]?.asset && (
+                      <SlotCode code={staffPhotoSlots[s.slot].code} />
+                    )}
+                  </Photo>
                   <div className="kot-staff-card__plate">
                     <div className="kot-staff-card__name">{s.name}</div>
                     <div className="kot-staff-card__role">{s.role}</div>
@@ -686,14 +594,14 @@ export default async function Home() {
         {/* ── Projects ── */}
         <section className="kot-section kot-section--ink" id="proiecte">
           <div className="kot-container">
-            <SectionMark index="04" tone="cyan">Proiecte</SectionMark>
-            <h2 className="kot-section__title kot-section__title--inv" data-reveal>
+            <SectionMark index="04" tone="ember">Proiecte</SectionMark>
+            <h2 className="kot-section__title kot-section__title--inv" data-reveal="wipe">
               Povestea din spatele<br />proiectelor <em>KOT</em>.
             </h2>
             <p className="kot-section__sub kot-section__sub--inv" data-reveal>
               Apasă pe fiecare proiect pentru a deschide povestea din spatele lui.
             </p>
-            <div className={projectsStyles.projectsStack} data-reveal>
+            <div className={projectsStyles.projectsStack} data-reveal-group>
               {homepageProjects.map((project) => (
                 <ProjectAccordionItem
                   key={project._key ?? project.slot}
@@ -724,7 +632,7 @@ export default async function Home() {
                   <strong>Suntem momentul tău WOOW.</strong>
                 </p>
               </div>
-              <div className="kot-sponsor__cards" data-reveal>
+              <div className="kot-sponsor__cards" data-reveal-group>
                 <article className="kot-sponsor-card">
                   <FileText size={28} />
                   <h3>Mapa de prezentare</h3>
@@ -747,7 +655,7 @@ export default async function Home() {
             </div>
             <div className="kot-sponsor__logos" data-reveal>
               <div className="kot-sponsor__logos-label">Sponsori și parteneri</div>
-              <div className="kot-sponsor__logos-strip">
+              <div className="kot-sponsor__logos-strip" data-reveal-group="fast">
                 {homepageSponsors.map((sponsor) => {
                   const logoUrl = sponsor.logo?.asset
                     ? urlForImage(sponsor.logo).width(800).height(320).fit('max').auto('format').url()
@@ -790,10 +698,10 @@ export default async function Home() {
         <section className="kot-section kot-section--white" id="contact">
           <div className="kot-container">
             <SectionMark index="07">Contact</SectionMark>
-            <h2 className="kot-section__title" data-reveal>
+            <h2 className="kot-section__title" data-reveal="wipe">
               Încearcă și tu.<br />Sau <em>scrie-ne</em>.
             </h2>
-            <div className="kot-contact__layout" data-reveal>
+            <div className="kot-contact__layout" data-reveal-group>
               {/* Form (client) */}
               <ContactForm />
 

@@ -58,6 +58,8 @@ export const sponsorType = defineType({
       name: 'logo',
       title: 'Logo',
       type: 'sponsorLogo',
+      description:
+        'Apare în banda „Sponsori și parteneri” din secțiunea Sponsorizare de pe homepage, pe fundal deschis. Recomandat: PNG sau SVG cu fundal transparent, orientare orizontală. Fără logo, în bandă apare doar numele scris.',
     }),
     defineField({
       name: 'displayOnHomepage',

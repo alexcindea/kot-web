@@ -73,6 +73,8 @@ export const postType = defineType({
       name: 'coverImage',
       title: 'Cover image',
       type: 'postImage',
+      description:
+        'Apare în trei locuri: cardul articolului din lista „Noutăți”, imaginea mare din capul articolului și previzualizarea la distribuire pe rețele sociale. Format recomandat: peisaj 16:9.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -92,6 +94,8 @@ export const postType = defineType({
       name: 'body',
       title: 'Body',
       type: 'array',
+      description:
+        'Textul articolului. Pozele adăugate aici apar în corpul articolului, pe toată lățimea coloanei de text, în ordinea în care le pui.',
       validation: (Rule) => Rule.required().min(1),
       of: [
         defineArrayMember({
