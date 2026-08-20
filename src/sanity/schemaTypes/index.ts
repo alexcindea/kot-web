@@ -5,6 +5,7 @@ import {
 } from '@/sanity/schemaTypes/homepageContent'
 import {
   aboutMilestonePhotosType,
+  aboutMilestoneType,
   eventPhotosType,
   groupPhotosType,
   projectPhotosType,
@@ -20,6 +21,7 @@ export const schemaTypes = [
   homepageEventType,
   homepageContentType,
   sitePhotoAssetType,
+  aboutMilestoneType,
   aboutMilestonePhotosType,
   groupPhotosType,
   staffPhotosType,

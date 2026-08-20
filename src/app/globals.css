@@ -832,61 +832,57 @@ a:hover { color: var(--kot-orange); }
 /* ============================================================
    About — chalk editorial
    ============================================================ */
-.kot-about__hero-row {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: clamp(32px, 4vw, 56px); align-items: start; margin-top: 8px;
+.kot-about__intro {
+  display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 4vw, 64px); align-items: start;
+  margin-top: 8px; margin-bottom: clamp(40px, 5vw, 72px);
 }
-.kot-about__intro { max-width: 74ch; }
-.kot-about__intro .kot-section__title { margin-bottom: 26px; }
+.kot-about__intro .kot-section__title { margin-bottom: 0; }
+.kot-about__copy { display: flex; flex-direction: column; }
 .kot-about__lede {
   font-size: 19px; line-height: 1.55; color: var(--ink); font-weight: 600;
   margin: 0 0 18px 0;
   border-left: 4px solid var(--kot-orange); padding-left: 18px;
 }
 .kot-about__body { font-size: 16px; line-height: 1.75; color: var(--ink-3); }
-.kot-about__milestones { display: grid; gap: 20px; align-items: start; }
-.kot-about__milestones--top,
-.kot-about__milestones--mid { grid-template-columns: 1fr 1fr; }
-.kot-about__milestones--mid { margin-top: 36px; }
-.kot-about__milestones--bottom { grid-template-columns: 1fr; margin-top: 20px; }
-.kot-milestone { min-width: 0; transition: transform var(--dur-slow) var(--ease-out); }
-.kot-about__milestones--top .kot-milestone:nth-child(odd),
-.kot-about__milestones--mid .kot-milestone:nth-child(even) { transform: rotate(-1.1deg); }
-.kot-about__milestones--top .kot-milestone:nth-child(even),
-.kot-about__milestones--mid .kot-milestone:nth-child(odd) { transform: rotate(0.9deg); }
-.kot-milestone:hover { transform: rotate(0deg) translateY(-4px); }
-.kot-milestone .kot-photo {
-  border: 2px solid var(--ink);
-  box-shadow: var(--shadow-hard);
+
+/* ============================================================
+   Empty photo slots — Sanity notation
+   ============================================================ */
+.kot-slot-code {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 4px;
+  align-self: center; margin: auto;
 }
-.kot-milestone--featured .kot-photo__inner { padding: 24px; }
-.kot-milestone__year {
-  font-family: var(--font-display); font-weight: 800; font-size: 48px;
-  line-height: 1; color: var(--chalk); letter-spacing: 0.02em;
-  text-shadow: 3px 3px 0 rgba(6, 8, 14, 0.45);
+.kot-slot-code__code {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(26px, 3.4vw, 44px); line-height: 1; letter-spacing: 0.05em;
+  color: transparent; -webkit-text-stroke: 2px rgba(255, 255, 255, 0.85);
 }
-.kot-milestone__label {
+.kot-slot-code__hint {
   font-family: var(--font-sans); font-stretch: var(--stretch-wide);
-  font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em;
-  color: var(--chalk); font-size: 12px; margin-top: 8px;
-  display: inline-flex; align-self: flex-start;
-  background: rgba(6, 8, 14, 0.55); padding: 5px 9px; border-radius: var(--radius-xs);
-  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  font-size: 9px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.16em; color: rgba(255, 255, 255, 0.7);
 }
-.kot-milestone--featured .kot-milestone__year { font-size: clamp(56px, 5.5vw, 76px); }
-@media (max-width: 1100px) {
-  .kot-about__hero-row { gap: 32px; }
-  .kot-about__milestones { gap: 16px; }
+
+/* Timeline rail above the accordion gallery */
+.kot-about__timeline-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  padding-bottom: 14px; margin-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+}
+.kot-about__timeline-label {
+  font-family: var(--font-sans); font-stretch: var(--stretch-wide);
+  font-size: 12px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: var(--tracking-label); color: var(--ink-2);
+}
+.kot-about__timeline-range {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 26px; line-height: 1; letter-spacing: 0.06em;
+  color: transparent; -webkit-text-stroke: 1.4px var(--kot-orange);
 }
 @media (max-width: 900px) {
-  .kot-about__hero-row { grid-template-columns: 1fr; gap: 28px; }
-  .kot-about__milestones--mid { margin-top: 20px; }
-}
-@media (max-width: 560px) {
-  .kot-about__milestones { gap: 14px; }
-  .kot-milestone__year { font-size: clamp(32px, 9vw, 42px); }
-  .kot-milestone__label { font-size: 10px; letter-spacing: 0.1em; }
-  .kot-milestone--featured .kot-milestone__year { font-size: clamp(40px, 11vw, 52px); }
+  .kot-about__intro { grid-template-columns: 1fr; gap: 24px; }
 }
 
 /* ============================================================
@@ -1014,6 +1010,13 @@ a:hover { color: var(--kot-orange); }
   font-family: var(--font-display); font-weight: 800;
   font-size: 30px; line-height: 0.95; letter-spacing: 0.02em;
   text-transform: uppercase;
+}
+.kot-event-card__slot {
+  margin-top: 8px; align-self: flex-start;
+  font-family: var(--font-sans); font-stretch: var(--stretch-wide);
+  font-size: 9px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.16em; color: rgba(255, 255, 255, 0.72);
+  background: rgba(6, 8, 14, 0.5); padding: 4px 8px; border-radius: var(--radius-xs);
 }
 .kot-events__empty { grid-column: 1 / -1; padding: 60px 20px; text-align: center; color: var(--ink-3); }
 

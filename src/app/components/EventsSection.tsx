@@ -1,6 +1,7 @@
 import Image from 'next/image'
 
 import { urlForImage } from '@/sanity/lib/image'
+import { eventPhotoSlots } from '@/sanity/photoSlots'
 import type { HomepageEvent, SitePhotosDocument } from '@/sanity/lib/types'
 
 const eventFallback: HomepageEvent[] = [
@@ -56,6 +57,7 @@ export default function EventsSection({ events, photos }: EventsSectionProps) {
                 {!e.photo?.asset && (
                   <div className="kot-photo__inner">
                     <span className="kot-event-card__placeholder">{e.title}</span>
+                    <span className="kot-event-card__slot">Slot {eventPhotoSlots[e.slot].code}</span>
                   </div>
                 )}
                 {e.photo?.caption && <div className="kot-photo__caption">{e.photo.caption}</div>}

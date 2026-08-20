@@ -117,7 +117,15 @@ export type HomepageContentDocument = {
   events?: HomepageEvent[]
 }
 
+export type AboutMilestoneEntry = {
+  _key?: string
+  year?: string
+  label?: string
+  photo?: SanityPhotoAsset
+}
+
 export type SitePhotosDocument = {
+  aboutTimeline?: AboutMilestoneEntry[]
   aboutMilestones?: {
     milestone2012?: SanityPhotoAsset
     milestone2016?: SanityPhotoAsset

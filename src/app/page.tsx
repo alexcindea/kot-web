@@ -7,7 +7,9 @@ import {
 } from 'lucide-react'
 import Nav from './components/Nav'
 import HeroRotate from './components/HeroRotate'
+import AboutGallery from './components/AboutGallery'
 import MarqueeStrip from './components/MarqueeStrip'
+import SlotCode from './components/SlotCode'
 import EventsSection from './components/EventsSection'
 import SiteFooter from './components/SiteFooter'
 import ContactMap from './components/ContactMap'
@@ -20,7 +22,14 @@ import projectsStyles from './projects-section.module.css'
 import { getAbsoluteUrl, organizationAddress, siteDescription, siteName, siteShortName } from './seo'
 import { urlForImage } from '@/sanity/lib/image'
 import { getHomepageContent, getSitePhotos, getSponsors } from '@/sanity/lib/queries'
-import type { HomepageProject, SanityPhotoAsset, SanitySponsor, SitePhotosDocument } from '@/sanity/lib/types'
+import { groupPhotoSlots, projectPhotoSlots, staffPhotoSlots } from '@/sanity/photoSlots'
+import type {
+  AboutMilestoneEntry,
+  HomepageProject,
+  SanityPhotoAsset,
+  SanitySponsor,
+  SitePhotosDocument,
+} from '@/sanity/lib/types'
 
 export const metadata: Metadata = {
   title: 'Cheerleading în Cluj-Napoca',
@@ -100,97 +109,33 @@ function SectionMark({ index, children, tone = 'orange' }: {
 
 /* ── Data ─────────────────────────────────────────────────── */
 
-type AboutMilestone = {
-  id: string
+/**
+ * Used only while `sitePhotos.aboutTimeline` is still empty, so the section
+ * keeps its five milestones — and the photos already uploaded to the old
+ * fixed slots — until the list is filled in from the Studio.
+ */
+const legacyAboutTimeline: Array<{
   year: string
   label: string
-  tone: 'cyan' | 'orange'
-  caption: string
-  ratio: string
-  slot?: keyof NonNullable<SitePhotosDocument['aboutMilestones']>
-  featured?: boolean
-}
-
-function MilestoneCard({
-  milestone,
-  images,
-}: {
-  milestone: AboutMilestone
-  images?: SitePhotosDocument['aboutMilestones']
-}) {
-  return (
-    <div className={`kot-milestone${milestone.featured ? ' kot-milestone--featured' : ''}`}>
-      <Photo
-        tone={milestone.tone}
-        ratio={milestone.ratio}
-        caption={milestone.caption}
-        image={milestone.slot ? images?.[milestone.slot] : undefined}
-      >
-        <div className="kot-milestone__year">{milestone.year}</div>
-        <div className="kot-milestone__label">{milestone.label}</div>
-      </Photo>
-    </div>
-  )
-}
-
-const milestones: AboutMilestone[] = [
-  {
-    id: 'origin-2014',
-    year: '2014',
-    label: 'Începutul',
-    tone: 'cyan',
-    caption: 'Foto: începuturile KOT',
-    ratio: '5/8',
-    slot: 'milestone2012',
-  },
-  {
-    id: 'first-medal-2015',
-    year: '2015',
-    label: 'Prima medalie',
-    tone: 'orange',
-    caption: 'Foto: prima medalie KOT',
-    ratio: '5/8',
-    slot: 'milestone2016',
-  },
-  {
-    id: 'varsity-2023',
-    year: '2023',
-    label: 'Începutul varsity',
-    tone: 'cyan',
-    caption: 'Foto: începutul grupei varsity',
-    ratio: '1/1',
-    slot: 'varsity2023',
-  },
-  {
-    id: 'sala-kot-2023',
-    year: '2023',
-    label: 'Sala KOT',
-    tone: 'orange',
-    caption: 'Foto: Sala KOT',
-    ratio: '1/1',
-    slot: 'salaKot2023',
-  },
-  {
-    id: 'worlds-2025',
-    year: '2025',
-    label: 'Campionatul mondial',
-    tone: 'cyan',
-    caption: 'Foto: Campionatul Mondial',
-    ratio: '21/9',
-    slot: 'milestone2024',
-    featured: true,
-  },
+  slot: keyof NonNullable<SitePhotosDocument['aboutMilestones']>
+}> = [
+  { year: '2014', label: 'Începutul', slot: 'milestone2012' },
+  { year: '2015', label: 'Prima medalie', slot: 'milestone2016' },
+  { year: '2023', label: 'Începutul varsity', slot: 'varsity2023' },
+  { year: '2023', label: 'Sala KOT', slot: 'salaKot2023' },
+  { year: '2025', label: 'Campionatul mondial', slot: 'milestone2024' },
 ]
 
-const aboutMilestonesTop = milestones.filter((milestone) =>
-  milestone.id === 'origin-2014' || milestone.id === 'first-medal-2015',
-)
+function resolveAboutTimeline(sitePhotos: SitePhotosDocument | null): AboutMilestoneEntry[] {
+  if (sitePhotos?.aboutTimeline?.length) return sitePhotos.aboutTimeline
 
-const aboutMilestonesMid = milestones.filter((milestone) =>
-  milestone.id === 'varsity-2023' || milestone.id === 'sala-kot-2023',
-)
-
-const aboutMilestoneFeatured = milestones.find((milestone) => milestone.featured)
+  return legacyAboutTimeline.map(({ year, label, slot }) => ({
+    _key: slot,
+    year,
+    label,
+    photo: sitePhotos?.aboutMilestones?.[slot],
+  }))
+}
 
 type TrainingGroup = {
   id: keyof NonNullable<SitePhotosDocument['groups']>
@@ -267,7 +212,9 @@ function GroupAccordionItem({
             </div>
           ) : (
             <div className={groupsStyles.groupAccordionPlaceholder}>
-              <span className={groupsStyles.groupAccordionPlaceholderLabel}>Foto grupă</span>
+              <span className={groupsStyles.groupAccordionPlaceholderLabel}>
+                Foto grupă · slot {groupPhotoSlots[group.id].code}
+              </span>
               <strong>Adăugăm fotografia aici după ce o alegem.</strong>
             </div>
           )}
@@ -459,7 +406,9 @@ function ProjectAccordionItem({
           >
             {!image?.asset && (
               <div className={projectsStyles.projectAccordionPlaceholder}>
-                <span className={projectsStyles.projectAccordionPlaceholderLabel}>Proiect</span>
+                <span className={projectsStyles.projectAccordionPlaceholderLabel}>
+                  Proiect · slot {projectPhotoSlots[project.slot].code}
+                </span>
                 <strong>{project.title}</strong>
               </div>
             )}
@@ -485,6 +434,12 @@ export default async function Home() {
   const homepageSponsors: SanitySponsor[] = sanitySponsors.length > 0
     ? sanitySponsors
     : sponsorFallbackNames.map((name) => ({ _id: name, name }))
+
+  const aboutTimeline = resolveAboutTimeline(sitePhotos)
+  const aboutYears = aboutTimeline.map((milestone) => milestone.year).filter(Boolean)
+  const aboutTimelineRange = aboutYears.length > 1
+    ? `${aboutYears[0]} — ${aboutYears[aboutYears.length - 1]}`
+    : aboutYears[0] ?? ''
 
   return (
     <>
@@ -567,12 +522,12 @@ export default async function Home() {
         <section className="kot-section kot-section--white" id="despre">
           <div className="kot-container">
             <SectionMark index="01">Despre noi</SectionMark>
-            <div className="kot-about__hero-row">
-              <div className="kot-about__intro" data-reveal>
-                <h2 className="kot-section__title">
-                  Etalonul țării<br />în <em>cheer sport</em>.
-                </h2>
+            <div className="kot-about__intro" data-reveal>
+              <h2 className="kot-section__title">
+                Etalonul țării<br />în <em>cheer sport</em>.
+              </h2>
 
+              <div className="kot-about__copy">
                 <p className="kot-about__lede">
                   Knights Of Transylvania este structura clujeană devenită etalonul
                   României în materie de cheer sport — peste 130 de sportivi între
@@ -587,33 +542,17 @@ export default async function Home() {
                   ICU Cheerleading Worlds 2025 din SUA.
                 </p>
               </div>
-
-              <div className="kot-about__milestones kot-about__milestones--top" data-reveal-group>
-                {aboutMilestonesTop.map((milestone) => (
-                  <MilestoneCard
-                    key={milestone.id}
-                    milestone={milestone}
-                    images={sitePhotos?.aboutMilestones}
-                  />
-                ))}
-              </div>
             </div>
 
-            <div className="kot-about__milestones kot-about__milestones--mid" data-reveal-group>
-              {aboutMilestonesMid.map((milestone) => (
-                <MilestoneCard
-                  key={milestone.id}
-                  milestone={milestone}
-                  images={sitePhotos?.aboutMilestones}
-                />
-              ))}
-            </div>
-
-            {aboutMilestoneFeatured && (
-              <div className="kot-about__milestones kot-about__milestones--bottom" data-reveal>
-                <MilestoneCard milestone={aboutMilestoneFeatured} images={sitePhotos?.aboutMilestones} />
+            <div className="kot-about__timeline" data-reveal>
+              <div className="kot-about__timeline-head">
+                <span className="kot-about__timeline-label">Momentele care ne-au construit</span>
+                {aboutTimelineRange && (
+                  <span className="kot-about__timeline-range">{aboutTimelineRange}</span>
+                )}
               </div>
-            )}
+              <AboutGallery milestones={aboutTimeline} />
+            </div>
           </div>
         </section>
 
@@ -661,7 +600,11 @@ export default async function Home() {
                     ratio="4/5"
                     caption={`Foto: ${s.name}`}
                     image={sitePhotos?.staff?.[s.slot]}
-                  />
+                  >
+                    {!sitePhotos?.staff?.[s.slot]?.asset && (
+                      <SlotCode code={staffPhotoSlots[s.slot].code} />
+                    )}
+                  </Photo>
                   <div className="kot-staff-card__plate">
                     <div className="kot-staff-card__name">{s.name}</div>
                     <div className="kot-staff-card__role">{s.role}</div>
