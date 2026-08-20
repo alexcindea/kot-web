@@ -2066,6 +2066,56 @@ a:hover {
   background: var(--white);
   box-shadow: var(--shadow-glow-flame);
 }
+
+/* Invalid fields carry the warning on the border as well as in the text,
+   so the state does not rely on colour alone. */
+.kot-field input[aria-invalid='true'],
+.kot-field textarea[aria-invalid='true'],
+.kot-field select[aria-invalid='true'] {
+  border-color: var(--danger);
+  background: #fdf4f3;
+}
+.kot-field input[aria-invalid='true']:focus,
+.kot-field textarea[aria-invalid='true']:focus,
+.kot-field select[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 4px rgba(210, 63, 63, 0.22);
+}
+.kot-field__count {
+  align-self: flex-end;
+  margin-top: -3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.kot-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: -1px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #a52f2f;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.kot-field__error::before {
+  content: '!';
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+  margin-top: 2px;
+  border-radius: 999px;
+  background: var(--danger);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 15px;
+  text-align: center;
+}
 .kot-contact__err {
   background: #fbe1e1;
   color: #8a2222;

@@ -1,5 +1,14 @@
 "use server";
 
+import {
+  ENQUIRY_VALUES,
+  hasErrors,
+  normalizeContact,
+  validateContact,
+  type ContactFieldErrors,
+  type EnquiryValue,
+} from "./contact-validation";
+
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -12,31 +21,46 @@ function escapeHtml(value: string) {
 export type ContactState = {
   status: "idle" | "success" | "error";
   message?: string;
+  fieldErrors?: ContactFieldErrors;
 };
+
+/** Shown when we can't deliver — points at the public phone, never a private inbox. */
+const FALLBACK_CONTACT =
+  "Ne poți suna la 0799 822 100 sau încerca din nou în câteva minute.";
 
 export async function submitContact(
   _prev: ContactState,
   formData: FormData,
 ): Promise<ContactState> {
-  const name = (formData.get("name") as string | null)?.trim();
-  const email = (formData.get("email") as string | null)?.trim();
-  const phone = (formData.get("phone") as string | null)?.trim();
-  const enquiry = (formData.get("enquiry") as string | null) ?? "General";
-  const message = (formData.get("message") as string | null)?.trim();
-  const website = (formData.get("website") as string | null)?.trim();
-
-  if (website) {
+  // Honeypot: a real person never sees this field, so anything in it is a bot.
+  // Answer as if it worked so the bot doesn't learn to try again.
+  if ((formData.get("website") as string | null)?.trim()) {
     return { status: "success" };
   }
 
-  if (!name || !email || !message) {
-    return { status: "error", message: "Please fill in all required fields." };
+  const values = normalizeContact({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    enquiry: formData.get("enquiry"),
+    message: formData.get("message"),
+  });
+
+  // Re-validated here on purpose: server actions accept direct POSTs, so the
+  // client-side pass is only ever a convenience.
+  const fieldErrors = validateContact(values);
+  if (hasErrors(fieldErrors)) {
+    return {
+      status: "error",
+      message: "Verifică te rog câmpurile marcate.",
+      fieldErrors,
+    };
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return { status: "error", message: "Please enter a valid email address." };
-  }
+  const { name, email, phone, message } = values;
+  const enquiry: EnquiryValue = ENQUIRY_VALUES.includes(values.enquiry as EnquiryValue)
+    ? (values.enquiry as EnquiryValue)
+    : "General";
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_EMAIL?.trim() || "alexcindea@gmail.com";
@@ -46,30 +70,17 @@ export async function submitContact(
 
   if (!apiKey) {
     if (process.env.NODE_ENV === "development") {
-      console.log("[contact form]", {
-        name,
-        email,
-        phone,
-        enquiry,
-        message,
-        to,
-        from,
-      });
+      console.log("[contact form]", { name, email, phone, enquiry, message, to, from });
       return { status: "success" };
     }
 
     return {
       status: "error",
-      message:
-        "Mailing is not configured yet. Please email us directly at team@knightsoftransylvania.com.",
+      message: `Formularul nu este configurat momentan. ${FALLBACK_CONTACT}`,
     };
   }
 
-  const safeName = escapeHtml(name);
-  const safeEmail = escapeHtml(email);
   const safePhone = phone ? escapeHtml(phone) : null;
-  const safeEnquiry = escapeHtml(enquiry);
-  const safeMessage = escapeHtml(message).replace(/\n/g, "<br />");
   const textBody = [
     `Name: ${name}`,
     `Email: ${email}`,
@@ -91,15 +102,17 @@ export async function submitContact(
         from,
         to: [to],
         reply_to: email,
+        // `enquiry` is whitelisted above and `name` is newline-free after
+        // normalisation, so neither can smuggle anything into the subject.
         subject: `[KOT] ${enquiry} enquiry from ${name}`,
         text: textBody,
         html: `
-          <p><strong>Name:</strong> ${safeName}</p>
-          <p><strong>Email:</strong> ${safeEmail}</p>
+          <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
           ${safePhone ? `<p><strong>Phone:</strong> ${safePhone}</p>` : ""}
-          <p><strong>Enquiry type:</strong> ${safeEnquiry}</p>
+          <p><strong>Enquiry type:</strong> ${escapeHtml(enquiry)}</p>
           <p><strong>Message:</strong></p>
-          <p>${safeMessage}</p>
+          <p>${escapeHtml(message).replace(/\n/g, "<br />")}</p>
         `,
       }),
     });
@@ -112,7 +125,7 @@ export async function submitContact(
   } catch {
     return {
       status: "error",
-      message: `Could not send your message right now. Please email us directly at ${to}.`,
+      message: `Nu am putut trimite mesajul acum. ${FALLBACK_CONTACT}`,
     };
   }
 }

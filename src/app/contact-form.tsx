@@ -1,13 +1,46 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useId, useState } from 'react'
 import { Send, CheckCircle2 } from 'lucide-react'
 import { submitContact, type ContactState } from './actions'
+import {
+  CONTACT_LIMITS,
+  hasErrors,
+  normalizeContact,
+  validateContact,
+  type ContactField,
+  type ContactFieldErrors,
+  type ContactValues,
+} from './contact-validation'
 
 const initial: ContactState = { status: 'idle' }
 
+/** Source order, so "jump to the first problem" matches what the eye expects. */
+const FIELD_ORDER: ContactField[] = ['name', 'email', 'phone', 'enquiry', 'message']
+
+const FORM_ATTR = 'data-kot-contact-form'
+
+const EMPTY: ContactValues = { name: '', email: '', phone: '', enquiry: 'General', message: '' }
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null
+  return (
+    <span className="kot-field__error" id={id}>
+      {message}
+    </span>
+  )
+}
+
 export default function ContactForm() {
-  const [state, action, pending] = useActionState(submitContact, initial)
+  const [state, formAction, pending] = useActionState(submitContact, initial)
+  // Controlled on purpose: React resets an uncontrolled form once its action
+  // runs, which would throw away everything typed whenever validation fails.
+  const [values, setValues] = useState<ContactValues>(EMPTY)
+  const [clientErrors, setClientErrors] = useState<ContactFieldErrors>({})
+  const fieldId = useId()
+
+  // Server errors are authoritative; client errors cover fields touched since.
+  const errors: ContactFieldErrors = { ...clientErrors, ...(state.fieldErrors ?? {}) }
 
   if (state.status === 'success') {
     return (
@@ -21,8 +54,56 @@ export default function ContactForm() {
     )
   }
 
+  const update = (field: ContactField) => (value: string) => {
+    setValues((prev) => ({ ...prev, [field]: value }))
+    // Clear a field's error as soon as the user starts fixing it; never add
+    // new errors mid-typing.
+    setClientErrors((prev) => {
+      if (!prev[field]) return prev
+      const next = { ...prev }
+      delete next[field]
+      return next
+    })
+  }
+
+  /** Re-checks one field on blur, leaving untouched fields alone. */
+  const revalidateField = (field: ContactField) => {
+    const fresh = validateContact(normalizeContact(values))
+    setClientErrors((prev) => {
+      const next = { ...prev }
+      if (fresh[field]) next[field] = fresh[field]
+      else delete next[field]
+      return next
+    })
+  }
+
+  /** Runs the shared rules before spending a round-trip on an invalid form. */
+  const action = (formData: FormData) => {
+    const found = validateContact(normalizeContact(values))
+    setClientErrors(found)
+
+    if (hasErrors(found)) {
+      // The inputs already exist, so focus needs no wait for the error to paint.
+      const first = FIELD_ORDER.find((field) => found[field])
+      if (first) {
+        document.querySelector<HTMLElement>(`[${FORM_ATTR}] [name="${first}"]`)?.focus()
+      }
+      return
+    }
+
+    formAction(formData)
+  }
+
+  const fieldProps = (field: ContactField) => ({
+    name: field,
+    value: values[field],
+    'aria-invalid': errors[field] ? (true as const) : undefined,
+    'aria-describedby': errors[field] ? `${fieldId}-${field}` : undefined,
+    onBlur: () => revalidateField(field),
+  })
+
   return (
-    <form action={action} noValidate className="kot-contact__form">
+    <form {...{ [FORM_ATTR]: '' }} action={action} noValidate className="kot-contact__form">
       <input
         name="website"
         type="text"
@@ -35,56 +116,69 @@ export default function ContactForm() {
       <label className="kot-field">
         <span>Nume *</span>
         <input
-          name="name"
+          {...fieldProps('name')}
           type="text"
-          required
           autoComplete="name"
+          maxLength={CONTACT_LIMITS.name.max}
           placeholder="Maria Popescu"
+          onChange={(e) => update('name')(e.target.value)}
         />
+        <FieldError id={`${fieldId}-name`} message={errors.name} />
       </label>
 
       <label className="kot-field">
         <span>Email *</span>
         <input
-          name="email"
+          {...fieldProps('email')}
           type="email"
-          required
           autoComplete="email"
+          maxLength={CONTACT_LIMITS.email.max}
           placeholder="maria@email.ro"
+          onChange={(e) => update('email')(e.target.value)}
         />
+        <FieldError id={`${fieldId}-email`} message={errors.email} />
       </label>
 
       <label className="kot-field">
         <span>Telefon</span>
         <input
-          name="phone"
+          {...fieldProps('phone')}
           type="tel"
           autoComplete="tel"
+          maxLength={CONTACT_LIMITS.phone.max}
           placeholder="07xx xxx xxx"
+          onChange={(e) => update('phone')(e.target.value)}
         />
+        <FieldError id={`${fieldId}-phone`} message={errors.phone} />
       </label>
 
       <label className="kot-field">
         <span>Subiect</span>
-        <select name="enquiry">
+        <select {...fieldProps('enquiry')} onChange={(e) => update('enquiry')(e.target.value)}>
           <option value="General">Întrebare generală</option>
           <option value="Tryouts">Înscriere / Tryouts</option>
           <option value="Events">Evenimente și apariții</option>
           <option value="Sponsorship">Sponsorizare</option>
         </select>
+        <FieldError id={`${fieldId}-enquiry`} message={errors.enquiry} />
       </label>
 
       <label className="kot-field">
         <span>Mesaj *</span>
         <textarea
-          name="message"
+          {...fieldProps('message')}
           rows={5}
-          required
+          maxLength={CONTACT_LIMITS.message.max}
           placeholder="Vreau să mă înscriu la grupa juniori..."
+          onChange={(e) => update('message')(e.target.value)}
         />
+        <span className="kot-field__count" aria-hidden="true">
+          {values.message.length} / {CONTACT_LIMITS.message.max}
+        </span>
+        <FieldError id={`${fieldId}-message`} message={errors.message} />
       </label>
 
-      {state.status === 'error' && (
+      {state.status === 'error' && state.message && (
         <div className="kot-contact__err" role="alert">{state.message}</div>
       )}
 
