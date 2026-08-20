@@ -201,6 +201,58 @@ a:hover { color: var(--kot-orange); }
 }
 .kot-js [data-reveal].is-in { opacity: 1; transform: none; }
 
+/* "wipe" variant — poster titles sweep in from the left.
+   Uses a sliding mask, not clip-path: an element's own clip-path zeroes
+   its IntersectionObserver geometry, so a clip-based wipe never triggers. */
+.kot-js [data-reveal="wipe"] {
+  transform: translateY(14px);
+  -webkit-mask-image: linear-gradient(100deg, #000 46%, transparent 54%);
+  mask-image: linear-gradient(100deg, #000 46%, transparent 54%);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 720ms var(--ease-out),
+    -webkit-mask-position 900ms var(--ease-out),
+    mask-position 900ms var(--ease-out);
+}
+.kot-js [data-reveal="wipe"].is-in {
+  -webkit-mask-position: 0% 0;
+  mask-position: 0% 0;
+}
+
+/* Group reveal — direct children stagger in; ScrollFx sets --ri per child.
+   The from-only keyframe settles into each child's own resting transform
+   (rotated poster cards keep their tilt, hover transitions stay untouched). */
+.kot-js [data-reveal-group]:not(.is-in) > * { opacity: 0; }
+.kot-js [data-reveal-group].is-in > * {
+  animation: kot-group-in 640ms var(--ease-out) backwards;
+  animation-delay: calc(var(--ri, 0) * 80ms);
+}
+.kot-js [data-reveal-group="fast"].is-in > * {
+  animation-duration: 480ms;
+  animation-delay: calc(var(--ri, 0) * 45ms);
+}
+.kot-js [data-reveal-group].is-in.is-instant > * { animation: none; }
+@keyframes kot-group-in {
+  from { opacity: 0; transform: translateY(26px); }
+}
+
+/* ============================================================
+   Scroll progress — voltage line across the very top
+   ============================================================ */
+.kot-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--kot-orange) 0%, var(--kot-cyan) 100%);
+  z-index: 60;
+  pointer-events: none;
+}
+
 /* ============================================================
    Layout
    ============================================================ */
@@ -252,6 +304,17 @@ a:hover { color: var(--kot-orange); }
   position: relative;
   overflow: hidden;
 }
+
+/* Smooth accordion open/close where supported (Chromium 131+);
+   elsewhere the toggle stays instant. */
+.kot-section details { interpolate-size: allow-keywords; }
+.kot-section details::details-content {
+  block-size: 0; overflow-y: clip;
+  transition:
+    block-size 420ms var(--ease-out),
+    content-visibility 420ms allow-discrete;
+}
+.kot-section details[open]::details-content { block-size: auto; }
 .kot-section > .kot-container { position: relative; z-index: 1; }
 
 .kot-section--white  { background: var(--chalk); color: var(--ink); --title-accent: var(--kot-orange); }
@@ -338,6 +401,19 @@ a:hover { color: var(--kot-orange); }
     background-color var(--dur-base) var(--ease-out),
     color var(--dur-base) var(--ease-out);
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+/* one-shot shine sweep on hover */
+.kot-btn::after {
+  content: ''; position: absolute; top: -30%; bottom: -30%; left: 0; width: 36%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: translateX(-160%) skewX(-14deg);
+  pointer-events: none;
+}
+.kot-btn:hover::after {
+  transform: translateX(340%) skewX(-14deg);
+  transition: transform 640ms var(--ease-out);
 }
 .kot-btn > * { transform: skewX(8deg); }
 .kot-btn > span { display: inline-block; }
@@ -412,7 +488,11 @@ a:hover { color: var(--kot-orange); }
   transition: opacity var(--dur-base) var(--ease-out);
 }
 .kot-photo:hover::after { opacity: 1; }
-.kot-photo__img { object-fit: cover; z-index: 0; filter: saturate(1.05) contrast(1.04); }
+.kot-photo__img {
+  object-fit: cover; z-index: 0; filter: saturate(1.05) contrast(1.04);
+  transition: transform 900ms var(--ease-out);
+}
+.kot-photo:hover .kot-photo__img { transform: scale(1.045); }
 .kot-photo__inner {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; justify-content: flex-end;
@@ -430,16 +510,8 @@ a:hover { color: var(--kot-orange); }
    ============================================================ */
 .kot-kinetic { display: inline-block; }
 .kot-kinetic__word { display: inline-block; white-space: nowrap; }
-.kot-kinetic__letter {
-  display: inline-block; opacity: 0; transform: translateY(0.75em) rotate(4deg);
-  animation: kot-kinetic-rise 680ms var(--ease-spring) forwards;
-}
+.kot-kinetic__letter { display: inline-block; will-change: transform; }
 .kot-kinetic__space { display: inline-block; }
-@keyframes kot-kinetic-rise {
-  0%   { opacity: 0; transform: translateY(0.75em) rotate(4deg); }
-  60%  { opacity: 1; }
-  100% { opacity: 1; transform: translateY(0) rotate(0); }
-}
 
 /* ============================================================
    Nav
@@ -447,9 +519,15 @@ a:hover { color: var(--kot-orange); }
 .kot-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: var(--z-nav);
   height: 74px; background: transparent; color: var(--chalk);
-  transition: background-color var(--dur-base) var(--ease-out), backdrop-filter var(--dur-base) var(--ease-out), border-bottom-color var(--dur-base) var(--ease-out);
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    backdrop-filter var(--dur-base) var(--ease-out),
+    border-bottom-color var(--dur-base) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
   border-bottom: 1px solid transparent;
 }
+/* ducks away scrolling down, glides back on the first scroll up */
+.kot-nav.is-hidden { transform: translateY(-101%); }
 .kot-nav.is-scrolled {
   background: rgba(6, 8, 14, 0.86);
   -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
@@ -520,13 +598,9 @@ a:hover { color: var(--kot-orange); }
   border-bottom: 2px solid var(--kot-orange);
   padding: 18px var(--container-pad-x) 24px;
   display: flex; flex-direction: column; gap: 2px;
-  animation: kot-fade-down 280ms var(--ease-out) backwards;
-}
-@keyframes kot-fade-down {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: none; }
 }
 .kot-nav__mobile a {
+  display: block;
   text-decoration: none;
   font-family: var(--font-display); font-weight: 800; font-size: 28px;
   text-transform: uppercase; letter-spacing: 0.03em; color: var(--chalk);
@@ -631,6 +705,15 @@ a:hover { color: var(--kot-orange); }
   color: transparent;
   -webkit-text-stroke: 2px var(--kot-cyan-hot);
   text-shadow: none;
+  animation: kot-voltage 7.2s linear infinite;
+}
+/* floodlight buzz — a brief double-dip once per cycle */
+@keyframes kot-voltage {
+  0%, 86.9% { opacity: 1; }
+  87.4% { opacity: 0.35; }
+  87.9% { opacity: 1; }
+  88.7% { opacity: 0.5; }
+  89.5%, 100% { opacity: 1; }
 }
 .kot-hero__title-sub {
   font-family: var(--font-display); font-weight: 700;
@@ -725,6 +808,11 @@ a:hover { color: var(--kot-orange); }
   width: max-content;
 }
 .kot-marquee:hover .kot-marquee__track { animation-play-state: paused; }
+/* Once JS lands, Motion drives the tapes with scroll velocity — the CSS
+   keyframes above stay as the no-JS fallback. */
+.kot-js .kot-marquee__track,
+.kot-js .kot-footer__giant-track { animation: none; }
+.kot-vmq__copy { display: inline-flex; align-items: center; flex-shrink: 0; }
 .kot-marquee__item {
   display: inline-flex; align-items: center; gap: 20px;
   font-family: var(--font-display); font-weight: 800;

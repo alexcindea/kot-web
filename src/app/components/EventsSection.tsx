@@ -33,14 +33,14 @@ export default function EventsSection({ events, photos }: EventsSectionProps) {
           <span className="kot-mark__rule" aria-hidden="true" />
           <span className="kot-mark__label">Evenimente</span>
         </div>
-        <h2 className="kot-section__title" data-reveal>
+        <h2 className="kot-section__title" data-reveal="wipe">
           Evenimente în care<br />ne vezi <em>live</em>.
         </h2>
         <p className="kot-section__sub" data-reveal>
           Aici apar doar fotografia și titlul fiecărui eveniment.
         </p>
 
-        <div className="kot-events__grid" data-reveal>
+        <div className="kot-events__grid" data-reveal-group>
           {eventsWithPhotos.map((e) => (
             <article key={e.slot} className="kot-event-card">
               <div className={`kot-photo kot-photo--${e.tone}`} style={{ aspectRatio: '3/2', borderRadius: 0 }}>

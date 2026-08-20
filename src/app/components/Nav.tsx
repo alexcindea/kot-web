@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
+import { AnimatePresence, m } from 'motion/react'
+import type { Variants } from 'motion/react'
 
 const links = [
   { href: '/#despre', label: 'Despre noi' },
@@ -15,19 +17,45 @@ const links = [
   { href: '/#contact', label: 'Contact' },
 ]
 
+const menuVariants: Variants = {
+  hidden: { opacity: 0, y: -10 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1], staggerChildren: 0.045, delayChildren: 0.04 },
+  },
+  exit: { opacity: 0, y: -8, transition: { duration: 0.16, ease: 'easeIn' } },
+}
+
+const menuItemVariants: Variants = {
+  hidden: { opacity: 0, x: -14 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+  exit: { opacity: 0, transition: { duration: 0.1 } },
+}
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
+    let lastY = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 40)
+      // Duck out of the way going down, glide back the moment you scroll up.
+      setHidden(y > 320 && y > lastY)
+      lastY = y
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   return (
-    <header className={`kot-nav${scrolled ? ' is-scrolled' : ''}`}>
+    <header
+      className={`kot-nav${scrolled ? ' is-scrolled' : ''}${hidden && !mobileOpen ? ' is-hidden' : ''}`}
+    >
       <div className="kot-nav__inner">
         <Link href="/#top" className="kot-nav__logo">
           <Image
@@ -65,15 +93,25 @@ export default function Nav() {
         </button>
       </div>
 
-      {mobileOpen && (
-        <div className="kot-nav__mobile">
-          {links.map((l) => (
-            <Link key={l.href} href={l.href} onClick={() => setMobileOpen(false)}>
-              {l.label}
-            </Link>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileOpen && (
+          <m.div
+            className="kot-nav__mobile"
+            variants={menuVariants}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+          >
+            {links.map((l) => (
+              <m.div key={l.href} variants={menuItemVariants}>
+                <Link href={l.href} onClick={() => setMobileOpen(false)}>
+                  {l.label}
+                </Link>
+              </m.div>
+            ))}
+          </m.div>
+        )}
+      </AnimatePresence>
     </header>
   )
 }

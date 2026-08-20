@@ -6,18 +6,34 @@ import { usePathname } from 'next/navigation'
 /**
  * Progressive scroll reveals: without JS every element stays visible —
  * the `kot-js` class is what arms the hidden initial state in CSS.
+ *
+ * `[data-reveal]` reveals a single element; `[data-reveal-group]` reveals
+ * its direct children with a stagger (each child gets a `--ri` index that
+ * CSS turns into an animation delay).
  */
 export default function ScrollFx() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const targets = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-in)'))
+    const singles = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-in)'))
+    const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal-group]:not(.is-in)'))
+
+    for (const group of groups) {
+      Array.from(group.children).forEach((child, i) => {
+        ;(child as HTMLElement).style.setProperty('--ri', String(i))
+      })
+    }
 
     // Anything already on screen is marked revealed in the same frame the
     // hidden state is armed, so above-the-fold content never blinks.
+    // Groups also get `is-instant` so their stagger animation is skipped.
     const viewportLimit = window.innerHeight * 0.95
+    const targets = [...singles, ...groups]
     for (const el of targets) {
-      if (el.getBoundingClientRect().top < viewportLimit) el.classList.add('is-in')
+      if (el.getBoundingClientRect().top < viewportLimit) {
+        el.classList.add('is-in')
+        if (el.hasAttribute('data-reveal-group')) el.classList.add('is-instant')
+      }
     }
     document.documentElement.classList.add('kot-js')
 
