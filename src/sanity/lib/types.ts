@@ -79,7 +79,7 @@ export type SanitySponsor = {
   logo?: SanityImageAsset
 }
 
-export type HomepageTone = 'cyan' | 'orange'
+export type HomepageTone = 'flame' | 'ember'
 
 export type HomepageProjectSlot =
   | 'mondialTeamRo'

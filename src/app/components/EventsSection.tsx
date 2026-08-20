@@ -5,12 +5,12 @@ import { eventPhotoSlots } from '@/sanity/photoSlots'
 import type { HomepageEvent, SitePhotosDocument } from '@/sanity/lib/types'
 
 const eventFallback: HomepageEvent[] = [
-  { title: 'UNTOLD', tone: 'cyan' as const, slot: 'untold' as const },
-  { title: 'Zilele Clujului', tone: 'orange' as const, slot: 'zileleClujului' as const },
-  { title: 'Sports Festival', tone: 'cyan' as const, slot: 'sportsFestival' as const },
-  { title: 'Meciuri UBT', tone: 'orange' as const, slot: 'meciuriUbt' as const },
-  { title: 'Wonder Family Fest', tone: 'cyan' as const, slot: 'wonderFamilyFest' as const },
-  { title: 'Season Opening Show', tone: 'orange' as const, slot: 'seasonOpeningShow' as const },
+  { title: 'UNTOLD', tone: 'flame' as const, slot: 'untold' as const },
+  { title: 'Zilele Clujului', tone: 'ember' as const, slot: 'zileleClujului' as const },
+  { title: 'Sports Festival', tone: 'flame' as const, slot: 'sportsFestival' as const },
+  { title: 'Meciuri UBT', tone: 'ember' as const, slot: 'meciuriUbt' as const },
+  { title: 'Wonder Family Fest', tone: 'flame' as const, slot: 'wonderFamilyFest' as const },
+  { title: 'Season Opening Show', tone: 'ember' as const, slot: 'seasonOpeningShow' as const },
 ]
 
 type EventsSectionProps = {
@@ -30,7 +30,7 @@ export default function EventsSection({ events, photos }: EventsSectionProps) {
     <section className="kot-section kot-section--white" id="evenimente">
       <div className="kot-container">
         <div className="kot-mark" data-reveal>
-          <span className="kot-mark__num kot-mark__num--orange" aria-hidden="true">05</span>
+          <span className="kot-mark__num kot-mark__num--flame" aria-hidden="true">05</span>
           <span className="kot-mark__rule" aria-hidden="true" />
           <span className="kot-mark__label">Evenimente</span>
         </div>

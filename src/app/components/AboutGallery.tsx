@@ -70,7 +70,7 @@ export default function AboutGallery({ milestones }: AboutGalleryProps) {
       <ul className={styles.track}>
         {milestones.map((milestone, index) => {
           const isActive = index === active
-          const tone = index % 2 === 0 ? 'cyan' : 'orange'
+          const tone = index % 2 === 0 ? 'flame' : 'ember'
           const code = aboutSlotCode(index)
           const imageUrl = milestone.photo?.asset
             ? urlForImage(milestone.photo).width(900).height(1200).fit('crop').auto('format').url()

@@ -62,11 +62,11 @@ const photoDimensionsByRatio: Record<string, { width: number; height: number }> 
 /* ── Shared primitives ────────────────────────────────────── */
 
 function Photo({
-  caption, ratio = '16/9', tone = 'cyan', image, children,
+  caption, ratio = '16/9', tone = 'flame', image, children,
 }: {
   caption?: string
   ratio?: string
-  tone?: 'cyan' | 'orange' | 'ink'
+  tone?: 'flame' | 'ember' | 'ink'
   image?: SanityPhotoAsset
   children?: React.ReactNode
 }) {
@@ -93,10 +93,10 @@ function Photo({
   )
 }
 
-function SectionMark({ index, children, tone = 'orange' }: {
+function SectionMark({ index, children, tone = 'flame' }: {
   index: string
   children: React.ReactNode
-  tone?: 'orange' | 'cyan' | 'white'
+  tone?: 'flame' | 'ember' | 'white'
 }) {
   return (
     <div className="kot-mark" data-reveal>
@@ -118,7 +118,7 @@ type TrainingGroup = {
   format: string
   description: string
   note?: string
-  tone: 'cyan' | 'orange'
+  tone: 'flame' | 'ember'
 }
 
 function GroupAccordionItem({
@@ -132,7 +132,7 @@ function GroupAccordionItem({
   const imageUrl = image?.asset
     ? urlForImage(image).width(1200).height(900).fit('crop').auto('format').url()
     : null
-  const toneClass = group.tone === 'cyan' ? groupsStyles.groupAccordionCyan : groupsStyles.groupAccordionOrange
+  const toneClass = group.tone === 'flame' ? groupsStyles.groupAccordionFlame : groupsStyles.groupAccordionEmber
   const noteText = group.note ? (/[.!?]$/.test(group.note) ? group.note : `${group.note}.`) : null
 
   return (
@@ -205,7 +205,7 @@ const groups: TrainingGroup[] = [
     age: '5–7 ani',
     format: 'Start',
     description: 'Grupa în care cei mici descoperă bazele cheerleadingului prin joc, ritm și încredere.',
-    tone: 'cyan',
+    tone: 'flame',
   },
   {
     id: 'u13Mixt',
@@ -213,7 +213,7 @@ const groups: TrainingGroup[] = [
     age: 'Sub 13 ani',
     format: 'Mixt',
     description: 'Pentru sportivii U13 care lucrează tehnica de bază, coordonarea și lucrul în echipă.',
-    tone: 'orange',
+    tone: 'ember',
   },
   {
     id: 'u13FeteHu',
@@ -222,7 +222,7 @@ const groups: TrainingGroup[] = [
     format: 'Fete',
     description: 'Grupă dedicată fetelor U13, într-un ritm potrivit de învățare și progres.',
     note: 'Predare în limba maghiară',
-    tone: 'cyan',
+    tone: 'flame',
   },
   {
     id: 'primaryLevel1',
@@ -230,7 +230,7 @@ const groups: TrainingGroup[] = [
     age: '8–13 ani',
     format: 'Level 1',
     description: 'Pentru sportivii 8–13 ani care construiesc fundația tehnică și încep să lucreze în formulă de echipă.',
-    tone: 'orange',
+    tone: 'ember',
   },
   {
     id: 'primaryLevel2',
@@ -238,7 +238,7 @@ const groups: TrainingGroup[] = [
     age: '8–13 ani',
     format: 'Level 2',
     description: 'Grupă de progres pentru sportivii care sunt gata să treacă la cerințe și combinații mai avansate.',
-    tone: 'cyan',
+    tone: 'flame',
   },
   {
     id: 'u19',
@@ -246,7 +246,7 @@ const groups: TrainingGroup[] = [
     age: 'Sub 19 ani',
     format: 'Competițional',
     description: 'Categorie pentru sportivii care își dezvoltă constanța, expresivitatea și lucrul de echipă la nivel U19.',
-    tone: 'orange',
+    tone: 'ember',
   },
   {
     id: 'seniori',
@@ -254,50 +254,50 @@ const groups: TrainingGroup[] = [
     age: '16+ ani',
     format: 'Competițional',
     description: 'Grupa seniorilor reunește sportivii 16+ care lucrează rutine complete, energie de concurs și identitate de echipă.',
-    tone: 'cyan',
+    tone: 'flame',
   },
 ]
 
 const staff = [
-  { name: 'Antrenor 1', role: 'Head Coach · Seniori', tone: 'cyan'   as const, slot: 'coach1' as const },
-  { name: 'Antrenor 2', role: 'Coach · Juniori',      tone: 'orange' as const, slot: 'coach2' as const },
-  { name: 'Antrenor 3', role: 'Coach · Mini',         tone: 'cyan'   as const, slot: 'coach3' as const },
-  { name: 'Antrenor 4', role: 'Coregraf',             tone: 'orange' as const, slot: 'coach4' as const },
+  { name: 'Antrenor 1', role: 'Head Coach · Seniori', tone: 'flame'  as const, slot: 'coach1' as const },
+  { name: 'Antrenor 2', role: 'Coach · Juniori',      tone: 'ember'  as const, slot: 'coach2' as const },
+  { name: 'Antrenor 3', role: 'Coach · Mini',         tone: 'flame'  as const, slot: 'coach3' as const },
+  { name: 'Antrenor 4', role: 'Coregraf',             tone: 'ember'  as const, slot: 'coach4' as const },
 ]
 
 const projectFallback: HomepageProject[] = [
   {
     title: 'Mondial / Team RO',
     label: 'Mondial',
-    tone: 'cyan',
+    tone: 'flame',
     slot: 'mondialTeamRo',
     story: 'Drumul spre Team Romania a adunat antrenamente, selecții și responsabilitatea de a reprezenta mai mult decât o echipă: o direcție întreagă de creștere pentru cheer sportul românesc.',
   },
   {
     title: 'Erasmus',
     label: 'Dezvoltare',
-    tone: 'orange',
+    tone: 'ember',
     slot: 'erasmus',
     story: 'Proiectul aduce schimb de experiență, idei noi și contexte internaționale care se întorc apoi în sala KOT prin metode, ritm și încredere.',
   },
   {
     title: 'Tabăra Națională',
     label: 'Comunitate',
-    tone: 'cyan',
+    tone: 'flame',
     slot: 'tabaraNationala',
     story: 'Aici se leagă mai repede grupurile, se lucrează concentrat și se creează acel timp comun în care progresul tehnic merge mână în mână cu energia de echipă.',
   },
   {
     title: 'Frumusețe fără filtru',
     label: 'Identitate',
-    tone: 'orange',
+    tone: 'ember',
     slot: 'frumuseteFaraFiltru',
     story: 'Este un proiect construit în jurul autenticității, expresiei și felului în care sportul poate da curaj, prezență și voce.',
   },
   {
     title: 'Nicio zi fără spor(t)',
     label: 'Mișcare',
-    tone: 'cyan',
+    tone: 'flame',
     slot: 'nicioZiFaraSport',
     story: 'Inițiativa pune accent pe consecvență, obiceiuri sănătoase și ideea că sportul se construiește zi de zi, nu doar la evenimente mari.',
   },
@@ -356,7 +356,7 @@ function ProjectAccordionItem({
   images?: SitePhotosDocument['projects']
 }) {
   const image = images?.[project.slot]
-  const toneClass = project.tone === 'cyan' ? projectsStyles.projectAccordion : `${projectsStyles.projectAccordion} ${projectsStyles.projectAccordionOrange}`
+  const toneClass = project.tone === 'ember' ? projectsStyles.projectAccordion : `${projectsStyles.projectAccordion} ${projectsStyles.projectAccordionFlame}`
 
   return (
     <details className={toneClass}>
@@ -427,7 +427,7 @@ export default async function Home() {
         {/* ── Hero ── */}
         <section className="kot-hero" id="top">
           <div className="kot-hero__bg" aria-hidden="true">
-            <div className="kot-hero__beam kot-hero__beam--cyan" />
+            <div className="kot-hero__beam kot-hero__beam--warm" />
             <div className="kot-hero__beam kot-hero__beam--orange" />
             <div className="kot-hero__halftone" />
             <Parallax className="kot-hero__watermark" from={-30} to={110}>KOT</Parallax>
@@ -488,7 +488,7 @@ export default async function Home() {
 
         {/* ── Marquee 1 ── */}
         <MarqueeStrip
-          tone="orange"
+          tone="flame"
           items={['MOMENTUL TĂU WOOW', 'KNIGHTS OF TRANSYLVANIA', 'KOT', 'CLUJ-NAPOCA', 'CHEERLEADING']}
         />
 
@@ -535,7 +535,7 @@ export default async function Home() {
         {/* ── Groups ── */}
         <section className="kot-section kot-section--paper" id="grupe">
           <div className="kot-container">
-            <SectionMark index="02" tone="cyan">Grupele noastre</SectionMark>
+            <SectionMark index="02" tone="ember">Grupele noastre</SectionMark>
             <h2 className="kot-section__title" data-reveal="wipe">
               7 grupe.<br />O singură <em>familie</em>.
             </h2>
@@ -552,7 +552,7 @@ export default async function Home() {
 
         {/* ── Marquee 2 ── */}
         <MarqueeStrip
-          tone="cyan"
+          tone="ember"
           icon="trophy"
           direction={-1}
           items={['ICU WORLDS 2025', 'TEAM ROMANIA', '20+ TITLURI NAȚIONALE', 'CAMPIONAT NAȚIONAL TURDA 2026']}
@@ -594,7 +594,7 @@ export default async function Home() {
         {/* ── Projects ── */}
         <section className="kot-section kot-section--ink" id="proiecte">
           <div className="kot-container">
-            <SectionMark index="04" tone="cyan">Proiecte</SectionMark>
+            <SectionMark index="04" tone="ember">Proiecte</SectionMark>
             <h2 className="kot-section__title kot-section__title--inv" data-reveal="wipe">
               Povestea din spatele<br />proiectelor <em>KOT</em>.
             </h2>

@@ -39,7 +39,7 @@ export default async function NewsIndexPage() {
         <section className="kot-page-hero kot-page-hero--ink">
           <div className="kot-container">
             <div className="kot-eyebrow-row">
-              <span className="kot-eyebrow-dot dot-cyan" />
+              <span className="kot-eyebrow-dot dot-flame" />
               <span className="kot-eyebrow-text kot-page-hero__eyebrow">Noutăți KOT</span>
             </div>
             <h1 className="kot-page-hero__title">Rezultate, povești și proiecte noi.</h1>
@@ -58,7 +58,7 @@ export default async function NewsIndexPage() {
             {posts.length > 0 ? (
               <div className="kot-projects__grid">
                 {posts.map((post, index) => (
-                  <PostCard key={post._id} post={post} tone={index % 2 === 0 ? 'cyan' : 'orange'} />
+                  <PostCard key={post._id} post={post} tone={index % 2 === 0 ? 'flame' : 'ember'} />
                 ))}
               </div>
             ) : (

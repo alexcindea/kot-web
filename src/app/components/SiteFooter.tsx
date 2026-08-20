@@ -88,7 +88,7 @@ export default function SiteFooter() {
         </div>
         <div className="kot-footer__bottom">
           <span>© 2026 Knights Of Transylvania · Cluj-Napoca</span>
-          <span>Hai KOT! KOT orange and cyan, no excuses.</span>
+          <span>Hai KOT! Portocaliu din cap până-n picioare.</span>
         </div>
       </div>
     </footer>

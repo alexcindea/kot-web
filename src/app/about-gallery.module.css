@@ -19,15 +19,17 @@
 }
 
 .panel {
-  --kot-ag-accent: var(--kot-cyan);
-  --kot-ag-base: linear-gradient(150deg, #1bafe2 0%, #0a7da6 55%, #06222e 100%);
+  /* Flame is the default tone; ember alternates with it below. Value, not
+     hue, separates the panels now that the palette is a single colour. */
+  --kot-ag-accent: var(--kot-orange);
+  --kot-ag-base: linear-gradient(150deg, #f79335 0%, #b75f12 55%, #2b1404 100%);
   position: relative;
   flex: 1 1 0;
   min-width: 0;
   background: var(--kot-ag-base);
   border: 2px solid var(--ink);
   border-radius: var(--radius-md);
-  box-shadow: 5px 5px 0 rgba(14, 17, 24, 0.16);
+  box-shadow: 5px 5px 0 rgba(20, 17, 15, 0.16);
   overflow: hidden;
   isolation: isolate;
   transform-origin: center center;
@@ -37,9 +39,9 @@
     box-shadow var(--dur-slow) var(--ease-out);
 }
 
-.panel[data-tone='orange'] {
-  --kot-ag-accent: var(--kot-orange);
-  --kot-ag-base: linear-gradient(150deg, #f79335 0%, #b75f12 55%, #2b1404 100%);
+.panel[data-tone='ember'] {
+  --kot-ag-accent: var(--kot-amber);
+  --kot-ag-base: linear-gradient(150deg, #4a3b2c 0%, #2a2119 55%, #12100e 100%);
 }
 
 .panel[data-state='before'] { transform: rotateY(var(--kot-ag-tilt)); }
@@ -157,15 +159,15 @@
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, transparent 40%, rgba(6, 8, 14, 0.86) 100%),
-    rgba(6, 8, 14, 0.42);
+    linear-gradient(180deg, transparent 40%, rgba(18, 16, 14, 0.86) 100%),
+    rgba(18, 16, 14, 0.42);
   transition: background var(--dur-slow) var(--ease-out);
 }
 
 .panel[data-state='active'] .scrim {
   background:
-    linear-gradient(180deg, transparent 38%, rgba(6, 8, 14, 0.82) 100%),
-    rgba(6, 8, 14, 0);
+    linear-gradient(180deg, transparent 38%, rgba(18, 16, 14, 0.82) 100%),
+    rgba(18, 16, 14, 0);
 }
 
 /* trading-card corner ticks, matching .kot-photo elsewhere on the page */
@@ -228,14 +230,14 @@
   line-height: 0.9;
   letter-spacing: 0.02em;
   color: var(--chalk);
-  text-shadow: 3px 3px 0 rgba(6, 8, 14, 0.55);
+  text-shadow: 3px 3px 0 rgba(18, 16, 14, 0.55);
   white-space: nowrap;
 }
 
 .label {
   align-self: flex-start;
   padding: 5px 10px;
-  background: rgba(6, 8, 14, 0.62);
+  background: rgba(18, 16, 14, 0.62);
   border-radius: var(--radius-xs);
   font-family: var(--font-sans);
   font-stretch: var(--stretch-wide);
@@ -265,7 +267,7 @@
   line-height: 1;
   letter-spacing: 0.1em;
   color: var(--chalk);
-  text-shadow: 2px 2px 0 rgba(6, 8, 14, 0.6);
+  text-shadow: 2px 2px 0 rgba(18, 16, 14, 0.6);
   opacity: 0.85;
   transition: opacity var(--dur-base) var(--ease-out);
   pointer-events: none;

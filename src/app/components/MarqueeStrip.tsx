@@ -10,13 +10,13 @@ const icons = {
 
 type MarqueeStripProps = {
   items: string[]
-  tone?: 'orange' | 'cyan' | 'ink'
+  tone?: 'flame' | 'ember' | 'ink'
   icon?: keyof typeof icons
   /** 1 drifts left, -1 drifts right. */
   direction?: 1 | -1
 }
 
-export default function MarqueeStrip({ items, tone = 'orange', icon = 'star', direction = 1 }: MarqueeStripProps) {
+export default function MarqueeStrip({ items, tone = 'flame', icon = 'star', direction = 1 }: MarqueeStripProps) {
   const Icon = icons[icon]
 
   return (
