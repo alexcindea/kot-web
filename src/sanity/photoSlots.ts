@@ -168,8 +168,3 @@ export const eventPhotoSlots = {
  * the run. Ordering in Sanity is the ordering on the page, left to right.
  */
 export const aboutSlotCode = (index: number) => `A${index + 1}`
-
-export type GroupPhotoSlotKey = keyof typeof groupPhotoSlots
-export type StaffPhotoSlotKey = keyof typeof staffPhotoSlots
-export type ProjectPhotoSlotKey = keyof typeof projectPhotoSlots
-export type EventPhotoSlotKey = keyof typeof eventPhotoSlots

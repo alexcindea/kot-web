@@ -42,7 +42,7 @@ export const sitePhotoAssetType = defineType({
       name: 'caption',
       title: 'Legendă',
       type: 'string',
-      description: 'Text opțional afișat peste cardul cu imagine.',
+      description: 'Text opțional, afișat mic în colțul din dreapta-jos al pozei pe site.',
     }),
   ],
 })
@@ -71,7 +71,7 @@ export const aboutMilestoneType = defineType({
       name: 'photo',
       title: 'Poză',
       type: 'sitePhotoAsset',
-      description: 'Format recomandat: portret 4:5. Fără poză, panoul rămâne colorat cu anul peste el.',
+      description: 'Apare în panoul acestui moment din galeria „Despre noi”. Format recomandat: portret 4:5. Cât timp e goală, pe site apare eticheta poziției („A1”, „A2”, …) în locul pozei.',
     }),
   ],
   preview: {
@@ -86,29 +86,6 @@ export const aboutMilestoneType = defineType({
       media: media ?? StarIcon,
     }),
   },
-})
-
-/**
- * Superseded by the `aboutTimeline` list. Kept readable (and readOnly) so the
- * two photos already uploaded here are not lost — the site still falls back to
- * them while the list is empty. Remove once the list is populated.
- */
-export const aboutMilestonePhotosType = defineType({
-  name: 'aboutMilestonePhotos',
-  title: 'Despre noi · sloturi vechi',
-  type: 'object',
-  options: {
-    collapsible: true,
-    collapsed: true,
-  },
-  fields: [
-    defineField({ name: 'milestone2012', title: '2014 · Începutul', type: 'sitePhotoAsset' }),
-    defineField({ name: 'milestone2016', title: '2015 · Prima medalie', type: 'sitePhotoAsset' }),
-    defineField({ name: 'varsity2023', title: '2023 · Începutul varsity', type: 'sitePhotoAsset' }),
-    defineField({ name: 'salaKot2023', title: '2023 · Sala KOT', type: 'sitePhotoAsset' }),
-    defineField({ name: 'milestone2024', title: '2025 · Campionatul mondial', type: 'sitePhotoAsset' }),
-    defineField({ name: 'milestone2019', title: 'Slot vechi (nefolosit)', type: 'sitePhotoAsset' }),
-  ],
 })
 
 export const groupPhotosType = defineType({
@@ -171,18 +148,8 @@ export const sitePhotosType = defineType({
       type: 'array',
       icon: ImageIcon,
       description:
-        'Galeria acordeon din secțiunea „Despre noi”. Ordinea de aici este ordinea de pe site, de la stânga la dreapta — trage de momente ca să le rearanjezi. Poți adăuga oricâte momente vrei; panourile se împart automat.',
+        'Galeria acordeon din secțiunea „Despre noi”. Ordinea de aici este ordinea de pe site, de la stânga la dreapta: primul moment din listă este panoul A1, al doilea A2 și așa mai departe — trage de ele ca să le rearanjezi. Poți adăuga oricâte momente vrei; panourile se împart automat.',
       of: [defineArrayMember({ type: 'aboutMilestone' })],
-    }),
-    defineField({
-      name: 'aboutMilestones',
-      title: 'Despre noi · sloturi vechi',
-      type: 'aboutMilestonePhotos',
-      deprecated: {
-        reason: 'Înlocuit de lista „Despre noi · Momente cheie”. Pozele de aici se folosesc doar cât timp lista e goală.',
-      },
-      readOnly: true,
-      hidden: ({ value }) => value === undefined,
     }),
     defineField({
       name: 'groups',

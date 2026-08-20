@@ -109,33 +109,7 @@ function SectionMark({ index, children, tone = 'orange' }: {
 
 /* ── Data ─────────────────────────────────────────────────── */
 
-/**
- * Used only while `sitePhotos.aboutTimeline` is still empty, so the section
- * keeps its five milestones — and the photos already uploaded to the old
- * fixed slots — until the list is filled in from the Studio.
- */
-const legacyAboutTimeline: Array<{
-  year: string
-  label: string
-  slot: keyof NonNullable<SitePhotosDocument['aboutMilestones']>
-}> = [
-  { year: '2014', label: 'Începutul', slot: 'milestone2012' },
-  { year: '2015', label: 'Prima medalie', slot: 'milestone2016' },
-  { year: '2023', label: 'Începutul varsity', slot: 'varsity2023' },
-  { year: '2023', label: 'Sala KOT', slot: 'salaKot2023' },
-  { year: '2025', label: 'Campionatul mondial', slot: 'milestone2024' },
-]
-
-function resolveAboutTimeline(sitePhotos: SitePhotosDocument | null): AboutMilestoneEntry[] {
-  if (sitePhotos?.aboutTimeline?.length) return sitePhotos.aboutTimeline
-
-  return legacyAboutTimeline.map(({ year, label, slot }) => ({
-    _key: slot,
-    year,
-    label,
-    photo: sitePhotos?.aboutMilestones?.[slot],
-  }))
-}
+/* Milestones live entirely in Sanity — see sitePhotos.aboutTimeline. */
 
 type TrainingGroup = {
   id: keyof NonNullable<SitePhotosDocument['groups']>
@@ -435,7 +409,7 @@ export default async function Home() {
     ? sanitySponsors
     : sponsorFallbackNames.map((name) => ({ _id: name, name }))
 
-  const aboutTimeline = resolveAboutTimeline(sitePhotos)
+  const aboutTimeline: AboutMilestoneEntry[] = sitePhotos?.aboutTimeline ?? []
   const aboutYears = aboutTimeline.map((milestone) => milestone.year).filter(Boolean)
   const aboutTimelineRange = aboutYears.length > 1
     ? `${aboutYears[0]} — ${aboutYears[aboutYears.length - 1]}`
@@ -544,15 +518,17 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="kot-about__timeline" data-reveal>
-              <div className="kot-about__timeline-head">
-                <span className="kot-about__timeline-label">Momentele care ne-au construit</span>
-                {aboutTimelineRange && (
-                  <span className="kot-about__timeline-range">{aboutTimelineRange}</span>
-                )}
+            {aboutTimeline.length > 0 && (
+              <div className="kot-about__timeline" data-reveal>
+                <div className="kot-about__timeline-head">
+                  <span className="kot-about__timeline-label">Momentele care ne-au construit</span>
+                  {aboutTimelineRange && (
+                    <span className="kot-about__timeline-range">{aboutTimelineRange}</span>
+                  )}
+                </div>
+                <AboutGallery milestones={aboutTimeline} />
               </div>
-              <AboutGallery milestones={aboutTimeline} />
-            </div>
+            )}
           </div>
         </section>
 
