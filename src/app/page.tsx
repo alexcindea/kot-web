@@ -1,35 +1,22 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
-import {
-  ArrowRight, Play, ChevronRight, ChevronDown,
-  MapPin, User, Phone, Trophy,
-  FileText, HeartHandshake, Download,
-} from 'lucide-react'
+
 import Nav from './components/Nav'
-import HeroRotate from './components/HeroRotate'
-import AboutGallery from './components/AboutGallery'
-import MarqueeStrip from './components/MarqueeStrip'
-import SlotCode from './components/SlotCode'
-import EventsSection from './components/EventsSection'
 import SiteFooter from './components/SiteFooter'
-import ContactMap from './components/ContactMap'
-import CountUp from './components/fx/CountUp'
-import Magnetic from './components/fx/Magnetic'
-import Parallax from './components/fx/Parallax'
-import ContactForm from './contact-form'
-import groupsStyles from './groups-section.module.css'
-import projectsStyles from './projects-section.module.css'
-import { getAbsoluteUrl, organizationAddress, siteDescription, siteName, siteShortName } from './seo'
-import { urlForImage } from '@/sanity/lib/image'
+import MarqueeStrip from './components/ui/MarqueeStrip'
+import HeroSection from './components/sections/HeroSection'
+import AboutSection from './components/sections/AboutSection'
+import GroupsSection from './components/sections/GroupsSection'
+import StaffSection from './components/sections/StaffSection'
+import ProjectsSection from './components/sections/ProjectsSection'
+import EventsSection from './components/sections/EventsSection'
+import SponsorsSection from './components/sections/SponsorsSection'
+import ContactSection from './components/sections/ContactSection'
+import { projectFallback } from './content/projects'
+import { sponsorFallbackNames } from './content/sponsors'
+import { organizationStructuredData } from './content/structuredData'
+import { siteDescription, siteName } from './seo'
 import { getHomepageContent, getSitePhotos, getSponsors } from '@/sanity/lib/queries'
-import { groupPhotoSlots, projectPhotoSlots, staffPhotoSlots } from '@/sanity/photoSlots'
-import type {
-  AboutMilestoneEntry,
-  HomepageProject,
-  SanityPhotoAsset,
-  SanitySponsor,
-  SitePhotosDocument,
-} from '@/sanity/lib/types'
+import type { SanitySponsor } from '@/sanity/lib/types'
 
 export const metadata: Metadata = {
   title: 'Cheerleading în Cluj-Napoca',
@@ -52,368 +39,20 @@ export const metadata: Metadata = {
 
 export const revalidate = 60
 
-const photoDimensionsByRatio: Record<string, { width: number; height: number }> = {
-  '16/9': { width: 1600, height: 900 },
-  '4/5': { width: 960, height: 1200 },
-  '2/3': { width: 800, height: 1200 },
-  '1/1': { width: 1200, height: 1200 },
-}
-
-/* ── Shared primitives ────────────────────────────────────── */
-
-function Photo({
-  caption, ratio = '16/9', tone = 'flame', image, children,
-}: {
-  caption?: string
-  ratio?: string
-  tone?: 'flame' | 'ember' | 'ink'
-  image?: SanityPhotoAsset
-  children?: React.ReactNode
-}) {
-  const resolvedCaption = image?.caption ?? caption
-  const dimensions = photoDimensionsByRatio[ratio] ?? photoDimensionsByRatio['16/9']
-  const imageUrl = image?.asset
-    ? urlForImage(image).width(dimensions.width).height(dimensions.height).fit('crop').auto('format').url()
-    : null
-
-  return (
-    <div className={`kot-photo kot-photo--${tone}`} style={{ aspectRatio: ratio }}>
-      {imageUrl && (
-        <Image
-          src={imageUrl}
-          alt={image?.alt ?? resolvedCaption ?? 'Knights Of Transylvania photo'}
-          fill
-          className="kot-photo__img"
-          sizes="(min-width: 1280px) 320px, (min-width: 768px) 50vw, 100vw"
-        />
-      )}
-      <div className="kot-photo__inner">{children}</div>
-      {resolvedCaption && <div className="kot-photo__caption">{resolvedCaption}</div>}
-    </div>
-  )
-}
-
-function SectionMark({ index, children, tone = 'flame' }: {
-  index: string
-  children: React.ReactNode
-  tone?: 'flame' | 'ember' | 'white'
-}) {
-  return (
-    <div className="kot-mark" data-reveal>
-      <span className={`kot-mark__num kot-mark__num--${tone}`} aria-hidden="true">{index}</span>
-      <span className="kot-mark__rule" aria-hidden="true" />
-      <span className="kot-mark__label">{children}</span>
-    </div>
-  )
-}
-
-/* ── Data ─────────────────────────────────────────────────── */
-
-/* Milestones live entirely in Sanity — see sitePhotos.aboutTimeline. */
-
-type TrainingGroup = {
-  id: keyof NonNullable<SitePhotosDocument['groups']>
-  name: string
-  age: string
-  format: string
-  description: string
-  note?: string
-  tone: 'flame' | 'ember'
-}
-
-function GroupAccordionItem({
-  group,
-  images,
-}: {
-  group: TrainingGroup
-  images?: SitePhotosDocument['groups']
-}) {
-  const image = images?.[group.id]
-  const imageUrl = image?.asset
-    ? urlForImage(image).width(1200).height(900).fit('crop').auto('format').url()
-    : null
-  const toneClass = group.tone === 'flame' ? groupsStyles.groupAccordionFlame : groupsStyles.groupAccordionEmber
-  const noteText = group.note ? (/[.!?]$/.test(group.note) ? group.note : `${group.note}.`) : null
-
-  return (
-    <details className={`${groupsStyles.groupAccordion} ${toneClass}`}>
-      <summary className={groupsStyles.groupAccordionSummary}>
-        <div className={groupsStyles.groupAccordionSummaryMain}>
-          <div className={groupsStyles.groupAccordionHeadingRow}>
-            <h3 className={groupsStyles.groupAccordionName}>{group.name}</h3>
-            <span className={groupsStyles.groupAccordionAge}>{group.age}</span>
-            {group.note && <span className={groupsStyles.groupAccordionNote}>{group.note}</span>}
-          </div>
-          <div className={groupsStyles.groupAccordionFormat}>{group.format}</div>
-        </div>
-        <span className={groupsStyles.groupAccordionIcon} aria-hidden="true">
-          <ChevronDown size={20} />
-        </span>
-      </summary>
-
-      <div className={groupsStyles.groupAccordionBody}>
-        <div className={groupsStyles.groupAccordionContent}>
-          <p className={groupsStyles.groupAccordionDescription}>{group.description}</p>
-          {noteText && <p className={groupsStyles.groupAccordionNoteText}>{noteText}</p>}
-
-          <div className={groupsStyles.groupAccordionMeta}>
-            <div className={groupsStyles.groupAccordionMetaItem}>
-              <strong>Vârstă</strong>
-              <span>{group.age}</span>
-            </div>
-            <div className={groupsStyles.groupAccordionMetaItem}>
-              <strong>Format</strong>
-              <span>{group.format}</span>
-            </div>
-          </div>
-
-          <a href="#contact" className={groupsStyles.groupAccordionLink}>
-            <span>Încearcă și tu</span>
-            <ArrowRight size={16} />
-          </a>
-        </div>
-
-        <div className={groupsStyles.groupAccordionMedia}>
-          {imageUrl ? (
-            <div className={groupsStyles.groupAccordionImageWrap}>
-              <Image
-                src={imageUrl}
-                alt={image?.alt ?? `${group.name} group photo`}
-                width={1200}
-                height={900}
-                className={groupsStyles.groupAccordionImage}
-              />
-            </div>
-          ) : (
-            <div className={groupsStyles.groupAccordionPlaceholder}>
-              <span className={groupsStyles.groupAccordionPlaceholderLabel}>
-                Foto grupă · slot {groupPhotoSlots[group.id].code}
-              </span>
-              <strong>Adăugăm fotografia aici după ce o alegem.</strong>
-            </div>
-          )}
-        </div>
-      </div>
-    </details>
-  )
-}
-
-const groups: TrainingGroup[] = [
-  {
-    id: 'mini',
-    name: 'Mini',
-    age: '5–7 ani',
-    format: 'Start',
-    description: 'Grupa în care cei mici descoperă bazele cheerleadingului prin joc, ritm și încredere.',
-    tone: 'flame',
-  },
-  {
-    id: 'u13Mixt',
-    name: 'U13 Mixt',
-    age: 'Sub 13 ani',
-    format: 'Mixt',
-    description: 'Pentru sportivii U13 care lucrează tehnica de bază, coordonarea și lucrul în echipă.',
-    tone: 'ember',
-  },
-  {
-    id: 'u13FeteHu',
-    name: 'U13 Fete',
-    age: 'Sub 13 ani',
-    format: 'Fete',
-    description: 'Grupă dedicată fetelor U13, într-un ritm potrivit de învățare și progres.',
-    note: 'Predare în limba maghiară',
-    tone: 'flame',
-  },
-  {
-    id: 'primaryLevel1',
-    name: 'Primary Level 1',
-    age: '8–13 ani',
-    format: 'Level 1',
-    description: 'Pentru sportivii 8–13 ani care construiesc fundația tehnică și încep să lucreze în formulă de echipă.',
-    tone: 'ember',
-  },
-  {
-    id: 'primaryLevel2',
-    name: 'Primary Level 2',
-    age: '8–13 ani',
-    format: 'Level 2',
-    description: 'Grupă de progres pentru sportivii care sunt gata să treacă la cerințe și combinații mai avansate.',
-    tone: 'flame',
-  },
-  {
-    id: 'u19',
-    name: 'U19',
-    age: 'Sub 19 ani',
-    format: 'Competițional',
-    description: 'Categorie pentru sportivii care își dezvoltă constanța, expresivitatea și lucrul de echipă la nivel U19.',
-    tone: 'ember',
-  },
-  {
-    id: 'seniori',
-    name: 'Seniori',
-    age: '16+ ani',
-    format: 'Competițional',
-    description: 'Grupa seniorilor reunește sportivii 16+ care lucrează rutine complete, energie de concurs și identitate de echipă.',
-    tone: 'flame',
-  },
-]
-
-const staff = [
-  { name: 'Antrenor 1', role: 'Head Coach · Seniori', tone: 'flame'  as const, slot: 'coach1' as const },
-  { name: 'Antrenor 2', role: 'Coach · Juniori',      tone: 'ember'  as const, slot: 'coach2' as const },
-  { name: 'Antrenor 3', role: 'Coach · Mini',         tone: 'flame'  as const, slot: 'coach3' as const },
-  { name: 'Antrenor 4', role: 'Coregraf',             tone: 'ember'  as const, slot: 'coach4' as const },
-]
-
-const projectFallback: HomepageProject[] = [
-  {
-    title: 'Mondial / Team RO',
-    label: 'Mondial',
-    tone: 'flame',
-    slot: 'mondialTeamRo',
-    story: 'Drumul spre Team Romania a adunat antrenamente, selecții și responsabilitatea de a reprezenta mai mult decât o echipă: o direcție întreagă de creștere pentru cheer sportul românesc.',
-  },
-  {
-    title: 'Erasmus',
-    label: 'Dezvoltare',
-    tone: 'ember',
-    slot: 'erasmus',
-    story: 'Proiectul aduce schimb de experiență, idei noi și contexte internaționale care se întorc apoi în sala KOT prin metode, ritm și încredere.',
-  },
-  {
-    title: 'Tabăra Națională',
-    label: 'Comunitate',
-    tone: 'flame',
-    slot: 'tabaraNationala',
-    story: 'Aici se leagă mai repede grupurile, se lucrează concentrat și se creează acel timp comun în care progresul tehnic merge mână în mână cu energia de echipă.',
-  },
-  {
-    title: 'Frumusețe fără filtru',
-    label: 'Identitate',
-    tone: 'ember',
-    slot: 'frumuseteFaraFiltru',
-    story: 'Este un proiect construit în jurul autenticității, expresiei și felului în care sportul poate da curaj, prezență și voce.',
-  },
-  {
-    title: 'Nicio zi fără spor(t)',
-    label: 'Mișcare',
-    tone: 'flame',
-    slot: 'nicioZiFaraSport',
-    story: 'Inițiativa pune accent pe consecvență, obiceiuri sănătoase și ideea că sportul se construiește zi de zi, nu doar la evenimente mari.',
-  },
-]
-
-const sponsorFallbackNames = [
-  'CCS Sibiu', 'Primăria Cluj', 'ProSport', 'Erasmus+',
-  'Decathlon', 'CEC Bank', 'Hochland', 'Sibex',
-  'Continental', 'Hervis', 'Brio', 'OMV',
-]
-
-const contactMapQuery = encodeURIComponent('Str. Fabricii de Zahăr 109, 400631 Cluj-Napoca, Romania')
-const contactMapLat = 46.786109
-const contactMapLon = 23.6263783
-const contactMapDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${contactMapQuery}`
-
-const organizationStructuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'SportsOrganization',
-  '@id': getAbsoluteUrl('/#organization'),
-  name: siteName,
-  alternateName: siteShortName,
-  url: getAbsoluteUrl('/'),
-  logo: getAbsoluteUrl('/logo-kot-shield.svg'),
-  description: siteDescription,
-  sport: 'Cheerleading',
-  foundingDate: '2014',
-  address: {
-    '@type': 'PostalAddress',
-    ...organizationAddress,
-  },
-  location: {
-    '@type': 'Place',
-    name: 'Sala KOT',
-    address: {
-      '@type': 'PostalAddress',
-      ...organizationAddress,
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: contactMapLat,
-      longitude: contactMapLon,
-    },
-  },
-  areaServed: {
-    '@type': 'City',
-    name: 'Cluj-Napoca',
-  },
-}
-
-function ProjectAccordionItem({
-  project,
-  images,
-}: {
-  project: HomepageProject
-  images?: SitePhotosDocument['projects']
-}) {
-  const image = images?.[project.slot]
-  const toneClass = project.tone === 'ember' ? projectsStyles.projectAccordion : `${projectsStyles.projectAccordion} ${projectsStyles.projectAccordionFlame}`
-
-  return (
-    <details className={toneClass}>
-      <summary className={projectsStyles.projectAccordionSummary}>
-        <div className={projectsStyles.projectAccordionSummaryText}>
-          <span className={projectsStyles.projectAccordionLabel}>{project.label}</span>
-          <h3 className={projectsStyles.projectAccordionTitle}>{project.title}</h3>
-        </div>
-        <span className={projectsStyles.projectAccordionIcon} aria-hidden="true">
-          <ChevronDown size={20} />
-        </span>
-      </summary>
-
-      <div className={projectsStyles.projectAccordionBody}>
-        <div className={projectsStyles.projectAccordionMedia}>
-          <Photo
-            caption={`Foto: ${project.title}`}
-            ratio="16/9"
-            tone={project.tone}
-            image={image}
-          >
-            {!image?.asset && (
-              <div className={projectsStyles.projectAccordionPlaceholder}>
-                <span className={projectsStyles.projectAccordionPlaceholderLabel}>
-                  Proiect · slot {projectPhotoSlots[project.slot].code}
-                </span>
-                <strong>{project.title}</strong>
-              </div>
-            )}
-          </Photo>
-        </div>
-
-        <div className={projectsStyles.projectAccordionContent}>
-          <p className={projectsStyles.projectAccordionStory}>{project.story}</p>
-        </div>
-      </div>
-    </details>
-  )
-}
-
-/* ── Page ─────────────────────────────────────────────────── */
-
+/**
+ * Composition only — every section owns its own markup, and the static copy
+ * lives in `content/`. Sanity supplies the photos, projects and sponsors,
+ * with the fallbacks covering a dataset that has not been filled in yet.
+ */
 export default async function Home() {
   const homepageContent = await getHomepageContent()
   const sitePhotos = await getSitePhotos()
   const sanitySponsors = await getSponsors()
-  const homepageProjects = homepageContent?.projects?.length ? homepageContent.projects : projectFallback
 
-  const homepageSponsors: SanitySponsor[] = sanitySponsors.length > 0
+  const projects = homepageContent?.projects?.length ? homepageContent.projects : projectFallback
+  const sponsors: SanitySponsor[] = sanitySponsors.length > 0
     ? sanitySponsors
     : sponsorFallbackNames.map((name) => ({ _id: name, name }))
-
-  const aboutTimeline: AboutMilestoneEntry[] = sitePhotos?.aboutTimeline ?? []
-  const aboutYears = aboutTimeline.map((milestone) => milestone.year).filter(Boolean)
-  const aboutTimelineRange = aboutYears.length > 1
-    ? `${aboutYears[0]} — ${aboutYears[aboutYears.length - 1]}`
-    : aboutYears[0] ?? ''
 
   return (
     <>
@@ -424,133 +63,17 @@ export default async function Home() {
       <Nav />
 
       <main>
-        {/* ── Hero ── */}
-        <section className="kot-hero" id="top">
-          <div className="kot-hero__bg" aria-hidden="true">
-            <div className="kot-hero__beam kot-hero__beam--warm" />
-            <div className="kot-hero__beam kot-hero__beam--orange" />
-            <div className="kot-hero__halftone" />
-            <Parallax className="kot-hero__watermark" from={-30} to={110}>KOT</Parallax>
-            <div className="kot-hero__floor" />
-          </div>
+        <HeroSection />
 
-          <div className="kot-container kot-hero__inner">
-            <div className="kot-hero__eyebrow">
-              <span className="kot-hero__dot" />
-              Knights of Transylvania · Cluj-Napoca · est. 2014
-            </div>
-
-            <h1 className="kot-hero__title">
-              <span className="kot-hero__title-main">
-                CHEER<span className="kot-hero__title-flip">LEADING</span>
-              </span>
-              <span className="kot-hero__title-sub">
-                <HeroRotate />
-              </span>
-            </h1>
-
-            <p className="kot-hero__lede">
-              Peste 130 de sportivi între 5 și 30 de ani, 16 instructori și 12
-              țări în care am dus tricolorul. În 2025 am fost nucleul primei
-              echipe naționale a României la ICU Cheerleading Worlds.
-            </p>
-
-            <div className="kot-hero__ctas">
-              <Magnetic>
-                <a href="#contact" className="kot-btn kot-btn--accent kot-btn--lg">
-                  <span>Încearcă și tu</span>
-                  <ArrowRight size={18} />
-                </a>
-              </Magnetic>
-              <Magnetic>
-                <a href="#despre" className="kot-btn kot-btn--ghost kot-btn--lg">
-                  <Play size={18} />
-                  <span>Despre KOT</span>
-                </a>
-              </Magnetic>
-            </div>
-          </div>
-
-          <div className="kot-container">
-            <div className="kot-hero__stats" role="list" aria-label="KOT în cifre">
-              <div role="listitem"><CountUp value={130} suffix="+" /><span>Sportivi activi</span></div>
-              <div role="listitem"><CountUp value={16} suffix="+" duration={1.2} /><span>Instructori</span></div>
-              <div role="listitem"><CountUp value={12} suffix="+" duration={1.2} /><span>Țări concurate</span></div>
-              <div role="listitem"><CountUp value={10} suffix="K+" duration={1} /><span>Spectatori</span></div>
-            </div>
-          </div>
-
-          <div className="kot-hero__scroll" aria-hidden="true">
-            <span>SCROLL</span>
-            <ChevronRight size={16} />
-          </div>
-        </section>
-
-        {/* ── Marquee 1 ── */}
         <MarqueeStrip
           tone="flame"
           items={['MOMENTUL TĂU WOOW', 'KNIGHTS OF TRANSYLVANIA', 'KOT', 'CLUJ-NAPOCA', 'CHEERLEADING']}
         />
 
-        {/* ── About ── */}
-        <section className="kot-section kot-section--white" id="despre">
-          <div className="kot-container">
-            <SectionMark index="01">Despre noi</SectionMark>
-            <div className="kot-about__intro" data-reveal>
-              <h2 className="kot-section__title">
-                Etalonul țării<br />în <em>cheer sport</em>.
-              </h2>
+        <AboutSection milestones={sitePhotos?.aboutTimeline ?? []} />
 
-              <div className="kot-about__copy">
-                <p className="kot-about__lede">
-                  Knights Of Transylvania este structura clujeană devenită etalonul
-                  României în materie de cheer sport — peste 130 de sportivi între
-                  5 și 30 de ani, 16 instructori specializați și 20 de titluri
-                  naționale câștigate la toate categoriile de vârstă.
-                </p>
-                <p className="kot-about__body">
-                  Suntem liderul proiectelor care au pus România pe harta
-                  cheerleadingului mondial. Avem 8 participări ca echipă
-                  reprezentativă la Campionatul European, 7 medalii europene la
-                  juniori și seniori, și am fost nucleul primei echipe naționale la
-                  ICU Cheerleading Worlds 2025 din SUA.
-                </p>
-              </div>
-            </div>
+        <GroupsSection images={sitePhotos?.groups} />
 
-            {aboutTimeline.length > 0 && (
-              <div className="kot-about__timeline" data-reveal>
-                <div className="kot-about__timeline-head">
-                  <span className="kot-about__timeline-label">Momentele care ne-au construit</span>
-                  {aboutTimelineRange && (
-                    <span className="kot-about__timeline-range">{aboutTimelineRange}</span>
-                  )}
-                </div>
-                <AboutGallery milestones={aboutTimeline} />
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* ── Groups ── */}
-        <section className="kot-section kot-section--paper" id="grupe">
-          <div className="kot-container">
-            <SectionMark index="02" tone="ember">Grupele noastre</SectionMark>
-            <h2 className="kot-section__title" data-reveal="wipe">
-              7 grupe.<br />O singură <em>familie</em>.
-            </h2>
-            <p className="kot-section__sub" data-reveal>
-              Apasă pe grupa potrivită pentru a vedea categoria, formatul și spațiul rezervat pentru fotografia ei.
-            </p>
-            <div className={groupsStyles.groupsStack} data-reveal-group>
-              {groups.map((g) => (
-                <GroupAccordionItem key={g.id} group={g} images={sitePhotos?.groups} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Marquee 2 ── */}
         <MarqueeStrip
           tone="ember"
           icon="trophy"
@@ -558,184 +81,15 @@ export default async function Home() {
           items={['ICU WORLDS 2025', 'TEAM ROMANIA', '20+ TITLURI NAȚIONALE', 'CAMPIONAT NAȚIONAL TURDA 2026']}
         />
 
-        {/* ── Staff ── */}
-        <section className="kot-section kot-section--ink" id="staff">
-          <div className="kot-container">
-            <SectionMark index="03" tone="white">Staff KOT</SectionMark>
-            <h2 className="kot-section__title kot-section__title--inv" data-reveal="wipe">
-              Echipa din spatele<br /><em>rezultatelor</em>.
-            </h2>
-            <p className="kot-section__sub kot-section__sub--inv" data-reveal>
-              Această secțiune urmează să fie actualizată cu portrete și nume reale.
-            </p>
-            <div className="kot-staff__grid" data-reveal-group>
-              {staff.map((s) => (
-                <div key={s.slot} className="kot-staff-card">
-                  <Photo
-                    tone={s.tone}
-                    ratio="4/5"
-                    caption={`Foto: ${s.name}`}
-                    image={sitePhotos?.staff?.[s.slot]}
-                  >
-                    {!sitePhotos?.staff?.[s.slot]?.asset && (
-                      <SlotCode code={staffPhotoSlots[s.slot].code} />
-                    )}
-                  </Photo>
-                  <div className="kot-staff-card__plate">
-                    <div className="kot-staff-card__name">{s.name}</div>
-                    <div className="kot-staff-card__role">{s.role}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <StaffSection images={sitePhotos?.staff} />
 
-        {/* ── Projects ── */}
-        <section className="kot-section kot-section--ink" id="proiecte">
-          <div className="kot-container">
-            <SectionMark index="04" tone="ember">Proiecte</SectionMark>
-            <h2 className="kot-section__title kot-section__title--inv" data-reveal="wipe">
-              Povestea din spatele<br />proiectelor <em>KOT</em>.
-            </h2>
-            <p className="kot-section__sub kot-section__sub--inv" data-reveal>
-              Apasă pe fiecare proiect pentru a deschide povestea din spatele lui.
-            </p>
-            <div className={projectsStyles.projectsStack} data-reveal-group>
-              {homepageProjects.map((project) => (
-                <ProjectAccordionItem
-                  key={project._key ?? project.slot}
-                  project={project}
-                  images={sitePhotos?.projects}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+        <ProjectsSection projects={projects} images={sitePhotos?.projects} />
 
-        {/* ── Events (client — filterable) ── */}
         <EventsSection photos={sitePhotos?.events} events={homepageContent?.events} />
 
-        {/* ── Sponsors ── */}
-        <section className="kot-section kot-section--orange" id="sponsorizare">
-          <div className="kot-container">
-            <div className="kot-sponsor__layout">
-              <div data-reveal>
-                <SectionMark index="06" tone="white">Sponsorizare</SectionMark>
-                <h2 className="kot-section__title kot-section__title--inv">
-                  Ajută echipa<br />să zboare <em>mai sus</em>.
-                </h2>
-                <p className="kot-section__sub kot-section__sub--inv">
-                  Asociere cu un proiect sportiv credibil. Vizibilitate în
-                  contexte pozitive și organizate. Public tânăr și familii active.
-                  Energie care atrage atenția publicului.{' '}
-                  <strong>Suntem momentul tău WOOW.</strong>
-                </p>
-              </div>
-              <div className="kot-sponsor__cards" data-reveal-group>
-                <article className="kot-sponsor-card">
-                  <FileText size={28} />
-                  <h3>Mapa de prezentare</h3>
-                  <p>PDF cu obiective, audiență și pachete de sponsorizare 2026.</p>
-                  <a href="#" className="kot-btn kot-btn--dark kot-btn--sm">
-                    <Download size={16} />
-                    <span>Descarcă mapa</span>
-                  </a>
-                </article>
-                <article className="kot-sponsor-card">
-                  <HeartHandshake size={28} />
-                  <h3>Formular 230</h3>
-                  <p>Redirecționează 3.5% din impozit către KOT. Durează 2 minute.</p>
-                  <a href="#" className="kot-btn kot-btn--dark kot-btn--sm">
-                    <Download size={16} />
-                    <span>Descarcă formularul</span>
-                  </a>
-                </article>
-              </div>
-            </div>
-            <div className="kot-sponsor__logos" data-reveal>
-              <div className="kot-sponsor__logos-label">Sponsori și parteneri</div>
-              <div className="kot-sponsor__logos-strip" data-reveal-group="fast">
-                {homepageSponsors.map((sponsor) => {
-                  const logoUrl = sponsor.logo?.asset
-                    ? urlForImage(sponsor.logo).width(800).height(320).fit('max').auto('format').url()
-                    : null
+        <SponsorsSection sponsors={sponsors} />
 
-                  const content = logoUrl ? (
-                    <Image
-                      src={logoUrl}
-                      alt={sponsor.logo?.alt ?? sponsor.name}
-                      width={800}
-                      height={320}
-                      className="kot-sponsor-logo__image"
-                    />
-                  ) : (
-                    sponsor.name
-                  )
-
-                  return sponsor.websiteUrl ? (
-                    <a
-                      key={sponsor._id}
-                      className={`kot-sponsor-logo${logoUrl ? ' kot-sponsor-logo--image' : ''}`}
-                      href={sponsor.websiteUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {content}
-                    </a>
-                  ) : (
-                    <div key={sponsor._id} className={`kot-sponsor-logo${logoUrl ? ' kot-sponsor-logo--image' : ''}`}>
-                      {content}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Contact ── */}
-        <section className="kot-section kot-section--white" id="contact">
-          <div className="kot-container">
-            <SectionMark index="07">Contact</SectionMark>
-            <h2 className="kot-section__title" data-reveal="wipe">
-              Încearcă și tu.<br />Sau <em>scrie-ne</em>.
-            </h2>
-            <div className="kot-contact__layout" data-reveal-group>
-              {/* Form (client) */}
-              <ContactForm />
-
-              {/* Info + map */}
-              <aside className="kot-contact__info">
-                <ContactMap
-                  latitude={contactMapLat}
-                  longitude={contactMapLon}
-                  address="Str. Fabricii de Zahăr 109"
-                  locationLabel="Sala KOT · Cluj-Napoca"
-                  directionsUrl={contactMapDirectionsUrl}
-                />
-                <ul className="kot-contact__list">
-                  <li>
-                    <MapPin size={20} />
-                    <div><strong>Bază</strong><span>Str. Fabricii de Zahăr 109, 400631 Cluj-Napoca</span></div>
-                  </li>
-                  <li>
-                    <User size={20} />
-                    <div><strong>Persoană de contact</strong><span>Carmen Biriș</span></div>
-                  </li>
-                  <li>
-                    <Phone size={20} />
-                    <div><strong>Telefon</strong><span>0799 822 100</span></div>
-                  </li>
-                  <li>
-                    <Trophy size={20} />
-                    <div><strong>30 mai 2026</strong><span>Campionatul Național · Turda</span></div>
-                  </li>
-                </ul>
-              </aside>
-            </div>
-          </div>
-        </section>
+        <ContactSection />
       </main>
 
       <SiteFooter />

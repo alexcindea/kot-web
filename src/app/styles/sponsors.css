@@ -1,0 +1,135 @@
+/* ============================================================
+   Sponsors — the orange block
+   ============================================================ */
+.kot-sponsor__layout {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(32px, 4vw, 56px);
+  align-items: start;
+  margin-bottom: 56px;
+}
+.kot-sponsor__layout > * {
+  min-width: 0;
+}
+@media (max-width: 900px) {
+  .kot-sponsor__layout {
+    grid-template-columns: 1fr;
+  }
+}
+.kot-sponsor__cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+.kot-sponsor-card {
+  background: var(--chalk);
+  color: var(--ink);
+  padding: 26px;
+  border: 2px solid var(--night);
+  border-radius: var(--radius-md);
+  box-shadow: 7px 7px 0 var(--night);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+.kot-sponsor-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 9px 9px 0 var(--night);
+}
+.kot-sponsor-card > svg {
+  width: 30px;
+  height: 30px;
+  color: var(--kot-orange-600);
+}
+.kot-sponsor-card h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin: 0;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+.kot-sponsor-card p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-3);
+  margin: 0 0 6px;
+}
+.kot-sponsor__logos {
+  background: var(--night);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--night);
+  padding: 26px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.kot-sponsor__logos::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--grain);
+  background-size: 180px;
+  opacity: 0.06;
+}
+.kot-sponsor__logos-label {
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(243, 237, 228, 0.5);
+}
+.kot-sponsor__logos-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.kot-sponsor-logo {
+  flex: 1 1 130px;
+  height: 64px;
+  background: var(--night-3);
+  border: 1px solid var(--night-line);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 13px;
+  color: rgba(243, 237, 228, 0.7);
+  letter-spacing: 0.04em;
+  transition: all var(--dur-base) var(--ease-out);
+  text-decoration: none;
+  padding: 10px 14px;
+}
+.kot-sponsor-logo:hover {
+  background: #2a2119;
+  color: var(--chalk);
+  transform: translateY(-2px);
+}
+.kot-sponsor-logo--image {
+  background: rgba(245, 242, 233, 0.96);
+  border-color: transparent;
+}
+.kot-sponsor-logo--image:hover {
+  background: var(--white);
+}
+.kot-sponsor-logo__image {
+  max-width: 100%;
+  max-height: 36px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+

@@ -1,0 +1,81 @@
+/* ============================================================
+   Marquee — skewed speed tape
+   ============================================================ */
+.kot-marquee {
+  background: var(--kot-orange);
+  color: var(--night);
+  overflow: hidden;
+  padding: 16px 0;
+  border-top: 3px solid var(--night);
+  border-bottom: 3px solid var(--night);
+  transform: rotate(-1.4deg) scaleX(1.04);
+  position: relative;
+  z-index: 5;
+  margin: -14px 0;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+.kot-marquee--flame {
+  background: var(--kot-orange);
+  color: var(--night);
+}
+.kot-marquee--ember {
+  background: var(--tone-b);
+  color: var(--tone-b-ink);
+}
+.kot-marquee--ink {
+  background: var(--night-3);
+  color: var(--chalk);
+  border-color: var(--kot-orange);
+}
+.kot-marquee__track {
+  display: flex;
+  gap: 40px;
+  white-space: nowrap;
+  animation: kot-marquee 36s linear infinite;
+  width: max-content;
+}
+.kot-marquee:hover .kot-marquee__track {
+  animation-play-state: paused;
+}
+/* Once JS lands, Motion drives the tapes with scroll velocity — the CSS
+   keyframes above stay as the no-JS fallback. */
+.kot-js .kot-marquee__track,
+.kot-js .kot-footer__giant-track {
+  animation: none;
+}
+.kot-vmq__copy {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.kot-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(26px, 3.6vw, 42px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+/* alternate hollow lettering */
+.kot-marquee__item:nth-child(even) span {
+  color: transparent;
+  -webkit-text-stroke: 1.6px currentColor;
+}
+.kot-marquee__item svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+@keyframes kot-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
+}
+

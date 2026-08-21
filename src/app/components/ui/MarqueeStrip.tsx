@@ -1,7 +1,7 @@
 'use client'
 
 import { Star, Trophy } from 'lucide-react'
-import VelocityMarquee from './fx/VelocityMarquee'
+import VelocityMarquee from '../fx/VelocityMarquee'
 
 const icons = {
   star: Star,

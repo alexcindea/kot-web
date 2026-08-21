@@ -1,0 +1,119 @@
+/* ============================================================
+   Projects / post cards (shared with /noutati)
+   ============================================================ */
+.kot-projects__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 1000px) {
+  .kot-projects__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .kot-projects__grid {
+    grid-template-columns: 1fr;
+  }
+}
+.kot-project {
+  background: var(--night-2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--night-line);
+  border-top: 4px solid var(--chalk);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    border-color var(--dur-base),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+.kot-project--flame {
+  border-top-color: var(--kot-orange);
+}
+.kot-project--ember {
+  border-top-color: var(--chalk);
+}
+.kot-project:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+}
+.kot-project .kot-photo {
+  border-radius: 0;
+}
+.kot-project__body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  align-items: flex-start;
+}
+.kot-project__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: 0.02em;
+  line-height: 0.98;
+  color: var(--chalk);
+  margin: 0;
+  text-transform: uppercase;
+}
+.kot-project__desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(243, 237, 228, 0.66);
+  margin: 0;
+}
+.kot-post-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.kot-post-card__meta--article {
+  margin-bottom: 18px;
+}
+.kot-post-card__date {
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(243, 237, 228, 0.5);
+}
+.kot-project__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--kot-orange-hot);
+  text-decoration: none;
+  margin-top: 4px;
+  transition:
+    gap var(--dur-base) var(--ease-out),
+    color var(--dur-fast);
+}
+.kot-project__link:hover {
+  gap: 12px;
+  color: var(--chalk);
+}
+.kot-project--ember .kot-project__link {
+  color: var(--kot-amber);
+}
+.kot-project--ember .kot-project__link:hover {
+  color: var(--chalk);
+}
+.kot-project__link svg {
+  width: 14px;
+  height: 14px;
+}
+.kot-project__link--dark {
+  color: var(--ink);
+}
+

@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/* ============================================================
+   KOT — Knights Of Transylvania
+   "VARSITY VOLTAGE" · night-meet sports poster
+   ============================================================
+   Dark arena sections + warm chalk paper, floodlit brand
+   one-hue orange system, towering condensed display type, skewed speed
+   buttons, jersey-number section marks, halftone + grain.
+   ============================================================ */
+:root {
+  /* Brand — one hue, worked across its whole range.
+     The team dropped blue, so orange carries the site alone: flame leads,
+     ember accents on paper, amber accents on night. Rhythm that used to
+     come from cyan-vs-orange now comes from value — see --tone-b below. */
+  --kot-orange: #f79335; /* flame — the brand colour */
+  --kot-orange-hot: #ffa94d; /* hover */
+  --kot-orange-600: #e07a1d;
+  --kot-orange-700: #b75f12; /* ember */
+  --kot-orange-100: #fde2c6;
+  --kot-orange-50: #fff1e2;
+  --kot-amber: #ffbe6d; /* highlight on dark grounds */
+  --kot-ember: var(--kot-orange-700);
+
+  /* Arena darks — warm charcoal, no blue cast anywhere */
+  --night: #12100e;
+  --night-2: #17130f;
+  --night-3: #241d17;
+  --night-line: rgba(255, 226, 190, 0.16);
+  --night-soft: rgba(255, 226, 190, 0.07);
+
+  /* Chalk lights (warm gym-chalk paper) */
+  --chalk: #f5f2e9;
+  --chalk-2: #ece8db;
+  --bone: #efe7d9;
+  --white: #ffffff;
+
+  /* Ink text on chalk — warm-biased, never blue-grey */
+  --black: #0d0b0a;
+  --ink: #14110f;
+  --ink-2: #332b24;
+  --ink-3: #5b5147;
+  --ink-4: #8a7f72;
+  --line: #d8d3c4;
+  --line-2: #e4e0d2;
+  --paper: var(--chalk-2);
+
+  /* Two-tone rhythm without a second hue. Tone A is always flame; tone B is
+     whatever contrasts the ground it sits on, so dark sections flip it to
+     chalk and light sections keep it ink. Alternating rows read as
+     colour-against-paper the way a printed poster does. */
+  --tone-a: var(--kot-orange);
+  --tone-a-ink: var(--night);
+  --tone-b: var(--ink);
+  --tone-b-ink: var(--chalk);
+
+  /* Semantic */
+  --success: #2ea66f;
+  --warn: #e0a012;
+  --danger: #d23f3f;
+
+  /* Surfaces */
+  --bg: var(--night);
+  --bg-inverted: var(--chalk);
+  --bg-muted: var(--chalk-2);
+  --fg: var(--ink);
+  --fg-2: var(--ink-2);
+  --fg-3: var(--ink-3);
+  --fg-muted: var(--ink-4);
+  --fg-inverted: var(--chalk);
+  --border: var(--line);
+  --primary: var(--kot-orange);
+  --accent: var(--kot-ember);
+
+  /* Typography — next/font variables injected via layout */
+  --font-display: var(--font-shoulders), "Arial Narrow", "Impact", sans-serif;
+  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, monospace;
+
+  /* Type scale */
+  --fs-display-2xl: clamp(58px, 14vw, 210px);
+  --fs-display-xl: clamp(52px, 9vw, 128px);
+  --fs-display-lg: clamp(44px, 6.5vw, 92px);
+  --fs-display-md: clamp(34px, 4.5vw, 60px);
+  --fs-display-sm: clamp(26px, 3vw, 38px);
+  --fs-h1: clamp(34px, 4vw, 52px);
+  --fs-h2: clamp(26px, 3vw, 38px);
+  --fs-h3: 22px;
+  --fs-body: 16px;
+  --fs-body-sm: 14px;
+  --fs-caption: 12px;
+
+  --lh-tight: 0.92;
+  --lh-snug: 1.08;
+  --lh-normal: 1.45;
+  --lh-relaxed: 1.62;
+
+  --tracking-label: 0.16em;
+  --tracking-button: 0.07em;
+
+  /* Label voice — Archivo pushed wide via wdth axis */
+  --stretch-wide: 122%;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+  --section-pad-y: clamp(72px, 10vw, 136px);
+  --container-pad-x: clamp(20px, 4vw, 48px);
+  --container-max: 1320px;
+
+  /* Radii — sharp poster edges */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-pill: 999px;
+
+  /* Shadows — hard offsets, print-style */
+  --shadow-sm: 0 1px 2px rgba(18, 16, 14, 0.1);
+  --shadow-md: 6px 6px 0 rgba(20, 17, 15, 0.12);
+  --shadow-lg: 10px 10px 0 rgba(20, 17, 15, 0.14);
+  --shadow-hard: 6px 6px 0 var(--ink);
+  --shadow-hard-sm: 4px 4px 0 var(--ink);
+  --shadow-glow-flame: 0 0 0 4px rgba(247, 147, 53, 0.28);
+  --shadow-glow-orange: 0 0 0 4px rgba(247, 147, 53, 0.24);
+
+  /* Texture */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 130ms;
+  --dur-base: 220ms;
+  --dur-slow: 420ms;
+
+  /* Z */
+  --z-nav: 50;
+  --z-overlay: 80;
+  --z-modal: 100;
+}
+

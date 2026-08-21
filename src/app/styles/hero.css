@@ -1,0 +1,345 @@
+/* ============================================================
+   Hero — night arena
+   ============================================================ */
+.kot-hero {
+  position: relative;
+  min-height: 100svh;
+  background:
+    radial-gradient(110% 70% at 70% -10%, #241c14 0%, transparent 60%),
+    var(--night);
+  color: var(--chalk);
+  padding-top: clamp(120px, 16vh, 170px);
+  padding-bottom: 96px;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+}
+.kot-hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.kot-hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  background-size: 180px;
+  opacity: 0.08;
+}
+/* floodlight beams */
+.kot-hero__beam {
+  position: absolute;
+  top: -30%;
+  width: 46vw;
+  height: 140%;
+  filter: blur(46px);
+  opacity: 0.5;
+  transform-origin: top center;
+  animation: kot-beam-sway 13s ease-in-out infinite alternate;
+}
+/* Two floodlights, both warm now: a pale amber key on the left, the hot
+   orange one on the right. Reads as stadium light rather than cold moonlight. */
+.kot-hero__beam--warm {
+  left: 4%;
+  background: conic-gradient(
+    from 12deg at 50% 0%,
+    transparent 41%,
+    rgba(255, 226, 190, 0.3) 50%,
+    transparent 59%
+  );
+}
+.kot-hero__beam--orange {
+  right: 2%;
+  animation-delay: -6s;
+  background: conic-gradient(
+    from -12deg at 50% 0%,
+    transparent 42%,
+    rgba(247, 147, 53, 0.34) 50%,
+    transparent 58%
+  );
+}
+@keyframes kot-beam-sway {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(5deg);
+  }
+}
+.kot-hero__halftone {
+  position: absolute;
+  top: 8%;
+  right: -4%;
+  width: 46vw;
+  height: 60%;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 226, 190, 0.34) 1px,
+    transparent 1.8px
+  );
+  background-size: 17px 17px;
+  mask-image: radial-gradient(
+    70% 70% at 60% 40%,
+    rgba(0, 0, 0, 0.8),
+    transparent 70%
+  );
+  -webkit-mask-image: radial-gradient(
+    70% 70% at 60% 40%,
+    rgba(0, 0, 0, 0.8),
+    transparent 70%
+  );
+}
+.kot-hero__watermark {
+  position: absolute;
+  right: -2vw;
+  bottom: -7vw;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.8;
+  font-size: clamp(220px, 38vw, 560px);
+  letter-spacing: 0em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 226, 190, 0.13);
+  user-select: none;
+}
+.kot-hero__floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 180px;
+  background: linear-gradient(180deg, transparent, rgba(10, 14, 23, 0.9));
+}
+.kot-hero__inner {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+.kot-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(16, 22, 36, 0.6);
+  border: 1px solid var(--night-line);
+  border-radius: var(--radius-xs);
+  padding: 9px 16px;
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(243, 237, 228, 0.82);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  margin-bottom: 30px;
+  animation: kot-fade-up 600ms var(--ease-out) backwards;
+}
+.kot-hero__dot {
+  width: 8px;
+  height: 8px;
+  background: var(--kot-orange);
+  border-radius: 999px;
+  box-shadow: 0 0 0 4px rgba(247, 147, 53, 0.25);
+  animation: kot-pulse 2s ease-in-out infinite;
+}
+@keyframes kot-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(247, 147, 53, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 11px rgba(247, 147, 53, 0);
+  }
+}
+@keyframes kot-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.kot-hero__title {
+  margin: 0 0 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1vw, 14px);
+  text-transform: uppercase;
+}
+.kot-hero__title-main {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-display-2xl);
+  line-height: 0.84;
+  letter-spacing: 0.005em;
+  color: var(--chalk);
+  text-shadow: 0.035em 0.035em 0 var(--kot-orange);
+  animation: kot-fade-up 700ms var(--ease-out) 120ms backwards;
+}
+.kot-hero__title-flip {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--kot-amber);
+  text-shadow: none;
+  animation: kot-voltage 7.2s linear infinite;
+}
+/* floodlight buzz — a brief double-dip once per cycle */
+@keyframes kot-voltage {
+  0%,
+  86.9% {
+    opacity: 1;
+  }
+  87.4% {
+    opacity: 0.35;
+  }
+  87.9% {
+    opacity: 1;
+  }
+  88.7% {
+    opacity: 0.5;
+  }
+  89.5%,
+  100% {
+    opacity: 1;
+  }
+}
+.kot-hero__title-sub {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, 5vw, 64px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  animation: kot-fade-up 700ms var(--ease-out) 320ms backwards;
+}
+.kot-hero__rotate {
+  display: inline-block;
+  color: var(--kot-orange-hot);
+  font-style: italic;
+}
+.kot-hero__lede {
+  font-family: var(--font-sans);
+  font-size: clamp(16px, 1.7vw, 20px);
+  line-height: 1.6;
+  color: rgba(243, 237, 228, 0.78);
+  max-width: 54ch;
+  margin: 0 0 38px 0;
+  animation: kot-fade-up 700ms var(--ease-out) 480ms backwards;
+}
+.kot-hero__ctas {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+  animation: kot-fade-up 700ms var(--ease-out) 640ms backwards;
+}
+
+/* scoreboard strip */
+.kot-hero__stats {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(16, 22, 36, 0.55);
+  border: 1px solid var(--night-line);
+  border-radius: var(--radius-sm);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  animation: kot-fade-up 700ms var(--ease-out) 820ms backwards;
+}
+.kot-hero__stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: clamp(16px, 2.2vw, 28px) clamp(14px, 2vw, 28px);
+  border-left: 1px solid var(--night-line);
+  position: relative;
+}
+.kot-hero__stats > div:first-child {
+  border-left: 0;
+}
+.kot-hero__stats > div::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--kot-orange);
+  border-left: 2px solid var(--kot-orange);
+  opacity: 0.85;
+}
+.kot-hero__stats > div:nth-child(even)::before {
+  border-color: var(--kot-amber);
+}
+.kot-hero__stats strong {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(38px, 4.6vw, 64px);
+  line-height: 0.92;
+  color: var(--chalk);
+  letter-spacing: 0.02em;
+}
+.kot-hero__stats span {
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(243, 237, 228, 0.55);
+}
+@media (max-width: 700px) {
+  .kot-hero__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .kot-hero__stats > div:nth-child(odd) {
+    border-left: 0;
+  }
+  .kot-hero__stats > div:nth-child(n + 3) {
+    border-top: 1px solid var(--night-line);
+  }
+}
+.kot-hero__scroll {
+  position: absolute;
+  bottom: 30px;
+  right: clamp(20px, 4vw, 48px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(243, 237, 228, 0.5);
+}
+.kot-hero__scroll svg {
+  width: 16px;
+  height: 16px;
+  animation: kot-bounce 1.6s ease-in-out infinite;
+}
+@keyframes kot-bounce {
+  0%,
+  100% {
+    transform: rotate(90deg) translateX(0);
+  }
+  50% {
+    transform: rotate(90deg) translateX(6px);
+  }
+}
+@media (max-width: 640px) {
+  .kot-hero {
+    padding-bottom: 72px;
+  }
+  .kot-hero__scroll {
+    display: none;
+  }
+}
+

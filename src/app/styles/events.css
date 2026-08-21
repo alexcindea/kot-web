@@ -1,0 +1,97 @@
+/* ============================================================
+   Events — poster wall
+   ============================================================ */
+.kot-events__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 2.4vw, 30px);
+}
+@media (max-width: 900px) {
+  .kot-events__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .kot-events__grid {
+    grid-template-columns: 1fr;
+  }
+}
+.kot-event-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow-hard);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+.kot-event-card:nth-child(3n + 1) {
+  transform: rotate(-0.7deg);
+}
+.kot-event-card:nth-child(3n + 2) {
+  transform: rotate(0.5deg);
+}
+.kot-event-card:nth-child(3n) {
+  transform: rotate(-0.3deg);
+}
+.kot-event-card:hover {
+  transform: rotate(0deg) translate(-3px, -3px);
+  box-shadow: 9px 9px 0 var(--ink);
+}
+.kot-event-card .kot-photo {
+  border-radius: 0;
+}
+.kot-event-card__body {
+  padding: 14px 18px 16px;
+  border-top: 2px solid var(--ink);
+  background:
+    linear-gradient(90deg, var(--kot-orange) 0 6px, transparent 6px),
+    var(--white);
+}
+.kot-event-card:nth-child(even) .kot-event-card__body {
+  background:
+    linear-gradient(90deg, var(--ink) 0 6px, transparent 6px), var(--white);
+}
+.kot-event-card__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin: 0;
+  color: var(--ink);
+  text-transform: uppercase;
+  padding-left: 8px;
+}
+.kot-event-card__placeholder {
+  max-width: 12ch;
+  color: var(--chalk);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.kot-event-card__slot {
+  margin-top: 8px;
+  align-self: flex-start;
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(18, 16, 14, 0.5);
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+}
+.kot-events__empty {
+  grid-column: 1 / -1;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--ink-3);
+}
+
