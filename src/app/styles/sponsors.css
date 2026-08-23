@@ -16,6 +16,105 @@
     grid-template-columns: 1fr;
   }
 }
+/* Benefits: the old paragraph broken into scannable claims. */
+.kot-sponsor__benefits {
+  list-style: none;
+  margin: -14px 0 28px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 52ch;
+}
+.kot-sponsor__benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+.kot-sponsor__benefits svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--night);
+  color: var(--kot-orange);
+}
+.kot-sponsor__benefits strong {
+  display: block;
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--night);
+}
+.kot-sponsor__benefits span {
+  display: block;
+  margin-top: 2px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: rgba(18, 16, 14, 0.78);
+}
+
+.kot-sponsor__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+/* Reach strip — the sponsor-facing restatement of the hero counters. */
+.kot-sponsor__reach {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin: 0 0 40px;
+  background: var(--night);
+  border: 2px solid var(--night);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.kot-sponsor__reach > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: clamp(16px, 2.2vw, 24px);
+  background: var(--kot-orange);
+}
+.kot-sponsor__reach strong {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(34px, 4.2vw, 54px);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  color: var(--night);
+}
+.kot-sponsor__reach span {
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(18, 16, 14, 0.72);
+}
+.kot-sponsor__reach em {
+  font-style: normal;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(18, 16, 14, 0.66);
+}
+@media (max-width: 900px) {
+  .kot-sponsor__reach { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .kot-sponsor__reach { grid-template-columns: 1fr; }
+  .kot-sponsor__ctas .kot-btn { width: 100%; }
+}
+
 .kot-sponsor__cards {
   display: grid;
   grid-template-columns: 1fr;
