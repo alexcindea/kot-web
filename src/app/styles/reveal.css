@@ -1,0 +1,63 @@
+/* ============================================================
+   Scroll reveal (armed only when JS lands — see ScrollFx)
+   ============================================================ */
+.kot-js [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 640ms var(--ease-out),
+    transform 720ms var(--ease-out);
+}
+.kot-js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* "wipe" variant — poster titles sweep in from the left.
+   Uses a sliding mask, not clip-path: an element's own clip-path zeroes
+   its IntersectionObserver geometry, so a clip-based wipe never triggers. */
+.kot-js [data-reveal="wipe"] {
+  transform: translateY(14px);
+  -webkit-mask-image: linear-gradient(100deg, #000 46%, transparent 54%);
+  mask-image: linear-gradient(100deg, #000 46%, transparent 54%);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 720ms var(--ease-out),
+    -webkit-mask-position 900ms var(--ease-out),
+    mask-position 900ms var(--ease-out);
+}
+.kot-js [data-reveal="wipe"].is-in {
+  -webkit-mask-position: 0% 0;
+  mask-position: 0% 0;
+}
+
+/* Group reveal — direct children stagger in; ScrollFx sets --ri per child.
+   The from-only keyframe settles into each child's own resting transform
+   (rotated poster cards keep their tilt, hover transitions stay untouched). */
+.kot-js [data-reveal-group]:not(.is-in) > * {
+  opacity: 0;
+}
+.kot-js [data-reveal-group].is-in > * {
+  animation: kot-group-in 640ms var(--ease-out) backwards;
+  animation-delay: calc(var(--ri, 0) * 80ms);
+}
+.kot-js [data-reveal-group="fast"].is-in > * {
+  animation-duration: 480ms;
+  animation-delay: calc(var(--ri, 0) * 45ms);
+}
+.kot-js [data-reveal-group].is-in.is-instant > * {
+  animation: none;
+}
+@keyframes kot-group-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+

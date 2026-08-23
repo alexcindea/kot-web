@@ -1,0 +1,33 @@
+/* ============================================================
+   About — chalk editorial
+   ============================================================ */
+.kot-about__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+  margin-top: 8px;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+.kot-about__intro .kot-section__title {
+  margin-bottom: 0;
+}
+.kot-about__copy {
+  display: flex;
+  flex-direction: column;
+}
+.kot-about__lede {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 600;
+  margin: 0 0 18px 0;
+  border-left: 4px solid var(--kot-orange);
+  padding-left: 18px;
+}
+.kot-about__body {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink-3);
+}
+

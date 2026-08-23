@@ -1,0 +1,67 @@
+/* ============================================================
+   Staff — name plates under floodlight
+   ============================================================ */
+.kot-staff__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(18px, 2vw, 26px);
+}
+@media (max-width: 800px) {
+  .kot-staff__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.kot-staff-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.kot-staff-card .kot-photo {
+  border: 1px solid var(--night-line);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.kot-staff-card:hover .kot-photo {
+  transform: translateY(-4px);
+}
+.kot-staff-card .kot-photo__img {
+  object-position: top;
+}
+.kot-staff-card__plate {
+  margin: -16px 10px 0;
+  position: relative;
+  z-index: 3;
+  background: var(--chalk);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.55);
+  padding: 12px 14px;
+  transform: skewX(-4deg);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+.kot-staff-card:hover .kot-staff-card__plate {
+  transform: skewX(-4deg) translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.6);
+}
+.kot-staff-card__plate > * {
+  transform: skewX(4deg);
+}
+.kot-staff-card__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.kot-staff-card__role {
+  font-size: 10px;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  margin-top: 5px;
+  font-stretch: var(--stretch-wide);
+}
+

@@ -1,0 +1,190 @@
+/* ============================================================
+   Nav
+   ============================================================ */
+.kot-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  height: 74px;
+  background: transparent;
+  color: var(--chalk);
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    backdrop-filter var(--dur-base) var(--ease-out),
+    border-bottom-color var(--dur-base) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+/* ducks away scrolling down, glides back on the first scroll up */
+.kot-nav.is-hidden {
+  transform: translateY(-101%);
+}
+.kot-nav.is-scrolled {
+  background: rgba(18, 16, 14, 0.86);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom-color: var(--night-line);
+}
+.kot-nav__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 var(--container-pad-x);
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 24px);
+}
+.kot-nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--chalk);
+  min-width: 0;
+}
+.kot-nav__logo img {
+  height: clamp(36px, 2.4vw, 42px);
+  width: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+}
+.kot-nav__wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1;
+  gap: 4px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  color: var(--chalk);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.kot-nav__wordmark-main {
+  font-size: clamp(15px, 0.75vw + 11px, 19px);
+  letter-spacing: 0.05em;
+  line-height: 0.96;
+  white-space: nowrap;
+}
+.kot-nav__wordmark-sub {
+  font-size: clamp(8px, 0.2vw + 7px, 10px);
+  letter-spacing: 0.22em;
+  color: var(--kot-orange);
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.kot-nav__links {
+  display: flex;
+  gap: clamp(14px, 1.5vw, 22px);
+  margin-left: auto;
+}
+.kot-nav__links a {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--chalk);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  transition: color var(--dur-fast);
+  position: relative;
+}
+.kot-nav__links a:hover {
+  color: var(--kot-orange-hot);
+}
+.kot-nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 3px;
+  background: var(--kot-orange);
+  transform: scaleX(0) skewX(-20deg);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.kot-nav__links a:hover::after {
+  transform: scaleX(1) skewX(-20deg);
+}
+.kot-nav__cta {
+  display: none;
+}
+@media (min-width: 1100px) {
+  .kot-nav__cta {
+    display: block;
+  }
+}
+.kot-nav__menu {
+  display: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  margin-left: auto;
+  color: var(--chalk);
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 900px) {
+  .kot-nav__links {
+    display: none;
+  }
+  .kot-nav__menu {
+    display: inline-flex;
+  }
+}
+@media (max-width: 640px) {
+  .kot-nav__inner {
+    gap: 12px;
+  }
+  .kot-nav__logo {
+    gap: 9px;
+  }
+  .kot-nav__logo img {
+    height: 34px;
+  }
+  .kot-nav__wordmark-main {
+    font-size: 13px;
+  }
+  .kot-nav__wordmark-sub {
+    font-size: 7px;
+    letter-spacing: 0.16em;
+  }
+}
+.kot-nav__mobile {
+  background: rgba(18, 16, 14, 0.96);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--night-line);
+  border-bottom: 2px solid var(--kot-orange);
+  padding: 18px var(--container-pad-x) 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.kot-nav__mobile a {
+  display: block;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--chalk);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--night-line);
+  transition:
+    color var(--dur-fast),
+    padding-left var(--dur-base) var(--ease-out);
+}
+.kot-nav__mobile a:hover {
+  color: var(--kot-orange-hot);
+  padding-left: 10px;
+}
+

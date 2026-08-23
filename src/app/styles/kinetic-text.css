@@ -1,0 +1,18 @@
+/* ============================================================
+   Kinetic letters
+   ============================================================ */
+.kot-kinetic {
+  display: inline-block;
+}
+.kot-kinetic__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.kot-kinetic__letter {
+  display: inline-block;
+  will-change: transform;
+}
+.kot-kinetic__space {
+  display: inline-block;
+}
+

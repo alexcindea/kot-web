@@ -1,0 +1,20 @@
+/* ============================================================
+   Scroll progress — voltage line across the very top
+   ============================================================ */
+.kot-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  transform-origin: 0 50%;
+  background: linear-gradient(
+    90deg,
+    var(--kot-ember) 0%,
+    var(--kot-orange) 55%,
+    var(--kot-amber) 100%
+  );
+  z-index: 60;
+  pointer-events: none;
+}
+

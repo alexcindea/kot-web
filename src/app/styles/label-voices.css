@@ -1,0 +1,78 @@
+/* ============================================================
+   Label voices
+   ============================================================ */
+.kot-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.kot-eyebrow-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 1px;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+.kot-eyebrow-dot.dot-flame {
+  background: var(--kot-orange);
+}
+.kot-eyebrow-dot.dot-ember {
+  background: var(--tone-b);
+}
+.kot-eyebrow-dot.dot-white {
+  background: var(--chalk);
+}
+.kot-eyebrow-text {
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: inherit;
+}
+
+/* Jersey-number section mark: 01 ——— LABEL */
+.kot-mark {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+.kot-mark__num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 46px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.6px var(--kot-orange);
+}
+.kot-mark__num--flame {
+  -webkit-text-stroke-color: var(--kot-orange);
+}
+.kot-mark__num--ember {
+  -webkit-text-stroke-color: var(--tone-b);
+}
+.kot-mark__num--white {
+  -webkit-text-stroke-color: var(--chalk);
+}
+.kot-section--orange .kot-mark__num--white {
+  -webkit-text-stroke-color: var(--night);
+}
+.kot-mark__rule {
+  height: 2px;
+  width: 56px;
+  background: currentColor;
+  opacity: 0.25;
+}
+.kot-mark__label {
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+}
+

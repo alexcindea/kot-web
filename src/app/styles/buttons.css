@@ -1,0 +1,141 @@
+/* ============================================================
+   Buttons — skewed speed blocks
+   ============================================================ */
+.kot-btn {
+  --btn-bg: var(--kot-orange);
+  --btn-fg: var(--night);
+  --btn-bd: transparent;
+  --btn-shadow: rgba(18, 16, 14, 0.85);
+  font-family: var(--font-sans);
+  font-stretch: 112%;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-button);
+  font-size: 14px;
+  padding: 13px 22px;
+  border-radius: var(--radius-xs);
+  border: 2px solid var(--btn-bd);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  text-decoration: none;
+  transform: skewX(-8deg);
+  box-shadow: 4px 4px 0 var(--btn-shadow);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+/* one-shot shine sweep on hover */
+.kot-btn::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+  width: 36%;
+  background: linear-gradient(
+    105deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transform: translateX(-160%) skewX(-14deg);
+  pointer-events: none;
+}
+.kot-btn:hover::after {
+  transform: translateX(340%) skewX(-14deg);
+  transition: transform 640ms var(--ease-out);
+}
+.kot-btn > * {
+  transform: skewX(8deg);
+}
+.kot-btn > span {
+  display: inline-block;
+}
+.kot-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.kot-btn:hover {
+  transform: skewX(-8deg) translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--btn-shadow);
+}
+.kot-btn:active {
+  transform: skewX(-8deg) translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--btn-shadow);
+}
+
+.kot-btn--sm {
+  padding: 9px 15px;
+  font-size: 12px;
+  box-shadow: 3px 3px 0 var(--btn-shadow);
+}
+.kot-btn--md {
+  padding: 13px 22px;
+  font-size: 14px;
+}
+.kot-btn--lg {
+  padding: 17px 30px;
+  font-size: 15px;
+}
+
+.kot-btn--primary {
+  --btn-bg: var(--kot-orange);
+  --btn-fg: var(--night);
+}
+.kot-btn--primary:hover {
+  --btn-bg: var(--kot-orange-hot);
+  color: var(--night);
+}
+.kot-btn--accent {
+  --btn-bg: var(--kot-orange);
+  --btn-fg: var(--night);
+}
+.kot-btn--accent:hover {
+  --btn-bg: var(--kot-orange-hot);
+  color: var(--night);
+}
+.kot-btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: currentColor;
+  --btn-bd: currentColor;
+  box-shadow: none;
+}
+.kot-btn--ghost:hover {
+  --btn-bg: var(--kot-orange);
+  --btn-fg: var(--night);
+  --btn-bd: var(--kot-orange);
+  box-shadow: 4px 4px 0 var(--btn-shadow);
+  color: var(--night);
+}
+.kot-btn--dark {
+  --btn-bg: var(--night);
+  --btn-fg: var(--chalk);
+  --btn-shadow: rgba(18, 16, 14, 0.35);
+}
+.kot-btn--dark:hover {
+  --btn-bg: var(--night-3);
+  color: var(--chalk);
+}
+.kot-btn--ghost-inv {
+  --btn-bg: transparent;
+  --btn-fg: var(--chalk);
+  --btn-bd: rgba(245, 242, 233, 0.4);
+  box-shadow: none;
+}
+.kot-btn--ghost-inv:hover {
+  --btn-bd: var(--chalk);
+  --btn-bg: rgba(245, 242, 233, 0.08);
+  color: var(--chalk);
+}
+

@@ -1,0 +1,37 @@
+/* ============================================================
+   Pills
+   ============================================================ */
+.kot-pill {
+  font-family: var(--font-sans);
+  font-stretch: var(--stretch-wide);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10px;
+  padding: 6px 10px;
+  border-radius: var(--radius-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ink);
+  color: var(--chalk);
+}
+.kot-pill--ember {
+  background: var(--tone-b);
+  color: var(--tone-b-ink);
+}
+.kot-pill--flame {
+  background: var(--kot-orange);
+  color: var(--night);
+}
+.kot-pill--ember.kot-pill--soft {
+  background: rgba(255, 190, 109, 0.16);
+  color: var(--kot-amber);
+  box-shadow: inset 0 0 0 1px rgba(255, 190, 109, 0.35);
+}
+.kot-pill--flame.kot-pill--soft {
+  background: rgba(247, 147, 53, 0.16);
+  color: var(--kot-orange-hot);
+  box-shadow: inset 0 0 0 1px rgba(255, 156, 51, 0.35);
+}
+
