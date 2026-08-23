@@ -1,4 +1,6 @@
-import { ArrowRight, Play, ChevronRight } from 'lucide-react'
+import { ArrowRight, Play, ChevronRight, HeartHandshake } from 'lucide-react'
+
+import { SPONSOR_CONTACT_URL } from '@/app/content/sponsorship'
 
 import HeroRotate from '@/app/components/HeroRotate'
 import CountUp from '@/app/components/fx/CountUp'
@@ -37,11 +39,19 @@ export default function HeroSection() {
           echipe naționale a României la ICU Cheerleading Worlds.
         </p>
 
+        {/* The site's two audiences, given equal weight: families joining and
+            companies backing. Separated by value, not hue. */}
         <div className="kot-hero__ctas">
           <Magnetic>
             <a href="#contact" className="kot-btn kot-btn--accent kot-btn--lg">
               <span>Încearcă și tu</span>
               <ArrowRight size={18} />
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a href={SPONSOR_CONTACT_URL} className="kot-btn kot-btn--chalk kot-btn--lg">
+              <HeartHandshake size={18} />
+              <span>Devino sponsor</span>
             </a>
           </Magnetic>
           <Magnetic>

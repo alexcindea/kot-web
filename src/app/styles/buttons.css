@@ -127,6 +127,17 @@
   --btn-bg: var(--night-3);
   color: var(--chalk);
 }
+/* Solid paper. Reads as a peer to the orange CTA on dark grounds, separated
+   by value rather than hue since the palette runs on a single colour. */
+.kot-btn--chalk {
+  --btn-bg: var(--chalk);
+  --btn-fg: var(--ink);
+  --btn-shadow: rgba(18, 16, 14, 0.55);
+}
+.kot-btn--chalk:hover {
+  --btn-bg: var(--white);
+  color: var(--ink);
+}
 .kot-btn--ghost-inv {
   --btn-bg: transparent;
   --btn-fg: var(--chalk);

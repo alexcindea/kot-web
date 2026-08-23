@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useId, useState } from 'react'
+import { useActionState, useId, useState, useSyncExternalStore } from 'react'
 import { Send, CheckCircle2 } from 'lucide-react'
 import { submitContact, type ContactState } from './actions'
 import {
@@ -20,7 +20,15 @@ const FIELD_ORDER: ContactField[] = ['name', 'email', 'phone', 'enquiry', 'messa
 
 const FORM_ATTR = 'data-kot-contact-form'
 
-const EMPTY: ContactValues = { name: '', email: '', phone: '', enquiry: 'General', message: '' }
+/** enquiry starts blank so an untouched field can fall back to the URL subject. */
+const EMPTY: ContactValues = { name: '', email: '', phone: '', enquiry: '', message: '' }
+
+/* Sponsor CTAs arrive as ?subiect=sponsorizare. The URL is external state, so
+   it is read through useSyncExternalStore with a null server snapshot — that
+   keeps the server render and the hydration pass in agreement. */
+const subscribeToUrl = () => () => {}
+const readUrlSubject = () => new URLSearchParams(window.location.search).get('subiect')
+const readServerSubject = () => null
 
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null
@@ -35,9 +43,18 @@ export default function ContactForm() {
   const [state, formAction, pending] = useActionState(submitContact, initial)
   // Controlled on purpose: React resets an uncontrolled form once its action
   // runs, which would throw away everything typed whenever validation fails.
-  const [values, setValues] = useState<ContactValues>(EMPTY)
+  const [typed, setValues] = useState<ContactValues>(EMPTY)
   const [clientErrors, setClientErrors] = useState<ContactFieldErrors>({})
   const fieldId = useId()
+
+  const urlSubject = useSyncExternalStore(subscribeToUrl, readUrlSubject, readServerSubject)
+
+  // An untouched subject follows the link the visitor arrived on; once they
+  // pick one themselves, their choice wins.
+  const values: ContactValues = {
+    ...typed,
+    enquiry: typed.enquiry || (urlSubject === 'sponsorizare' ? 'Sponsorship' : 'General'),
+  }
 
   // Server errors are authoritative; client errors cover fields touched since.
   const errors: ContactFieldErrors = { ...clientErrors, ...(state.fieldErrors ?? {}) }
