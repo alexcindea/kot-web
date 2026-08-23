@@ -13,8 +13,8 @@ import SponsorsSection from './components/sections/SponsorsSection'
 import ContactSection from './components/sections/ContactSection'
 import { projectFallback } from './content/projects'
 import { sponsorFallbackNames } from './content/sponsors'
-import { organizationStructuredData } from './content/structuredData'
-import { siteDescription, siteName } from './seo'
+import { championshipStructuredData, organizationStructuredData } from './content/structuredData'
+import { siteDescription, siteLocale, siteName } from './seo'
 import { getHomepageContent, getSitePhotos, getSponsors } from '@/sanity/lib/queries'
 import type { SanitySponsor } from '@/sanity/lib/types'
 
@@ -27,11 +27,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/',
+    // Repeated here because a page-level openGraph replaces the layout's
+    // wholesale — without these the homepage loses site name and locale.
+    siteName,
+    locale: siteLocale,
     title: `${siteName} · Cheerleading în Cluj-Napoca`,
     description: siteDescription,
   },
   twitter: {
-    card: 'summary',
+    // summary_large_image so the generated card shows full-width, not as a
+    // thumbnail beside the text.
+    card: 'summary_large_image',
     title: `${siteName} · Cheerleading în Cluj-Napoca`,
     description: siteDescription,
   },
@@ -59,6 +65,10 @@ export default async function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(championshipStructuredData) }}
       />
       <Nav />
 
