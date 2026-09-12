@@ -1,5 +1,7 @@
 "use server";
 
+import { headers } from "next/headers";
+
 import {
   ENQUIRY_VALUES,
   hasErrors,
@@ -8,6 +10,7 @@ import {
   type ContactFieldErrors,
   type EnquiryValue,
 } from "./contact-validation";
+import { consumeContactSlot, contactRateLimitKey } from "./rate-limit";
 
 function escapeHtml(value: string) {
   return value
@@ -63,12 +66,14 @@ export async function submitContact(
     : "General";
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_EMAIL?.trim() || "alexcindea@gmail.com";
+  // No hardcoded recipient on purpose: a missing CONTACT_EMAIL should be a
+  // visible misconfiguration, not enquiries quietly going somewhere else.
+  const to = process.env.CONTACT_EMAIL?.trim();
   const from =
     process.env.CONTACT_FROM_EMAIL?.trim() ||
     "Knights of Transylvania <onboarding@resend.dev>";
 
-  if (!apiKey) {
+  if (!apiKey || !to) {
     if (process.env.NODE_ENV === "development") {
       console.log("[contact form]", { name, email, phone, enquiry, message, to, from });
       return { status: "success" };
@@ -77,6 +82,19 @@ export async function submitContact(
     return {
       status: "error",
       message: `Formularul nu este configurat momentan. ${FALLBACK_CONTACT}`,
+    };
+  }
+
+  // Charged only now, once the message is real and about to be sent, so a
+  // visitor fixing a typo never spends their allowance on failed validation.
+  const slot = consumeContactSlot(contactRateLimitKey(await headers()));
+  if (!slot.allowed) {
+    const minutes = Math.max(1, Math.ceil(slot.retryAfterSeconds / 60));
+    // 1 minut · 2–19 minute · 20 de minute
+    const unit = minutes === 1 ? "minut" : minutes < 20 ? "minute" : "de minute";
+    return {
+      status: "error",
+      message: `Ai trimis deja câteva mesaje. Mai încearcă peste ${minutes} ${unit}. ${FALLBACK_CONTACT}`,
     };
   }
 
